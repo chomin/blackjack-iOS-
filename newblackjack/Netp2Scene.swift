@@ -14,7 +14,7 @@ class Netp2Scene: SKScene {
 	let ppLabel = SKLabelNode(fontNamed: "HiraginoSans-W6") //得点表示用のラベル
 	let cpLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
 	
-	var fpcardsc=2	//p1の手札の数(更新前)
+	var fpcardsc=0	//p1の手札の数(更新前)
 	//ボタンを生成
 	static let hitButton = UIButton()
 	static let standButton = UIButton()
@@ -35,6 +35,7 @@ class Netp2Scene: SKScene {
 	var firstdraw=false
 	var didchange=false
 	var buttontapped=true
+	let queue = DispatchQueue.main
 	
 	
 	
@@ -158,11 +159,15 @@ class Netp2Scene: SKScene {
 			last=currentTime
 			buttontapped=false
 		}
-		// 4秒おきに行う処理をかく。
-		if last + 4 <= currentTime  {
+		// 3秒おきに行う処理をかく。
+		if last + 3 <= currentTime  {
+			queue.async {
+				
+				
+			
 			//サーバーから山札、手札を獲得
 			
-			nets.receiveData()
+			self.nets.receiveData()
 			if Cards.state=="break"{	  //breakを受信したら強制終了
 				Netp2Scene.hitButton.isHidden=true
 				Netp2Scene.standButton.isHidden=true
@@ -174,7 +179,7 @@ class Netp2Scene: SKScene {
 				self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
 			}
 			
-			print(Cards.state)
+			
 		
 			Netp2Scene.hitButton.isEnabled=true
 			Netp2Scene.standButton.isEnabled=true
@@ -182,8 +187,8 @@ class Netp2Scene: SKScene {
 			Netp2Scene.titleButton.isEnabled=true
 			
 			
-			let pcardsc=Cards.pcards.count
-			if firstdraw==false && Cards.state=="p1turn"{
+			let pcardsc=Cards.pcards.count    //毎回更新
+			if self.firstdraw==false && Cards.state=="p1turn"{
 				//最初の手札を獲得(pの手札、cの手札、pの得点、cの得点)
 				let pcards:[Int]=Cards.pcards
 				let ccards:[Int]=Cards.ccards
@@ -192,118 +197,125 @@ class Netp2Scene: SKScene {
 				
 				//1p（敵）の各手札を表示
 				for (index,value) in pcards.enumerated(){
-					card[value].position=CGPoint(x:cwidth/2+cwidth*CGFloat(index),y:frame.size.height-cheight/2)
-					self.addChild(card[value])
+					self.card[value].position=CGPoint(x:cwidth/2+cwidth*CGFloat(index),y:self.frame.size.height-cheight/2)
+					self.addChild(self.card[value])
 				}
 				
 				//2pの1枚目は表,2枚目は裏向き
-				card[ccards[0]].position=CGPoint(x:cwidth/2,y:cheight/2)
-				card[0].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-				self.addChild(card[ccards[0]])
-				self.addChild(card[0])
+				self.card[ccards[0]].position=CGPoint(x:cwidth/2,y:cheight/2)
+				self.card[0].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+				self.addChild(self.card[ccards[0]])
+				self.addChild(self.card[0])
 				
 				//敵の得点表示
-				ppLabel.text=pp
+				self.ppLabel.text=pp
 				//ターンを表示
 				
-				Label.text = "player1のターン"
-				Label.fontSize = 45
-				Label.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 20)
-				self.addChild(Label)
+				self.Label.text = "player1のターン"
+				self.Label.fontSize = 45
+				self.Label.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 20)
+				self.addChild(self.Label)
 				
 				//BJの判定
 				let j=Cards().judge(0)
 				if j==5{
 					//2枚目を表に向ける
 					var ccards=Cards.ccards
-					card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-					self.addChild(card[ccards[1]])
-					ppLabel.text="Blackjack!"
-					cpLabel.text="Blackjack!"
-					draw()
+					self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+					self.addChild(self.card[ccards[1]])
+					self.ppLabel.text="Blackjack!"
+					self.cpLabel.text="Blackjack!"
+					self.draw()
 					
 				}else if j==3{
-					ppLabel.text="Blackjack!"
+					self.ppLabel.text="Blackjack!"
 					
 					//2枚目を表に向ける
 					var ccards=Cards.ccards
-					card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-					self.addChild(card[ccards[1]])
+					self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+					self.addChild(self.card[ccards[1]])
 					
 					//得点表示
-					cpLabel.text=cp
+					self.cpLabel.text=cp
 					
-					pwin()
+					self.pwin()
 				}else if j==4{
-					card[0].run(SKAction.hide())	  //裏面カードを非表示にする
+					self.card[0].run(SKAction.hide())	  //裏面カードを非表示にする
 					
 					//2枚目を表に向ける
 					var ccards=Cards.ccards
-					card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-					self.addChild(card[ccards[1]])
+					self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+					self.addChild(self.card[ccards[1]])
 					
 					//得点表示
-					cpLabel.text="Blackjack!"
+					self.cpLabel.text="Blackjack!"
 					
 					
-					plose()
+					self.plose()
 				}
 				
-				firstdraw=true
-			}else if (pcardsc != fpcardsc) && (Cards.state != "end") && (Cards.state != "start"){//更新(startはまだ配った手札が来てない状態、endは手札がからの状態)
+				self.firstdraw=true
+				self.fpcardsc=pcards.count	//最初だけ受信
+			}else if (pcardsc != self.fpcardsc) && (Cards.state == "p1turn"||Cards.state == "p2turn"){//更新(startはまだ配った手札が来てない状態、end,breakは手札がからの状態、judgeでもエラー発生)
 				let pcards:[Int]=Cards.pcards
 				
 				let (pp,_)=Cards().getpoints()
 				//1p（敵）の各手札を表示
 				
-				card[pcards[pcardsc-1]].position=CGPoint(x:cwidth/2+cwidth*CGFloat(pcardsc-1),y:frame.size.height-cheight/2)
-				self.addChild(card[pcards[pcardsc-1]])
+				self.card[pcards[pcardsc-1]].position=CGPoint(x:cwidth/2+cwidth*CGFloat(pcardsc-1),y:self.frame.size.height-cheight/2)
+				self.addChild(self.card[pcards[pcardsc-1]])
+				
 				
 				//敵の得点表示
-				ppLabel.text=pp
-				fpcardsc+=1
+				self.ppLabel.text=pp
+				
+				self.fpcardsc=pcardsc
 				
 				//敵のbustの判定
 				let j=Cards().judge(1)
 				if j==4{
-					ppLabel.text! += " Bust!!!"
-					plose()
+					self.ppLabel.text! += " Bust!!!"
+					self.plose()
 					
-					card[0].run(SKAction.hide())	  //p2の裏面カードを非表示にする
+					self.card[0].run(SKAction.hide())	  //p2の裏面カードを非表示にする
 					
 					//2枚目を表に向ける
 					var ccards=Cards.ccards
-					card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-					self.addChild(card[ccards[1]])
+					self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+					self.addChild(self.card[ccards[1]])
 					
 					//得点を表示する
 					let (_,cp0)=Cards().getpoints()
-					cpLabel.text=cp0
+					self.cpLabel.text=cp0
+					
+					//入ってこないようにする
+					Cards.state="stable"  //適当
 				}
 				
 			}
-			if Cards.state=="p2turn"&&didchange==false{
+			if Cards.state=="p2turn"&&self.didchange==false{
 				Netp2Scene.hitButton.isHidden=false
 				Netp2Scene.standButton.isHidden=false
-				card[0].run(SKAction.hide())	  //p2の裏面カードを非表示にする
+				self.card[0].run(SKAction.hide())	  //p2の裏面カードを非表示にする
 				
 				//2枚目を表に向ける
 				var ccards=Cards.ccards
-				card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-				self.addChild(card[ccards[1]])
+				self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+				self.addChild(self.card[ccards[1]])
 				
 				//得点を表示する
 				let (_,cp0)=Cards().getpoints()
-				cpLabel.text=cp0
-				Label.text="player2のターン"
+				self.cpLabel.text=cp0
+				self.Label.text="player2のターン"
 				
-				didchange=true
+				self.didchange=true
 				
 			}
 			
 			
 			
-			last = currentTime
+			self.last = currentTime
+		}
 		}
 		
 		
@@ -314,6 +326,7 @@ class Netp2Scene: SKScene {
 	func onClickHitButton(_ sender : UIButton){
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
+		nets.receiveData()
 		let hcounter=Cards.pcards.count-2
 		
 		let (ccards,cp)=Cards().stand(hcounter+chcounter) //カードを引く
@@ -351,6 +364,7 @@ class Netp2Scene: SKScene {
 	}
 	
 	func onClickStandButton(_ sender : UIButton){
+		nets.receiveData()
 		Cards.state="judge"
 		nets.sendData()
 		
@@ -442,6 +456,7 @@ class Netp2Scene: SKScene {
 		self.view!.addSubview(Netp2Scene.resetButton)
 		
 		
+		
 		Netp2Scene.titleButton.frame = CGRect(x: 0,y: 0,width: 200,height: 40)
 		Netp2Scene.titleButton.backgroundColor = UIColor.red;
 		Netp2Scene.titleButton.layer.masksToBounds = true
@@ -456,7 +471,7 @@ class Netp2Scene: SKScene {
 		Netp2Scene.titleButton.addTarget(self, action: #selector(PVPScene.onClickTitleButton(_:)), for: .touchUpInside)
 		Netp2Scene.titleButton.addTarget(self, action: #selector(PVPScene.touchDownTitleButton(_:)), for: .touchDown)
 		Netp2Scene.titleButton.addTarget(self, action: #selector(PVPScene.enableButtons(_:)), for: .touchUpOutside)
-		Netp2Scene.resetButton.isHidden=false
+		Netp2Scene.titleButton.isHidden=false
 		self.view!.addSubview(Netp2Scene.titleButton)
 		
 		
@@ -464,47 +479,59 @@ class Netp2Scene: SKScene {
 	}
 	
 	func onClickResetButton(_ sender : UIButton){
-		if Cards.state=="p1turn"{   //endofthegameに入れると、カードの表示前に初期化してしまう！
-			Cards.state="end"
-			//クラス変数を初期化
-			Cards.pcards.removeAll()
-			Cards.cards.removeAll()
-			Cards.ccards.removeAll()
-			Cards.cards=[Int](1...52)
-			nets.sendData() //受け手側が送るようにする
+		queue.async { //処理を順番に実行
+			if Cards.state=="p1turn"{   //endofthegameに入れると、カードの表示前に初期化してしまう！
+				
+				self.nets.receiveData()
+				
+				Cards.state="end"//クラス変数を初期化
+				Cards.pcards.removeAll()
+				Cards.cards.removeAll()
+				Cards.ccards.removeAll()
+				Cards.cards=[Int](1...52)
+				
+				self.nets.sendData() //受け手側が送るようにする
+				
+			}
+			
+			//ボタンを隠す
+			Netp2Scene.resetButton.isHidden=true
+			Netp2Scene.titleButton.isHidden=true
+			
+			let gameScene:waitingScene = waitingScene(size: self.view!.bounds.size) // create your new scene
+			let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+			gameScene.scaleMode = SKSceneScaleMode.fill
+			self.view!.presentScene(gameScene, transition: transition) //waitingSceneに移動
 		}
-
-		//ボタンを隠す
-		Netp2Scene.resetButton.isHidden=true
-		Netp2Scene.titleButton.isHidden=true
-		
-		let gameScene:waitingScene = waitingScene(size: self.view!.bounds.size) // create your new scene
-		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
-		gameScene.scaleMode = SKSceneScaleMode.fill
-		self.view!.presentScene(gameScene, transition: transition) //waitingSceneに移動
 	}
 	
 	func onClickTitleButton(_ sender : UIButton){
-		if Cards.state=="p1turn"{   //endofthegameに入れると、カードの表示前に初期化してしまう！
-			Cards.state="end"
-			//クラス変数を初期化
-			Cards.pcards.removeAll()
-			Cards.cards.removeAll()
-			Cards.ccards.removeAll()
-			Cards.cards=[Int](1...52)
-			nets.sendData() //受け手側が送るようにする
+		queue.async {
+			if Cards.state=="p1turn"{//endofthegameに入れると、カードの表示前に初期化してしまう！
+				
+				self.nets.receiveData()
+				
+				Cards.state="end"//クラス変数を初期化
+				Cards.pcards.removeAll()
+				Cards.cards.removeAll()
+				Cards.ccards.removeAll()
+				Cards.cards=[Int](1...52)
+				
+				self.nets.sendData() //受け手側が送るようにする
+				
+			}
+			
+			
+			
+			//ボタンを隠す
+			Netp2Scene.resetButton.isHidden=true
+			Netp2Scene.titleButton.isHidden=true
+			
+			let gameScene = LaunchScene(size: self.view!.bounds.size) // create your new scene
+			let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+			gameScene.scaleMode = SKSceneScaleMode.fill
+			self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
 		}
-		
-
-		
-		//ボタンを隠す
-		Netp2Scene.resetButton.isHidden=true
-		Netp2Scene.titleButton.isHidden=true
-		
-		let gameScene = LaunchScene(size: self.view!.bounds.size) // create your new scene
-		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
-		gameScene.scaleMode = SKSceneScaleMode.fill
-		self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
 	}
 	
 	//同時押し対策

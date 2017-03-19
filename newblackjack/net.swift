@@ -10,7 +10,8 @@ import UIKit
 
 
 class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をする(URLSessionDelegateを継承するためにUIViewControllerを継承)
-	
+	static var fjcount:Int?=nil
+	let uuid=UIDevice.current.identifierForVendor!.uuidString //識別子
 	
 	
 	func receiveData(){		//受信する
@@ -31,7 +32,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 //		let session: URLSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
 		
 		// 通信先のURLを生成.
-		let url:NSURL = NSURL(string: "https://chomin-api.herokuapp.com/bj2s.json")!
+		let url:NSURL = NSURL(string: "https://chomin-api.herokuapp.com/bj3s.json/")!
 		
 		// リクエストを生成.
 		let request:NSURLRequest  = NSURLRequest(url: url as URL)
@@ -48,45 +49,69 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		
 		// タスクの生成.
 //		let task: URLSessionDataTask = session.dataTask(with: url as URL, completionHandler: { (data, response, err) -> Void in	//これは非同期通信（処理をバックグラウンドで行い、完了前でも次に進む）
-			if data==nil{
-				print("nilだお")
-			}
-			if data != nil {
+		if data==nil{
+			print("nilだお")
+		}
+		if data != nil {
+			
+			//				let str = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+			//				print(str!)
+			
+			do {
+				// 受け取ったJSONデータをパースする.(辞書型に変換)
+				let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Dictionary<String, Any>]
 				
-//				let str = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-//				print(str!)
+				/*
+				このAPIにおいてそれぞれのJSONは
 				
-				do {
-					// 受け取ったJSONデータをパースする.(辞書型に変換)
-					let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [Dictionary<String, Any>]
+				created_at（時）
+				id（番号）
+				updated_at
+				url
+				cards(String)
+				pcards(String)
+				ccards(String)
+				state(String)
+				uuid(String)
+				
+				
+				を返す。(3/19/15:30での予定)
+				*/
+				
+				if json.isEmpty==false{
 					
-					/*
-					このAPIにおいてそれぞれのJSONは
-					
-					created_at（時）
-					id（番号）
-					updated_at
-					url
-					cards(String)
-					pcards(String)
-					ccards(String)
-					state(String)
+					var cardS:String
+					var pcardsS:String
+					var ccardsS:String
+					var state:String
+					var cards:[Int]=[]
+					var pcards:[Int]=[]
+					var ccards:[Int]=[]
 					
 					
-					を返す。(3/17/18:30での予定)
-					*/
-					
-					if json.isEmpty==false{
+					if (net.fjcount != json.count)||(net.fjcount==nil){
+						let adjust:Int
+						if net.fjcount==nil{
+							adjust=0
+						}else{
+							adjust=json.count-net.fjcount!-1
+						}
+						let alast=json.count-adjust-1	//adjusted last index(0が1個め)(新しいものを1つずつ順に獲得する)
+						if adjust==0{
+							waitingScene.isLatest=true
+						}else{
+							waitingScene.isLatest=false
+						}
 						
-						var cardS:String
-						var pcardsS:String
-						var ccardsS:String
-						var state:String
-						var cards:[Int]=[]
-						var pcards:[Int]=[]
-						var ccards:[Int]=[]
+						net.fjcount=json.count-adjust
 						
-						if let tmp=json.last!["card"]{
+						if json.count >= 2 && adjust==0{
+							if json[alast]["state"] as! String=="waiting" && json[alast-1]["state"] as! String=="waiting" && json[alast]["uuid"] as! String==uuid{	//ダブルwaitingになったらあとから送ったほうがstartを投げる
+								
+								waitingScene.sendstart=true
+							}
+						}
+						if let tmp=json[alast]["card"]{
 							cardS=tmp as! String
 							//それぞれの文字列を配列に戻す
 							
@@ -113,7 +138,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 							
 						}
 						
-						if let tmp=json.last!["pcards"]{
+						if let tmp=json[alast]["pcards"]{
 							pcardsS=tmp as! String
 							for i in 0...52{
 								let hstart=pcardsS.characters.index(pcardsS.startIndex, offsetBy: 1+i)
@@ -134,7 +159,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 							}
 							Cards.pcards=pcards
 						}
-						if let tmp=json.last!["ccards"]{
+						if let tmp=json[alast]["ccards"]{
 							ccardsS=tmp as! String
 							for i in 0...52{
 								let hstart=ccardsS.characters.index(ccardsS.startIndex, offsetBy: 1+i)
@@ -155,13 +180,14 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 							}
 							Cards.ccards=ccards
 						}
-						if let tmp=json.last!["state"]{
+						if let tmp=json[alast]["state"]{
 							state=tmp as! String
 							Cards.state=state
 							
 						}
-					}
-					
+					}//
+				}
+				
 				} catch {
 					print("error")
 					print(error)
@@ -193,13 +219,13 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		
 		
 		// APIへ飛ばすデータをJSONに変換する(sendDataはData?型)
-		let sendData = String(format: "{ \"bj2\": { \"cards\":\"%@\", \"pcards\":\"%@\",\"ccards\":\"%@\",\"state\":\"%@\" } }", Scards, Spcards,Sccards,Cards.state).data(using: String.Encoding.utf8)  //%@の部分にそれぞれの変数が入るようになっている？
+		let sendData = String(format: "{ \"bj3\": { \"cards\":\"%@\", \"pcards\":\"%@\",\"ccards\":\"%@\",\"state\":\"%@\",\"uuid\":\"%@\" } }", Scards, Spcards,Sccards,Cards.state,uuid).data(using: String.Encoding.utf8)  //%@の部分にそれぞれの変数が入るようになっている？
 		 print(String(data: sendData!, encoding: String.Encoding.utf8)!)
 		
 		
 		
 		// APIへ接続するための設定
-		let apiUrl = URL(string: "https://chomin-api.herokuapp.com/bj2s.json")!  //URLを文字列から型変換してapiUrlに代入
+		let apiUrl = URL(string: "https://chomin-api.herokuapp.com/bj3s.json/")!  //URLを文字列から型変換してapiUrlに代入
 		var request = URLRequest(url: apiUrl)   //リクエストの生成
 		request.addValue("application/json", forHTTPHeaderField: "Content-type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")
