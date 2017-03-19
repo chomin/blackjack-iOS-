@@ -463,7 +463,7 @@ class Netp2Scene: SKScene {
 		
 	}
 	
-	func onClickResetButton(_ sender : UIButton){//
+	func onClickResetButton(_ sender : UIButton){
 		if Cards.state=="p1turn"{   //endofthegameに入れると、カードの表示前に初期化してしまう！
 			Cards.state="end"
 			//クラス変数を初期化
