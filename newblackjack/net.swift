@@ -10,8 +10,12 @@ import UIKit
 
 
 class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をする(URLSessionDelegateを継承するためにUIViewControllerを継承)
-	static var fjcount:Int?=nil
-	let uuid=UIDevice.current.identifierForVendor!.uuidString //識別子
+	
+	static var fLastId=0
+	static var uuid=""
+	static var isLatest=false
+	
+	
 	
 	
 	func receiveData(){		//受信する
@@ -26,17 +30,17 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		Netp2Scene.titleButton.isEnabled=false
 		
 		// 通信用のConfigを生成.
-//		let config: URLSessionConfiguration =  URLSessionConfiguration.default
+		//		let config: URLSessionConfiguration =  URLSessionConfiguration.default
 		
 		// Sessionを生成.
-//		let session: URLSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+		//		let session: URLSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
 		
 		// 通信先のURLを生成.
-		let url:NSURL = NSURL(string: "https://chomin-api.herokuapp.com/bj3s.json/")!
+		let url:NSURL = NSURL(string: "https://chomin-api.herokuapp.com/bj3s/latest.json/")!
 		
 		// リクエストを生成.
 		let request:NSURLRequest  = NSURLRequest(url: url as URL)
-
+		
 		
 		var data: Data?
 		do {
@@ -48,14 +52,14 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		}
 		
 		// タスクの生成.
-//		let task: URLSessionDataTask = session.dataTask(with: url as URL, completionHandler: { (data, response, err) -> Void in	//これは非同期通信（処理をバックグラウンドで行い、完了前でも次に進む）
-		if data==nil{
-			print("nilだお")
-		}
-		if data != nil {
+		//		let task: URLSessionDataTask = session.dataTask(with: url as URL, completionHandler: { (data, response, err) -> Void in	//これは非同期通信（処理をバックグラウンドで行い、完了前でも次に進む）
+		if data == nil {//起こらない？
+			print("nil")
+		}else{
 			
-			//				let str = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-			//				print(str!)
+//			let str = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+//			print(str!)
+//			print("↑受信したデータ")
 			
 			do {
 				// 受け取ったJSONデータをパースする.(辞書型に変換)
@@ -63,19 +67,17 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 				
 				/*
 				このAPIにおいてそれぞれのJSONは
-				
-				created_at（時）
 				id（番号）
-				updated_at
-				url
 				cards(String)
 				pcards(String)
 				ccards(String)
 				state(String)
 				uuid(String)
+				created_at（時）
+				updated_at
+				url
 				
-				
-				を返す。(3/19/15:30での予定)
+				を返す。(6/12時点)
 				*/
 				
 				if json.isEmpty==false{
@@ -87,32 +89,45 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 					var cards:[Int]=[]
 					var pcards:[Int]=[]
 					var ccards:[Int]=[]
+					let lastIndex=json.count-1
+					let lastId=json[lastIndex]["id"] as! Int
+					var fLastIdIndex = -1 //fLastIdのデータが入ってる位置
 					
-					
-					if (net.fjcount != json.count)||(net.fjcount==nil){
-						let adjust:Int
-						if net.fjcount==nil{
-							adjust=0
-						}else{
-							adjust=json.count-net.fjcount!-1
+					for i in 0...lastIndex{//fLastIdのデータが入っている位置を調べる
+						if json[i]["id"] as! Int == net.fLastId{
+							fLastIdIndex=i
+							break
 						}
-						let alast=json.count-adjust-1	//adjusted last index(0が1個め)(新しいものを1つずつ順に獲得する)
-						if adjust==0{
-							waitingScene.isLatest=true
+					}
+					if fLastIdIndex == -1 && net.fLastId != 0{//見つからず、初期状態でないとき
+						print("fLastIdのデータが見つかりませんでした")
+						exit(1)
+					}
+					
+					if net.fLastId == lastId {
+						net.isLatest=true
+					}else{//更新すべきとき
+						net.isLatest=false
+						let adjust:Int  //反映されていないデータの個数
+						if net.fLastId==0{
+							adjust=1
 						}else{
-							waitingScene.isLatest=false
+							adjust=lastIndex-fLastIdIndex
 						}
 						
-						net.fjcount=json.count-adjust
+						let alast=lastIndex-adjust+1	//adjusted last index(新しいものを1つずつ順に獲得する)
+						
+						net.fLastId=json[alast]["id"] as! Int
 						
 						if json.count >= 2 && adjust==0{
-							if json[alast]["state"] as! String=="waiting" && json[alast-1]["state"] as! String=="waiting" && json[alast]["uuid"] as! String==uuid{	//ダブルwaitingになったらあとから送ったほうがstartを投げる
+							if json[alast]["state"] as! String=="waiting" && json[alast-1]["state"] as! String=="waiting" && json[alast]["uuid"] as! String==net.uuid{	//ダブルwaitingになったら、あとから送ったほうがstartを投げる
 								
 								waitingScene.sendstart=true
 							}
 						}
-						if let tmp=json[alast]["card"]{
-							cardS=tmp as! String
+						
+						if let tmp0=json[alast]["cards"]{
+							cardS=tmp0 as! String
 							//それぞれの文字列を配列に戻す
 							
 							
@@ -123,7 +138,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 									let tmp=Int(cardS[hstart..<end])
 									cards.append(tmp!)
 									cardS.removeSubrange(hstart...end) //半角スペースと置き換え？
-								}else{
+								}else{//要エラー処理
 									let end=cardS.characters.index(of: "]")
 									let tmp=Int(cardS[hstart..<end!])
 									if tmp==nil{
@@ -138,8 +153,8 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 							
 						}
 						
-						if let tmp=json[alast]["pcards"]{
-							pcardsS=tmp as! String
+						if let tmp0=json[alast]["pcards"]{
+							pcardsS=tmp0 as! String
 							for i in 0...52{
 								let hstart=pcardsS.characters.index(pcardsS.startIndex, offsetBy: 1+i)
 								
@@ -159,8 +174,8 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 							}
 							Cards.pcards=pcards
 						}
-						if let tmp=json[alast]["ccards"]{
-							ccardsS=tmp as! String
+						if let tmp0=json[alast]["ccards"]{
+							ccardsS=tmp0 as! String
 							for i in 0...52{
 								let hstart=ccardsS.characters.index(ccardsS.startIndex, offsetBy: 1+i)
 								
@@ -180,20 +195,28 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 							}
 							Cards.ccards=ccards
 						}
-						if let tmp=json[alast]["state"]{
-							state=tmp as! String
+						if let tmp0=json[alast]["state"]{
+							
+							state=tmp0 as! String
 							Cards.state=state
 							
 						}
+						
+						if adjust==1{
+							net.isLatest=true
+						}
+						
 					}//
+				}else{  //もし空だったら(if json.isEmpty==false)
+					net.isLatest=true
 				}
 				
-				} catch {
-					print("error")
-					print(error)
-				}   //try
-				
-			} //if data!=nil
+			} catch {
+				print("error")
+				print(error)
+			}   //do
+			
+		} //if data!=nil
 		
 		Netp1Scene.hitButton.isEnabled=true
 		Netp1Scene.standButton.isEnabled=true
@@ -203,11 +226,14 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		Netp2Scene.standButton.isEnabled=true
 		Netp2Scene.resetButton.isEnabled=true
 		Netp2Scene.titleButton.isEnabled=true
-//		})
+		//		})
 		
 		
-//		// タスクの実行.
+		//		// タスクの実行.
 //		task.resume()
+		print("↓受信後のローカルの状態")
+		print("state:\(Cards.state),cards:\(Cards.cards),pcards:\(Cards.pcards),ccards:\(Cards.ccards)")
+		print("↑受信後のローカルの状態")
 
 	}
 	
@@ -219,8 +245,10 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		
 		
 		// APIへ飛ばすデータをJSONに変換する(sendDataはData?型)
-		let sendData = String(format: "{ \"bj3\": { \"cards\":\"%@\", \"pcards\":\"%@\",\"ccards\":\"%@\",\"state\":\"%@\",\"uuid\":\"%@\" } }", Scards, Spcards,Sccards,Cards.state,uuid).data(using: String.Encoding.utf8)  //%@の部分にそれぞれの変数が入るようになっている？
-		 print(String(data: sendData!, encoding: String.Encoding.utf8)!)
+		let sendData = String(format: "{ \"bj3\": { \"cards\":\"%@\", \"pcards\":\"%@\",\"ccards\":\"%@\",\"state\":\"%@\",\"uuid\":\"%@\" } }", Scards, Spcards,Sccards,Cards.state,net.uuid).data(using: String.Encoding.utf8)  //%@の部分にそれぞれの変数が入るようになっている？
+		
+//		 print(String(data: sendData!, encoding: String.Encoding.utf8)!)
+//		print("↑送信予定データ")
 		
 		
 		
@@ -233,15 +261,18 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		request.httpBody = sendData //JSONデータのセット
 		
 		
-//		var data: Data?
+		var data: Data?
 		do {
 			let res: AutoreleasingUnsafeMutablePointer<URLResponse?>? = nil
-			 try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning: res)
+			data=try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning: res)
 			
 		} catch {
 			print(error)
 		}
-
+		
+		print(String(data: data!, encoding: String.Encoding.utf8)!)
+		print("↑送信後に帰ってきたデータ")
+		
 		
 //		// APIに接続
 //		URLSession.shared.dataTask(with: request) {data, response, err in

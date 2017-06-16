@@ -18,7 +18,8 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 	static var ccards:[Int]=[]
 	//山札
 	static var cards=[Int](1...52)
-	static var state:String="end"	  //end,waiting,start(配り終えた情報を送信するまで),p1turn,p2turn,judge,endと推移
+	static var state:String="end"	  //end,waiting（1人が待っている状態）,start(配り終えた情報を送信するまで),p1turn,p2turn,judge,endと推移
+	
 	
 	
 	func setcard() -> (pcards:[Int],ccards:[Int],pp:String,cp:String){

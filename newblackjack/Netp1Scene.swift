@@ -31,7 +31,7 @@ class Netp1Scene:SKScene{
 	var last:CFTimeInterval!
 	let nets=net()
 	let queue = DispatchQueue.main//メインスレッド
-	var sendfirst=false
+	var sentfirst=false
 	
 	
 	
@@ -93,6 +93,8 @@ class Netp1Scene:SKScene{
 		//cardのサイズを設定
 		for i in card{
 			i.size=CGSize(width:cwidth,height:cheight)
+			self.addChild(i)	//予め全カードを枠外に表示（重複描写防止の為）
+			i.position=CGPoint(x:-100,y:0)    //枠外に
 		}
 		
 		//最初の手札を獲得(pの手札、cの手札、pの得点、cの得点)
@@ -101,14 +103,13 @@ class Netp1Scene:SKScene{
 		//各手札を表示
 		for (index,value) in pccards.pcards.enumerated(){
 			card[value].position=CGPoint(x:cwidth/2+cwidth*CGFloat(index),y:cheight/2)
-			self.addChild(card[value])
+			
 		}
 		
 		//cpuの1枚目は表,2枚目は裏向き
 		card[pccards.ccards[0]].position=CGPoint(x:cwidth/2,y:frame.size.height-cheight/2)
 		card[0].position=CGPoint(x:cwidth/2+cwidth,y:frame.size.height-cheight/2)
-		self.addChild(card[pccards.ccards[0]])
-		self.addChild(card[0])
+		
 		
 		//得点表示
 		ppLabel.text=pccards.pp
@@ -165,9 +166,10 @@ class Netp1Scene:SKScene{
 		Cards.state="p1turn"
 		
 		//初期の山札、手札を送信
-		queue.async {
+		
 			self.nets.sendData()
-			self.sendfirst=true
+		Thread.sleep(forTimeInterval: 3.0)
+			self.sentfirst=true
 			Netp1Scene.hitButton.isHidden=false
 			Netp1Scene.standButton.isHidden=false
 			
@@ -186,7 +188,7 @@ class Netp1Scene:SKScene{
 				//2枚目を表に向ける
 				var ccards=Cards.ccards
 				self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:self.frame.size.height-cheight/2)
-				self.addChild(self.card[ccards[1]])
+				
 				
 				//得点表示
 				self.cpLabel.text=pccards.cp
@@ -198,7 +200,7 @@ class Netp1Scene:SKScene{
 				//2枚目を表に向ける
 				var ccards=Cards.ccards
 				self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:self.frame.size.height-cheight/2)
-				self.addChild(self.card[ccards[1]])
+				
 				
 				//得点表示
 				self.cpLabel.text="Blackjack!"
@@ -206,7 +208,7 @@ class Netp1Scene:SKScene{
 				
 				self.plose()
 			}
-		}
+		
 		
 		
 	}
@@ -215,14 +217,18 @@ class Netp1Scene:SKScene{
 	
 	
 	func onClickHitButton(_ sender : UIButton){
+		self.isPaused=true  //updateによる受信防止
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
-		nets.receiveData()
+		repeat { //最新まで受信(←なぜrepeatする必要がある？)
+			nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
+		}while net.isLatest==false
+		
 		let (pcards,pp)=Cards().hit(hcounter)
 		
 		//p1の手札追加
 		card[pcards[2+hcounter]].position=CGPoint(x:cwidth/2+cwidth*CGFloat(2+hcounter),y:cheight/2)
-		self.addChild(card[pcards[2+hcounter]])
+		
 		
 		//得点を更新
 		ppLabel.text=pp
@@ -240,7 +246,7 @@ class Netp1Scene:SKScene{
 			//2枚目を表に向ける
 			var ccards=Cards.ccards
 			card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:frame.size.height-cheight/2)
-			self.addChild(card[ccards[1]])
+			
 			
 			//得点を表示する
 			let (_,cp0)=Cards().getpoints()
@@ -251,16 +257,19 @@ class Netp1Scene:SKScene{
 		
 		
 		nets.sendData()
-		Netp1Scene.standButton.isEnabled=true
 		
-		//1度、通信完了までボタンを押せないようにする
-		Netp1Scene.hitButton.isEnabled=false
-		Netp1Scene.standButton.isEnabled=false
-		Netp1Scene.resetButton.isEnabled=false
-		Netp1Scene.titleButton.isEnabled=false
+		Netp1Scene.standButton.isEnabled=true
+		self.isPaused=false
+	
 	}
 	
 	func onClickStandButton(_ sender : UIButton){
+		self.isPaused=true  //updateによる受信防止
+		repeat { //最新まで受信
+			nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
+		}while net.isLatest==false
+		
+		
 		
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
@@ -269,8 +278,8 @@ class Netp1Scene:SKScene{
 		
 		//2枚目を表に向ける
 		var ccards=Cards.ccards
-		card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:frame.size.height-cheight/2)
-		self.addChild(card[ccards[1]])
+		card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:frame.size.height-cheight/2)	//幾つか前の空データを受信したときにindex out of range
+		
 		
 		//得点を表示する
 		let (_,cp0)=Cards().getpoints()
@@ -278,17 +287,15 @@ class Netp1Scene:SKScene{
 		
 		Label.text="player2のターン"
 		
-		nets.receiveData()  //送信前に受信(stand時のみ)
+		
 		Cards.state="p2turn"
 		nets.sendData()
 		
-		//1度、通信完了までボタンを押せないようにする
-		Netp1Scene.hitButton.isEnabled=false
-		Netp1Scene.standButton.isEnabled=false
-		Netp1Scene.resetButton.isEnabled=false
-		Netp1Scene.titleButton.isEnabled=false
+		
+		
 		Netp1Scene.hitButton.isHidden=true
 		Netp1Scene.standButton.isHidden=true
+		self.isPaused=false
 		
 	}
 	override func update(_ currentTime: CFTimeInterval) {
@@ -305,8 +312,8 @@ class Netp1Scene:SKScene{
 		if last + 3 <= currentTime {
 			queue.async {
 				
-				if self.sendfirst==true{
-					//サーバーから山札、手札を獲得
+				if self.sentfirst==true{    //初期手札を送る前の空データの受信防止
+					//サーバーから山札、手札を獲得（1つずつ）
 					self.nets.receiveData()
 					
 					let ccardsc=Cards.ccards.count
@@ -349,7 +356,7 @@ class Netp1Scene:SKScene{
 						//2p（敵）の各手札を表示
 						
 						self.card[ccards[ccardsc-1]].position=CGPoint(x:cwidth/2+cwidth*CGFloat(ccardsc-1),y:self.frame.size.height-cheight/2)
-						self.addChild(self.card[ccards[ccardsc-1]])
+						
 						
 						//敵の得点表示
 						self.cpLabel.text=cp
@@ -460,10 +467,16 @@ class Netp1Scene:SKScene{
 	}
 	
 	func onClickResetButton(_ sender : UIButton){
-		queue.async { //直列、メインスレッドで順番に実行
+		self.isPaused=true  //updateによる受信防止
+		repeat{ //(サーバーの)最新まで受信（こっちの状態を送信する直前のデータを受信した状態だとエラー）
+			nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
+		}while net.isLatest==false
+
+		
+		
 			if Cards.state=="p2turn"||Cards.state=="judge"{	//ebdofthegameに入れると、カードの表示前に初期化してしまう！
 				
-				self.nets.receiveData()
+				
 				
 				Cards.state="end"//クラス変数を初期化
 				Cards.pcards.removeAll()
@@ -472,6 +485,7 @@ class Netp1Scene:SKScene{
 				Cards.cards=[Int](1...52)
 				
 				self.nets.sendData() //受け手側が送るようにする
+				
 				
 			}
 			//ボタンを隠す
@@ -482,14 +496,20 @@ class Netp1Scene:SKScene{
 			let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 			gameScene.scaleMode = SKSceneScaleMode.fill
 			self.view!.presentScene(gameScene, transition: transition) //waitingSceneに移動
-		}
+		self.isPaused=false
+		
 	}
 	
 	func onClickTitleButton(_ sender : UIButton){
-		queue.async {
+		self.isPaused=true  //updateによる受信防止
+		repeat { //最新まで受信
+			nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
+		}while net.isLatest==false
+
+		
 			if Cards.state=="p2turn"||Cards.state=="judge"{	//ebdofthegameに入れると、カードの表示前に初期化してしまう！
 				
-				self.nets.receiveData()
+				
 				
 				Cards.state="end"//クラス変数を初期化
 				Cards.pcards.removeAll()
@@ -498,6 +518,7 @@ class Netp1Scene:SKScene{
 				Cards.cards=[Int](1...52)
 				
 				self.nets.sendData() //受け手側が送るようにする
+				Thread.sleep(forTimeInterval: 3.0)
 				
 			}
 			
@@ -509,7 +530,8 @@ class Netp1Scene:SKScene{
 			let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 			gameScene.scaleMode = SKSceneScaleMode.fill
 			self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
-		}
+		self.isPaused=false
+		
 	}
 	
 	//同時押し対策

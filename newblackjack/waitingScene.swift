@@ -18,7 +18,8 @@ class waitingScene: SKScene {
 	var last:CFTimeInterval!
 	var didfirst=false
 	static var sendstart=false
-	static var isLatest=true
+	
+	static var dobreak=false
 	
 	let queue = DispatchQueue.main//メインスレッド
 	
@@ -26,6 +27,10 @@ class waitingScene: SKScene {
 	
 	
 	override func didMove(to view: SKView) {
+		let uuid1=UIDevice.current.identifierForVendor!.uuidString //識別子
+		let start=uuid1.startIndex
+		let end=uuid1.characters.index(start, offsetBy: 4)
+		net.uuid=uuid1[start...end]
 		
 		backgroundColor=SKColor.init(red: 0.8, green: 0.3, blue: 0.3, alpha: 0.3)
 		Label.text = "Waiting..."
@@ -47,78 +52,100 @@ class waitingScene: SKScene {
 		
 		// 3秒おきに行う処理をかく。(1秒だと到着順番が入れ替わりやすい)
 		if last + 3 <= currentTime {
-			queue.async {
+			queue.async { //3秒以上たっても処理が終わるまで次の処理を行わない
 				
-				
-				
-				
-				
-				let tmp=Cards.state   //こっちがwaitingで向こうからstartが帰ってきたとき
-				self.nets.receiveData() //更新
-				if waitingScene.isLatest==true{
-					if self.didfirst==false{
-						if Cards.state=="end"||Cards.state=="break"{
+				if waitingScene.dobreak==true{
+					Cards.state="break"
+					//クラス変数を初期化
+					Cards.pcards.removeAll()
+					Cards.cards.removeAll()
+					Cards.ccards.removeAll()
+					Cards.cards=[Int](1...52)
+					self.nets.sendData()
+					
+					let gameScene = LaunchScene(size: self.view!.bounds.size) // create your new scene
+					let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+					gameScene.scaleMode = SKSceneScaleMode.fill
+					self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
+					self.breakButton.isHidden=true
+					waitingScene.dobreak=false
+					self.didfirst=false
+					net.fLastId=0
+
+				}else{
+					
+					
+					
+					let tmp=Cards.state   //更新前の状態
+					self.nets.receiveData() //更新(Cardsに反映)
+
+					if net.isLatest==true{
+						
+						if (Cards.state=="start"||Cards.state=="p1turn") && tmp=="waiting"{//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
+							self.breakButton.isHidden=true
+							let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
+							let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+							gameScene.scaleMode = SKSceneScaleMode.fill
+							self.view!.presentScene(gameScene, transition: transition) //Netp1Sceneに移動
+						}
+						
+						if self.didfirst==false{//最初だけ行うべき内容？
+							if Cards.state=="end"||Cards.state=="break"{
+								Cards.state="waiting"
+								self.nets.sendData()
+								self.Label.text = "Waiting..."
+								self.breakButton.isHidden=true
+							}else if Cards.state=="waiting"{	//誰かが待っていたら→p2
+								Cards.state="start"
+								self.nets.sendData()
+								let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
+								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+								gameScene.scaleMode = SKSceneScaleMode.fill
+								self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
+								
+							}else{
+								self.Label.text="対戦中"
+								self.breakButton.frame = CGRect(x: 0,y: 0,width: 200,height: 40)
+								self.breakButton.backgroundColor = UIColor.red;
+								self.breakButton.layer.masksToBounds = true
+								self.breakButton.setTitle("強制終了", for: UIControlState())
+								self.breakButton.setTitleColor(UIColor.white, for: UIControlState())
+								self.breakButton.setTitle("強制終了", for: UIControlState.highlighted)
+								self.breakButton.setTitleColor(UIColor.black, for: UIControlState.highlighted)
+								self.breakButton.layer.cornerRadius = 20.0
+								self.breakButton.layer.position = CGPoint(x: self.view!.frame.width-100, y:self.view!.frame.height-20)
+								self.breakButton.addTarget(self, action: #selector(self.onClickBreakButton(_:)), for: .touchUpInside)
+								self.breakButton.addTarget(self, action: #selector(self.touchDownBreakButton(_:)), for: .touchDown)
+								self.breakButton.addTarget(self, action: #selector(self.enableButtons(_:)), for: .touchUpOutside)
+								self.view!.addSubview(self.breakButton)
+								
+							}
+							self.didfirst=true
+							
+						}
+						
+						
+						
+						if (Cards.state=="end")||(Cards.state=="break"){
 							Cards.state="waiting"
 							self.nets.sendData()
 							self.Label.text = "Waiting..."
 							self.breakButton.isHidden=true
-						}else if Cards.state=="waiting"{	//誰かが待っていたら→p2
+							
+						}
+						if waitingScene.sendstart==true{
 							Cards.state="start"
+							waitingScene.sendstart=false
 							self.nets.sendData()
 							let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
 							let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 							gameScene.scaleMode = SKSceneScaleMode.fill
 							self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
 							
-						}else{
-							self.Label.text="対戦中"
-							self.breakButton.frame = CGRect(x: 0,y: 0,width: 200,height: 40)
-							self.breakButton.backgroundColor = UIColor.red;
-							self.breakButton.layer.masksToBounds = true
-							self.breakButton.setTitle("強制終了", for: UIControlState())
-							self.breakButton.setTitleColor(UIColor.white, for: UIControlState())
-							self.breakButton.setTitle("強制終了", for: UIControlState.highlighted)
-							self.breakButton.setTitleColor(UIColor.black, for: UIControlState.highlighted)
-							self.breakButton.layer.cornerRadius = 20.0
-							self.breakButton.layer.position = CGPoint(x: self.view!.frame.width-100, y:self.view!.frame.height-20)
-							self.breakButton.addTarget(self, action: #selector(self.onClickBreakButton(_:)), for: .touchUpInside)
-							self.breakButton.addTarget(self, action: #selector(self.touchDownBreakButton(_:)), for: .touchDown)
-							self.breakButton.addTarget(self, action: #selector(self.enableButtons(_:)), for: .touchUpOutside)
-							self.view!.addSubview(self.breakButton)
-							
 						}
-						self.didfirst=true
 						
-					}
-					
-					
-					if (Cards.state=="start"||Cards.state=="p1turn") && tmp=="waiting"{
-						self.breakButton.isHidden=true
-						let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
-						let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
-						gameScene.scaleMode = SKSceneScaleMode.fill
-						self.view!.presentScene(gameScene, transition: transition) //Netp1Sceneに移動
-					}
-					if (Cards.state=="end")||(Cards.state=="break"){
-						Cards.state="waiting"
-						self.nets.sendData()
-						self.Label.text = "Waiting..."
-						self.breakButton.isHidden=true
-						
-					}
-					if waitingScene.sendstart==true{
-						Cards.state="start"
-						waitingScene.sendstart=false
-						self.nets.sendData()
-						let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
-						let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
-						gameScene.scaleMode = SKSceneScaleMode.fill
-						self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
-						
-					}
-					
-				}//
-				
+					}//
+				}
 				self.last = currentTime
 			}
 		}
@@ -131,27 +158,8 @@ class waitingScene: SKScene {
 	}
 	
 	func onClickBreakButton(_ sender : UIButton){
-
-		
-		Cards.state="break"
-		//クラス変数を初期化
-		Cards.pcards.removeAll()
-		Cards.cards.removeAll()
-		Cards.ccards.removeAll()
-		Cards.cards=[Int](1...52)
-		nets.sendData()
-		
-		let gameScene = LaunchScene(size: self.view!.bounds.size) // create your new scene
-		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
-		gameScene.scaleMode = SKSceneScaleMode.fill
-		self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
-		breakButton.isHidden=true
-
-
+		waitingScene.dobreak=true
 	}
-	
-	
-	
 	
 	//同時押し対策
 	
