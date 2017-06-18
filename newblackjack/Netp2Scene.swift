@@ -34,7 +34,7 @@ class Netp2Scene: SKScene {
 	
 	var firstdraw=false
 	var didchange=false
-	var buttontapped=true
+	var buttontapped=true //ボタン押し下げ直後に更新するのを防止
 	let queue = DispatchQueue.main
 	
 	

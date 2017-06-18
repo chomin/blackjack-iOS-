@@ -14,6 +14,8 @@
 		0F51A0831E7151A900A2ACE6 /* LaunchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */; };
 		0F51A0851E718F5900A2ACE6 /* PVPScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F51A0841E718F5900A2ACE6 /* PVPScene.swift */; };
 		0F5E748A1E6D688F003557A5 /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5E74891E6D688F003557A5 /* Cards.swift */; };
+		0F869AB31EF55EA20039832A /* preparingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F869AB21EF55EA20039832A /* preparingScene.swift */; };
+		0F869AB51EF55EC40039832A /* loadingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F869AB41EF55EC40039832A /* loadingScene.swift */; };
 		0F9EE1B61E66544000A78B59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9EE1B51E66544000A78B59 /* AppDelegate.swift */; };
 		0F9EE1BC1E66544000A78B59 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9EE1BB1E66544000A78B59 /* GameScene.swift */; };
 		0F9EE1BE1E66544000A78B59 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9EE1BD1E66544000A78B59 /* GameViewController.swift */; };
@@ -30,6 +32,8 @@
 		0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
 		0F51A0841E718F5900A2ACE6 /* PVPScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PVPScene.swift; sourceTree = "<group>"; };
 		0F5E74891E6D688F003557A5 /* Cards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cards.swift; sourceTree = "<group>"; };
+		0F869AB21EF55EA20039832A /* preparingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = preparingScene.swift; sourceTree = "<group>"; };
+		0F869AB41EF55EC40039832A /* loadingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loadingScene.swift; sourceTree = "<group>"; };
 		0F9EE1B21E66544000A78B59 /* newblackjack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newblackjack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F9EE1B51E66544000A78B59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0F9EE1BB1E66544000A78B59 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -74,6 +78,8 @@
 				0F9EE1BB1E66544000A78B59 /* GameScene.swift */,
 				0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */,
 				0F0E09081E7BDFA4005B85FB /* waitingScene.swift */,
+				0F869AB21EF55EA20039832A /* preparingScene.swift */,
+				0F869AB41EF55EC40039832A /* loadingScene.swift */,
 				0F0E09061E7BDA8E005B85FB /* Netp1Scene.swift */,
 				0F0E094E1E7BFDF3005B85FB /* Netp2Scene.swift */,
 				0F51A0841E718F5900A2ACE6 /* PVPScene.swift */,
@@ -163,10 +169,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F0E094D1E7BE5FA005B85FB /* net.swift in Sources */,
+				0F869AB51EF55EC40039832A /* loadingScene.swift in Sources */,
 				0F9EE1BC1E66544000A78B59 /* GameScene.swift in Sources */,
 				0F9EE1BE1E66544000A78B59 /* GameViewController.swift in Sources */,
 				0F5E748A1E6D688F003557A5 /* Cards.swift in Sources */,
 				0F9EE1B61E66544000A78B59 /* AppDelegate.swift in Sources */,
+				0F869AB31EF55EA20039832A /* preparingScene.swift in Sources */,
 				0F51A0831E7151A900A2ACE6 /* LaunchScene.swift in Sources */,
 				0F51A0851E718F5900A2ACE6 /* PVPScene.swift in Sources */,
 				0F0E09091E7BDFA4005B85FB /* waitingScene.swift in Sources */,

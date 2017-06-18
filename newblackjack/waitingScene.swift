@@ -14,12 +14,11 @@ class waitingScene: SKScene {
 	let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 	let breakButton=UIButton()	//対戦中じゃないのに対戦中から移動しないとき用
 	let nets=net()
-	// lastを用意しておく
-	var last:CFTimeInterval!
+	var last:CFTimeInterval!  //前に更新した時間
 	var didfirst=false
-	static var sendstart=false
+	static var sendstart=false	//ダブルwaiting対策→net.swiftのreceive()
 	
-	static var dobreak=false
+	static var dobreak=false  //受信と同時に働くのを防ぐため？
 	
 	let queue = DispatchQueue.main//メインスレッド
 	
@@ -81,12 +80,28 @@ class waitingScene: SKScene {
 
 					if net.isLatest==true{
 						
-						if (Cards.state=="start"||Cards.state=="p1turn") && tmp=="waiting"{//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
+						if (Cards.state=="start" && tmp=="waiting") || (Cards.state=="p1turn" && tmp=="start") {//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
 							self.breakButton.isHidden=true
-							let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
+							let gameScene:loadingScene = loadingScene(size: self.view!.bounds.size) // create your new scene
 							let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 							gameScene.scaleMode = SKSceneScaleMode.fill
-							self.view!.presentScene(gameScene, transition: transition) //Netp1Sceneに移動
+							self.view!.presentScene(gameScene, transition: transition) //loadingSceneに移動
+						}
+						if Cards.state=="p2turn" && tmp=="p1turn"{//2つ進んでいたらloadingSceneを飛ばす
+							if net.dealer==2{	//ありえないはず
+								let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
+								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+								gameScene.scaleMode = SKSceneScaleMode.fill
+								self.view!.presentScene(gameScene, transition: transition) //Netp1Sceneに移動
+							}else if net.dealer==1{
+								let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
+								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+								gameScene.scaleMode = SKSceneScaleMode.fill
+								self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
+							}else{
+								print("dealerの値が\(net.dealer)です。")
+								exit(1)
+							}
 						}
 						
 						if self.didfirst==false{//最初だけ行うべき内容？
@@ -98,10 +113,11 @@ class waitingScene: SKScene {
 							}else if Cards.state=="waiting"{	//誰かが待っていたら→p2
 								Cards.state="start"
 								self.nets.sendData()
-								let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
+								Thread.sleep(forTimeInterval: 3.0)
+								let gameScene:preparingScene = preparingScene(size: self.view!.bounds.size) // create your new scene
 								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 								gameScene.scaleMode = SKSceneScaleMode.fill
-								self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
+								self.view!.presentScene(gameScene, transition: transition) //preparingSceneに移動
 								
 							}else{
 								self.Label.text="対戦中"
@@ -126,7 +142,7 @@ class waitingScene: SKScene {
 						
 						
 						
-						if (Cards.state=="end")||(Cards.state=="break"){
+						if (Cards.state=="end")||(Cards.state=="break"){//??
 							Cards.state="waiting"
 							self.nets.sendData()
 							self.Label.text = "Waiting..."

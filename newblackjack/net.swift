@@ -11,9 +11,10 @@ import UIKit
 
 class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をする(URLSessionDelegateを継承するためにUIViewControllerを継承)
 	
-	static var fLastId=0
-	static var uuid=""
-	static var isLatest=false
+	static var fLastId = 0
+	static var uuid=""    //別クラスで定義するため、まずここで初期値を設定する必要があり、定数にできない
+	static var dealer = 0	  //\(dealer)番目に入った人がディーラー
+	static var isLatest = false
 	
 	
 	
@@ -36,7 +37,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		//		let session: URLSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
 		
 		// 通信先のURLを生成.
-		let url:NSURL = NSURL(string: "https://chomin-api.herokuapp.com/bj3s/latest.json/")!
+		let url:NSURL = NSURL(string: "https://chomin-api.herokuapp.com/bj4s/latest.json/")!
 		
 		// リクエストを生成.
 		let request:NSURLRequest  = NSURLRequest(url: url as URL)
@@ -104,7 +105,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 						exit(1)
 					}
 					
-					if net.fLastId == lastId {
+					if net.fLastId >= lastId {
 						net.isLatest=true
 					}else{//更新すべきとき
 						net.isLatest=false
@@ -119,7 +120,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 						
 						net.fLastId=json[alast]["id"] as! Int
 						
-						if json.count >= 2 && adjust==0{
+						if json.count >= 2 && adjust==1{
 							if json[alast]["state"] as! String=="waiting" && json[alast-1]["state"] as! String=="waiting" && json[alast]["uuid"] as! String==net.uuid{	//ダブルwaitingになったら、あとから送ったほうがstartを投げる
 								
 								waitingScene.sendstart=true
@@ -201,6 +202,9 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 							Cards.state=state
 							
 						}
+						if let tmp0=json[alast]["dealer"]{
+							net.dealer=tmp0 as! Int
+						}
 						
 						if adjust==1{
 							net.isLatest=true
@@ -243,9 +247,10 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		let Spcards=String(describing: Cards.pcards)
 		let Sccards=String(describing: Cards.ccards)
 		
-		
+		print(net.dealer)
 		// APIへ飛ばすデータをJSONに変換する(sendDataはData?型)
-		let sendData = String(format: "{ \"bj3\": { \"cards\":\"%@\", \"pcards\":\"%@\",\"ccards\":\"%@\",\"state\":\"%@\",\"uuid\":\"%@\" } }", Scards, Spcards,Sccards,Cards.state,net.uuid).data(using: String.Encoding.utf8)  //%@の部分にそれぞれの変数が入るようになっている？
+		let sendData = String(format: "{ \"bj4\": { \"cards\":\"%@\", \"pcards\":\"%@\",\"ccards\":\"%@\",\"state\":\"%@\",\"uuid\":\"%@\", \"dealer\":\"%@\" } }", Scards, Spcards,Sccards,Cards.state,net.uuid,String(net.dealer)
+			).data(using: String.Encoding.utf8)  //%@の部分にそれぞれの変数が入るようになっている？
 		
 //		 print(String(data: sendData!, encoding: String.Encoding.utf8)!)
 //		print("↑送信予定データ")
@@ -253,7 +258,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		
 		
 		// APIへ接続するための設定
-		let apiUrl = URL(string: "https://chomin-api.herokuapp.com/bj3s.json/")!  //URLを文字列から型変換してapiUrlに代入
+		let apiUrl = URL(string: "https://chomin-api.herokuapp.com/bj4s.json/")!  //URLを文字列から型変換してapiUrlに代入
 		var request = URLRequest(url: apiUrl)   //リクエストの生成
 		request.addValue("application/json", forHTTPHeaderField: "Content-type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")

@@ -12,13 +12,13 @@ import UIKit
 class Cards{	//カードや得点の管理、勝敗判定などを行うクラス
 	
 	
-	//手札(各カードを1から52の通し番号にする予定)(空の配列であることに注意！)
+	
 	//クラスプロパティ（クラス自身が保持する値）	
-	static var pcards:[Int]=[]
+	static var pcards:[Int]=[]	//手札(各カードは1から52の通し番号)(空の配列であることに注意！)
 	static var ccards:[Int]=[]
-	//山札
-	static var cards=[Int](1...52)
+	static var cards=[Int](1...52)    //山札
 	static var state:String="end"	  //end,waiting（1人が待っている状態）,start(配り終えた情報を送信するまで),p1turn,p2turn,judge,endと推移
+	
 	
 	
 	
