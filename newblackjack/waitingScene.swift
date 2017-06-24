@@ -50,7 +50,7 @@ class waitingScene: SKScene {
 		}
 		
 		// 3秒おきに行う処理をかく。(1秒だと到着順番が入れ替わりやすい)
-		if last + 3 <= currentTime {
+		if last + 1 <= currentTime {
 			queue.async { //3秒以上たっても処理が終わるまで次の処理を行わない
 				
 				if waitingScene.dobreak==true{
@@ -80,29 +80,31 @@ class waitingScene: SKScene {
 
 					if net.isLatest==true{
 						
-						if (Cards.state=="start" && tmp=="waiting") || (Cards.state=="p1turn" && tmp=="start") {//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
+						if (Cards.state=="start" && tmp=="waiting") || (Cards.state=="ready" && tmp=="start") {//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
 							self.breakButton.isHidden=true
 							let gameScene:loadingScene = loadingScene(size: self.view!.bounds.size) // create your new scene
-							let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+							let transition = SKTransition.fade(withDuration: 0.3) // create type of transition (you can check in documentation for more transtions)
 							gameScene.scaleMode = SKSceneScaleMode.fill
 							self.view!.presentScene(gameScene, transition: transition) //loadingSceneに移動
 						}
-						if Cards.state=="p2turn" && tmp=="p1turn"{//2つ進んでいたらloadingSceneを飛ばす
-							if net.dealer==2{	//ありえないはず
-								let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
-								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
-								gameScene.scaleMode = SKSceneScaleMode.fill
-								self.view!.presentScene(gameScene, transition: transition) //Netp1Sceneに移動
-							}else if net.dealer==1{
-								let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
-								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
-								gameScene.scaleMode = SKSceneScaleMode.fill
-								self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
-							}else{
-								print("dealerの値が\(net.dealer)です。")
-								exit(1)
-							}
-						}
+						
+						
+//						if Cards.state=="p2turn" && tmp=="p1turn"{//2つ進んでいたらloadingSceneを飛ばす(片方が進め過ぎるとバグるので、起こらないように仕様変更)
+//							if net.dealer==2{	//ありえないはず
+//								let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
+//								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+//								gameScene.scaleMode = SKSceneScaleMode.fill
+//								self.view!.presentScene(gameScene, transition: transition) //Netp1Sceneに移動
+//							}else if net.dealer==1{
+//								let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
+//								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+//								gameScene.scaleMode = SKSceneScaleMode.fill
+//								self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
+//							}else{
+//								print("dealerの値が\(net.dealer)です。")
+//								exit(1)
+//							}
+//						}
 						
 						if self.didfirst==false{//最初だけ行うべき内容？
 							if Cards.state=="end"||Cards.state=="break"{
@@ -115,7 +117,7 @@ class waitingScene: SKScene {
 								self.nets.sendData()
 								Thread.sleep(forTimeInterval: 3.0)
 								let gameScene:preparingScene = preparingScene(size: self.view!.bounds.size) // create your new scene
-								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+								let transition = SKTransition.fade(withDuration: 0.3) // create type of transition (you can check in documentation for more transtions)
 								gameScene.scaleMode = SKSceneScaleMode.fill
 								self.view!.presentScene(gameScene, transition: transition) //preparingSceneに移動
 								
@@ -153,10 +155,10 @@ class waitingScene: SKScene {
 							Cards.state="start"
 							waitingScene.sendstart=false
 							self.nets.sendData()
-							let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
-							let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
+							let gameScene:preparingScene = preparingScene(size: self.view!.bounds.size) // create your new scene
+							let transition = SKTransition.fade(withDuration: 0.3) // create type of transition (you can check in documentation for more transtions)
 							gameScene.scaleMode = SKSceneScaleMode.fill
-							self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
+							self.view!.presentScene(gameScene, transition: transition) //preparingSceneに移動
 							
 						}
 						

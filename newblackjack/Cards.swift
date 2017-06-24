@@ -17,7 +17,7 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 	static var pcards:[Int]=[]	//手札(各カードは1から52の通し番号)(空の配列であることに注意！)
 	static var ccards:[Int]=[]
 	static var cards=[Int](1...52)    //山札
-	static var state:String="end"	  //end,waiting（1人が待っている状態）,start(配り終えた情報を送信するまで),p1turn,p2turn,judge,endと推移
+	static var state:String="end"	  //end,waiting（1人が待っている状態）,start(配り終えた情報を送信するまで),ready(配り終えた情報を相手が受信するまで),p1turn,p2turn,judge,endと推移
 	
 	
 	

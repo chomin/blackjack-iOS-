@@ -312,7 +312,7 @@ class Netp1Scene:SKScene{
 		}
 		
 		// 3秒おきに行う処理をかく。
-		if last + 3 <= currentTime {
+		if last + 1 <= currentTime {
 			queue.async {
 				
 //				if self.sentfirst==true{    //初期手札を送る前の空データの受信防止

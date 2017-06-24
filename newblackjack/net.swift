@@ -50,6 +50,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 			
 		} catch {
 			print(error)
+			receiveData()
 		}
 		
 		// タスクの生成.
@@ -218,6 +219,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 			} catch {
 				print("error")
 				print(error)
+				receiveData()
 			}   //do
 			
 		} //if data!=nil
@@ -273,6 +275,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 			
 		} catch {
 			print(error)
+			self.sendData()
 		}
 		
 		print(String(data: data!, encoding: String.Encoding.utf8)!)

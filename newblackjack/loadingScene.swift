@@ -40,12 +40,15 @@ class loadingScene: SKScene {
 		}
 		
 		// 3秒おきに行う処理をかく。
-		if last + 3 <= currentTime  {
+		if last + 1 <= currentTime  {
 			queue.async {
 				
 				net().receiveData()
 				
-				if Cards.state=="p1turn"{
+				if Cards.state=="ready"{
+					Cards.state="p1turn"
+					net().sendData()	//受信したということを送信
+					
 					if net.dealer==2{
 						let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
 						let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)

@@ -32,9 +32,10 @@ class Netp2Scene: SKScene {
 	// lastを用意しておく
 	var last:CFTimeInterval!
 	
-	var firstdraw=false
-	var didchange=false
+//	var firstdraw=false
+	var didchange=false   //攻守交代
 	var buttontapped=true //ボタン押し下げ直後に更新するのを防止
+	var judged=false
 	let queue = DispatchQueue.main
 	
 	
@@ -143,6 +144,74 @@ class Netp2Scene: SKScene {
 		Netp2Scene.standButton.isHidden=true
 		self.view!.addSubview(Netp2Scene.standButton)
 		
+		//最初の手札を獲得(pの手札、cの手札、pの得点、cの得点)
+		let pcards:[Int]=Cards.pcards
+		let ccards:[Int]=Cards.ccards
+		let (pp,cp)=Cards().getpoints()
+		
+		
+		//1p（敵）の各手札を表示
+		for (index,value) in pcards.enumerated(){
+			self.card[value].position=CGPoint(x:cwidth/2+cwidth*CGFloat(index),y:self.frame.size.height-cheight/2)
+			
+		}
+		
+		//2pの1枚目は表,2枚目は裏向き
+		self.card[ccards[0]].position=CGPoint(x:cwidth/2,y:cheight/2)
+		self.card[0].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+		
+		
+		//敵の得点表示
+		self.ppLabel.text=pp
+		//ターンを表示
+		
+		self.Label.text = "player1のターン"
+		self.Label.fontSize = 45
+		self.Label.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 20)
+		self.addChild(self.Label)
+		
+		//BJの判定
+		let j=Cards().judge(0)
+		if j==5{
+			//2枚目を表に向ける
+			var ccards=Cards.ccards
+			self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+			
+			self.ppLabel.text="Blackjack!"
+			self.cpLabel.text="Blackjack!"
+			self.draw()
+			
+		}else if j==3{
+			self.ppLabel.text="Blackjack!"
+			
+			//2枚目を表に向ける
+			var ccards=Cards.ccards
+			self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+			
+			
+			//得点表示
+			self.cpLabel.text=cp
+			
+			self.pwin()
+		}else if j==4{
+			self.card[0].run(SKAction.hide())	  //裏面カードを非表示にする
+			
+			//2枚目を表に向ける
+			var ccards=Cards.ccards
+			self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+			
+			
+			//得点表示
+			self.cpLabel.text="Blackjack!"
+			
+			
+			self.plose()
+		}
+		
+		
+		self.fpcardsc=pcards.count	//最初だけ受信
+
+		
 		
 		
 		
@@ -158,12 +227,12 @@ class Netp2Scene: SKScene {
 		if last == nil{
 			last = currentTime
 		}
-		if buttontapped==true{
+		if buttontapped==true{	//ボタン処理と時間処理の衝突防止
 			last=currentTime
 			buttontapped=false
 		}
 		// 3秒おきに行う処理をかく。
-		if last + 3 <= currentTime  {
+		if last + 1 <= currentTime  {
 			queue.async {
 	
 				//サーバーから山札、手札を獲得
@@ -181,6 +250,7 @@ class Netp2Scene: SKScene {
 				}
 				
 				
+//				print("Netp2SceneのisEnabled\(Netp2Scene.resetButton.isEnabled)")
 				
 				Netp2Scene.hitButton.isEnabled=true
 				Netp2Scene.standButton.isEnabled=true
@@ -189,74 +259,82 @@ class Netp2Scene: SKScene {
 				
 				
 				let pcardsc=Cards.pcards.count    //毎回更新
-				if self.firstdraw==false && Cards.state=="p1turn"{
-					//最初の手札を獲得(pの手札、cの手札、pの得点、cの得点)
-					let pcards:[Int]=Cards.pcards
-					let ccards:[Int]=Cards.ccards
-					let (pp,cp)=Cards().getpoints()
+//				if self.firstdraw==false && Cards.state=="p1turn"{  //最初だけ行う処理→didmovetoviewへ
+//					//最初の手札を獲得(pの手札、cの手札、pの得点、cの得点)
+//					let pcards:[Int]=Cards.pcards
+//					let ccards:[Int]=Cards.ccards
+//					let (pp,cp)=Cards().getpoints()
+//					
+//					
+//					//1p（敵）の各手札を表示
+//					for (index,value) in pcards.enumerated(){
+//						self.card[value].position=CGPoint(x:cwidth/2+cwidth*CGFloat(index),y:self.frame.size.height-cheight/2)
+//						
+//					}
+//					
+//					//2pの1枚目は表,2枚目は裏向き
+//					self.card[ccards[0]].position=CGPoint(x:cwidth/2,y:cheight/2)
+//					self.card[0].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+//					
+//					
+//					//敵の得点表示
+//					self.ppLabel.text=pp
+//					//ターンを表示
+//					
+//					self.Label.text = "player1のターン"
+//					self.Label.fontSize = 45
+//					self.Label.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 20)
+//					self.addChild(self.Label)
+//					
+//					//BJの判定
+//					let j=Cards().judge(0)
+//					if j==5{
+//						//2枚目を表に向ける
+//						var ccards=Cards.ccards
+//						self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+//						
+//						self.ppLabel.text="Blackjack!"
+//						self.cpLabel.text="Blackjack!"
+//						self.draw()
+//						
+//					}else if j==3{
+//						self.ppLabel.text="Blackjack!"
+//						
+//						//2枚目を表に向ける
+//						var ccards=Cards.ccards
+//						self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+//						
+//						
+//						//得点表示
+//						self.cpLabel.text=cp
+//						
+//						self.pwin()
+//					}else if j==4{
+//						self.card[0].run(SKAction.hide())	  //裏面カードを非表示にする
+//						
+//						//2枚目を表に向ける
+//						var ccards=Cards.ccards
+//						self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+//						
+//						
+//						//得点表示
+//						self.cpLabel.text="Blackjack!"
+//						
+//						
+//						self.plose()
+//					}
+//					
+//					self.firstdraw=true
+//					self.fpcardsc=pcards.count	//最初だけ受信
+//				}else if (pcardsc > self.fpcardsc) && (Cards.state == "p1turn"||Cards.state == "p2turn"){//更新されたら(startはまだ配った手札が来てない状態、end,breakは手札がからの状態、judgeでもエラー発生)
+				if (pcardsc > self.fpcardsc) && (Cards.state == "p1turn"||Cards.state == "p2turn"){//更新されたら(startはまだ配った手札が来てない状態、end,breakは手札がからの状態、judgeでもエラー発生)
+
+				
+//					print("入ってるじゃん")
+//					print("pcardc=\(pcardsc),fpcardsc=\(self.fpcardsc)")
+				
+			
 					
-					
-					//1p（敵）の各手札を表示
-					for (index,value) in pcards.enumerated(){
-						self.card[value].position=CGPoint(x:cwidth/2+cwidth*CGFloat(index),y:self.frame.size.height-cheight/2)
-						
-					}
-					
-					//2pの1枚目は表,2枚目は裏向き
-					self.card[ccards[0]].position=CGPoint(x:cwidth/2,y:cheight/2)
-					self.card[0].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-					
-					
-					//敵の得点表示
-					self.ppLabel.text=pp
-					//ターンを表示
-					
-					self.Label.text = "player1のターン"
-					self.Label.fontSize = 45
-					self.Label.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 20)
-					self.addChild(self.Label)
-					
-					//BJの判定
-					let j=Cards().judge(0)
-					if j==5{
-						//2枚目を表に向ける
-						var ccards=Cards.ccards
-						self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-						
-						self.ppLabel.text="Blackjack!"
-						self.cpLabel.text="Blackjack!"
-						self.draw()
-						
-					}else if j==3{
-						self.ppLabel.text="Blackjack!"
-						
-						//2枚目を表に向ける
-						var ccards=Cards.ccards
-						self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-						
-						
-						//得点表示
-						self.cpLabel.text=cp
-						
-						self.pwin()
-					}else if j==4{
-						self.card[0].run(SKAction.hide())	  //裏面カードを非表示にする
-						
-						//2枚目を表に向ける
-						var ccards=Cards.ccards
-						self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
-						
-						
-						//得点表示
-						self.cpLabel.text="Blackjack!"
-						
-						
-						self.plose()
-					}
-					
-					self.firstdraw=true
-					self.fpcardsc=pcards.count	//最初だけ受信
-				}else if (pcardsc != self.fpcardsc) && (Cards.state == "p1turn"||Cards.state == "p2turn"){//更新(startはまだ配った手札が来てない状態、end,breakは手札がからの状態、judgeでもエラー発生)
 					let pcards:[Int]=Cards.pcards
 					
 					let (pp,_)=Cards().getpoints()
@@ -270,6 +348,7 @@ class Netp2Scene: SKScene {
 					self.ppLabel.text=pp
 					
 					self.fpcardsc=pcardsc
+					
 					
 					//敵のbustの判定
 					let j=Cards().judge(1)
@@ -293,7 +372,7 @@ class Netp2Scene: SKScene {
 					}
 					
 				}
-				if Cards.state=="p2turn"&&self.didchange==false{
+				if Cards.state=="p2turn" && self.didchange==false{
 					Netp2Scene.hitButton.isHidden=false
 					Netp2Scene.standButton.isHidden=false
 					self.card[0].run(SKAction.hide())	  //p2の裏面カードを非表示にする
@@ -376,6 +455,7 @@ class Netp2Scene: SKScene {
 		//最終判定(ループ外)
 		let j=Cards().judge(1)
 		if j==0{
+			
 			draw()
 		}else if j==1{
 			pwin()
@@ -416,7 +496,7 @@ class Netp2Scene: SKScene {
 		endofthegame()
 	}
 	
-	func draw(){  //引き分け！「描く」とは関係ない！
+	func draw(){  //引き分け！(「描く」とは関係ない！)
 		
 		Netp2Scene.hitButton.isHidden=true
 		Netp2Scene.standButton.isHidden=true
@@ -429,8 +509,8 @@ class Netp2Scene: SKScene {
 	}
 	
 	func endofthegame(){
-		chcounter=0
-		fpcardsc=2	//p1の手札の数(更新前)
+		
+		
 		Netp2Scene.titleButton.isEnabled=false
 		Netp2Scene.resetButton.isEnabled=false
 		
@@ -479,6 +559,9 @@ class Netp2Scene: SKScene {
 	
 	func onClickResetButton(_ sender : UIButton){
 		self.isPaused=true  //updateによる受信防止
+		fpcardsc=0	//初期化
+		chcounter=0
+		
 		repeat{ //最新まで受信（こっちの状態を送信する直前のデータを受信した状態だとエラー）
 			nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
 		}while net.isLatest==false
@@ -514,6 +597,10 @@ class Netp2Scene: SKScene {
 	
 	func onClickTitleButton(_ sender : UIButton){
 		self.isPaused=true  //updateによる受信防止
+		
+		fpcardsc=0	//初期化
+		chcounter=0
+		
 		repeat{ //最新まで受信（こっちの状態を送信する直前のデータを受信した状態だとエラー）
 			nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
 		}while net.isLatest==false
