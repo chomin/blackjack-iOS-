@@ -236,8 +236,10 @@ class Netp2Scene: SKScene {
 			queue.async {
 	
 				//サーバーから山札、手札を獲得
+				if Cards.state != "end"{
+					self.nets.receiveData()
+				}
 				
-				self.nets.receiveData()
 				if Cards.state=="break"{	  //breakを受信したら強制終了
 					Netp2Scene.hitButton.isHidden=true
 					Netp2Scene.standButton.isHidden=true
@@ -369,6 +371,13 @@ class Netp2Scene: SKScene {
 						self.cpLabel.text=cp0
 						self.isPaused=false
 						
+						Cards.state="end"
+						Cards.pcards.removeAll()
+						Cards.cards.removeAll()
+						Cards.ccards.removeAll()
+						Cards.cards=[Int](1...52)
+						self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
+
 					}
 					
 				}
@@ -428,10 +437,12 @@ class Netp2Scene: SKScene {
 		//引いた直後にバストの判定(ループ内)
 		let j=Cards().judge(1)
 		if j==3{
+			
 			cpLabel.text! += " Bust!!!"
 			pwin()
 			
 		}
+		
 		chcounter+=1
 		
 		
@@ -450,7 +461,7 @@ class Netp2Scene: SKScene {
 		}while net.isLatest==false
 		Cards.state="judge"
 		nets.sendData()
-		
+		Cards.state="end"	  //今後の受信を停止
 		
 		//最終判定(ループ外)
 		let j=Cards().judge(1)
@@ -567,21 +578,21 @@ class Netp2Scene: SKScene {
 		}while net.isLatest==false
 		print(Cards.state)
 		
-		if Cards.state=="p1turn" {   //endofthegameに入れると、カードの表示前に初期化してしまう！
-			
-			
-			
-			Cards.state="end"//クラス変数を初期化
-			Cards.pcards.removeAll()
-			Cards.cards.removeAll()
-			Cards.ccards.removeAll()
-			Cards.cards=[Int](1...52)
-			
-			self.nets.sendData() //受け手側が送るようにする
-			Thread.sleep(forTimeInterval: 3.0)
-			
-			
-		}
+//		if Cards.state=="p1turn" {   //endofthegameに入れると、カードの表示前に初期化してしまう！
+//			
+//			
+//			
+//			
+//			Cards.pcards.removeAll()
+//			Cards.cards.removeAll()
+//			Cards.ccards.removeAll()
+//			Cards.cards=[Int](1...52)
+//			
+//			self.nets.sendData() //受け手側が送るようにする
+//			Thread.sleep(forTimeInterval: 3.0)
+//			
+//			
+//		}
 		
 		//ボタンを隠す
 		Netp2Scene.resetButton.isHidden=true
@@ -604,20 +615,20 @@ class Netp2Scene: SKScene {
 		repeat{ //最新まで受信（こっちの状態を送信する直前のデータを受信した状態だとエラー）
 			nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
 		}while net.isLatest==false
-		if Cards.state=="p1turn"{//endofthegameに入れると、カードの表示前に初期化してしまう！
-			
-			
-			
-			Cards.state="end"//クラス変数を初期化
-			Cards.pcards.removeAll()
-			Cards.cards.removeAll()
-			Cards.ccards.removeAll()
-			Cards.cards=[Int](1...52)
-			
-			self.nets.sendData() //受け手側が送るようにする
-			Thread.sleep(forTimeInterval: 3.0)
-			
-		}
+//		if Cards.state=="p1turn"{//endofthegameに入れると、カードの表示前に初期化してしまう！
+//			
+//			
+//			
+//			
+//			Cards.pcards.removeAll()
+//			Cards.cards.removeAll()
+//			Cards.ccards.removeAll()
+//			Cards.cards=[Int](1...52)
+//			
+//			self.nets.sendData() //受け手側が送るようにする
+//			Thread.sleep(forTimeInterval: 3.0)
+//			
+//		}
 		
 		
 		

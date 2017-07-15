@@ -180,11 +180,21 @@ class Netp1Scene:SKScene{
 			//BJの判定
 			let j=Cards().judge(0)
 			if j==5{
+				Cards.state="end"
+				Cards.pcards.removeAll()
+				Cards.cards.removeAll()
+				Cards.ccards.removeAll()
+				Cards.cards=[Int](1...52)
+				self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
+				
 				self.ppLabel.text="Blackjack!"
 				self.cpLabel.text="Blackjack!"
 				self.draw()
 				
 			}else if j==3{
+				Cards.state="end"
+				nets.sendData()
+				
 				self.ppLabel.text="Blackjack!"
 				
 				//2枚目を表に向ける
@@ -197,6 +207,9 @@ class Netp1Scene:SKScene{
 				
 				self.pwin()
 			}else if j==4{
+				Cards.state="end"
+				nets.sendData()
+				
 				self.card[0].run(SKAction.hide())	  //裏面カードを非表示にする
 				
 				//2枚目を表に向ける
@@ -237,9 +250,13 @@ class Netp1Scene:SKScene{
 		
 		hcounter+=1
 		
+		nets.sendData()
+		
 		//バストの判定
 		let j=Cards().judge(1)
 		if j==4{
+			
+			
 			ppLabel.text! += " Bust!!!"
 			plose()
 			
@@ -253,12 +270,14 @@ class Netp1Scene:SKScene{
 			//得点を表示する
 			let (_,cp0)=Cards().getpoints()
 			cpLabel.text=cp0
+			
+				//サーバーをendに更新し、以後の受信を停止
 		}
 		
 		
 		
 		
-		nets.sendData()
+		
 		
 		Netp1Scene.standButton.isEnabled=true
 		self.isPaused=false
@@ -317,7 +336,9 @@ class Netp1Scene:SKScene{
 				
 //				if self.sentfirst==true{    //初期手札を送る前の空データの受信防止
 				//サーバーから山札、手札を獲得（1つずつ）
-				self.nets.receiveData()
+				if Cards.state != "end"{
+					self.nets.receiveData()
+				}
 				
 				let ccardsc=Cards.ccards.count
 				
@@ -333,14 +354,33 @@ class Netp1Scene:SKScene{
 					self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
 				}
 				if Cards.state=="judge"{
+					
+					
 					//最終判定(ループ外)
 					let j=Cards().judge(1)
 					if j==0{
+						Cards.state="end"
+						Cards.pcards.removeAll()
+						Cards.cards.removeAll()
+						Cards.ccards.removeAll()
+						Cards.cards=[Int](1...52)
+						self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 						self.draw()
 					}else if j==1{
+						Cards.state="end"
+						Cards.pcards.removeAll()
+						Cards.cards.removeAll()
+						Cards.ccards.removeAll()
+						Cards.cards=[Int](1...52)
+						self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 						self.pwin()
 					}else if j==2{
-						
+						Cards.state="end"
+						Cards.pcards.removeAll()
+						Cards.cards.removeAll()
+						Cards.ccards.removeAll()
+						Cards.cards=[Int](1...52)
+						self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 						self.plose()
 					}
 				}
@@ -367,6 +407,14 @@ class Netp1Scene:SKScene{
 					//引いた直後にバストの判定(ループ内)
 					let j=Cards().judge(1)
 					if j==3{
+						Cards.state="end"
+						Cards.pcards.removeAll()
+						Cards.cards.removeAll()
+						Cards.ccards.removeAll()
+						Cards.cards=[Int](1...52)
+						self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
+
+						
 						self.cpLabel.text! += " Bust!!!"
 						self.pwin()
 						
@@ -477,20 +525,20 @@ class Netp1Scene:SKScene{
 
 		
 		
-			if Cards.state=="p2turn"||Cards.state=="judge"{	//ebdofthegameに入れると、カードの表示前に初期化してしまう！
-				
-				
-				
-				Cards.state="end"//クラス変数を初期化
-				Cards.pcards.removeAll()
-				Cards.cards.removeAll()
-				Cards.ccards.removeAll()
-				Cards.cards=[Int](1...52)
-				
-				self.nets.sendData() //受け手側が送るようにする
-				
-				
-			}
+//			if Cards.state=="p2turn"||Cards.state=="judge"{	//ebdofthegameに入れると、カードの表示前に初期化してしまう！
+//				
+//				
+//				
+//				
+//				Cards.pcards.removeAll()
+//				Cards.cards.removeAll()
+//				Cards.ccards.removeAll()
+//				Cards.cards=[Int](1...52)
+//				
+//				self.nets.sendData() //受け手側が送るようにする
+//				
+//				
+//			}
 			//ボタンを隠す
 			Netp1Scene.resetButton.isHidden=true
 			Netp1Scene.titleButton.isHidden=true
@@ -510,21 +558,21 @@ class Netp1Scene:SKScene{
 		}while net.isLatest==false
 
 		
-			if Cards.state=="p2turn"||Cards.state=="judge"{	//ebdofthegameに入れると、カードの表示前に初期化してしまう！
-				
-				
-				
-				Cards.state="end"//クラス変数を初期化
-				Cards.pcards.removeAll()
-				Cards.cards.removeAll()
-				Cards.ccards.removeAll()
-				Cards.cards=[Int](1...52)
-				
-				self.nets.sendData() //受け手側が送るようにする
-				Thread.sleep(forTimeInterval: 3.0)
-				
-			}
-			
+//			if Cards.state=="p2turn"||Cards.state=="judge"{	//ebdofthegameに入れると、カードの表示前に初期化してしまう！
+//				
+//				
+//				
+//				
+//				Cards.pcards.removeAll()
+//				Cards.cards.removeAll()
+//				Cards.ccards.removeAll()
+//				Cards.cards=[Int](1...52)
+//				
+//				self.nets.sendData() //受け手側が送るようにする
+//				Thread.sleep(forTimeInterval: 3.0)
+//				
+//			}
+		
 			//ボタンを隠す
 			Netp1Scene.resetButton.isHidden=true
 			Netp1Scene.titleButton.isHidden=true

@@ -47,7 +47,7 @@ class loadingScene: SKScene {
 				
 				if Cards.state=="ready"{
 					Cards.state="p1turn"
-					net().sendData()	//受信したということを送信
+					net().sendData()	//初期手札を受信したということを送信
 					
 					if net.dealer==2{
 						let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene

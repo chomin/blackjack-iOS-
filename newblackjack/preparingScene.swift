@@ -39,7 +39,7 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 		Cards().setcard()
 		
 		Cards.state="ready"
-		net().sendData()
+		net().sendData()	  //初期手札を送信
 		Thread.sleep(forTimeInterval: 3.0)
 		
 		

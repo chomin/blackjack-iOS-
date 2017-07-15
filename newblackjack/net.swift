@@ -262,8 +262,8 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		// APIへ接続するための設定
 		let apiUrl = URL(string: "https://chomin-api.herokuapp.com/bj4s.json/")!  //URLを文字列から型変換してapiUrlに代入
 		var request = URLRequest(url: apiUrl)   //リクエストの生成
-		request.addValue("application/json", forHTTPHeaderField: "Content-type")
-		request.addValue("application/json", forHTTPHeaderField: "Accept")
+		request.addValue("application/json", forHTTPHeaderField: "Content-type")//??
+		request.addValue("application/json", forHTTPHeaderField: "Accept")//??
 		request.httpMethod = "POST"
 		request.httpBody = sendData //JSONデータのセット
 		

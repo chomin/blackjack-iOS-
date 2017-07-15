@@ -307,6 +307,7 @@
 				DEVELOPMENT_TEAM = UT6PG9K559;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = newblackjack/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nakai.newblackjack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -314,6 +315,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -326,6 +328,7 @@
 				DEVELOPMENT_TEAM = UT6PG9K559;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = newblackjack/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nakai.newblackjack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -333,6 +336,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

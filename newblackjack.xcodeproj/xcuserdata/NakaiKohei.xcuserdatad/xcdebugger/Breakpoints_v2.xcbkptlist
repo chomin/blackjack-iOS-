@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/waitingScene.swift"
-            timestampString = "519818058.826206"
+            timestampString = "521818270.806404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521799419.056701"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
+            startingLineNumber = "409"
+            endingLineNumber = "409"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521797694.254513"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521797694.254513"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "274"
-            endingLineNumber = "274"
+            startingLineNumber = "276"
+            endingLineNumber = "276"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp1Scene.swift"
-            timestampString = "519473079.724871"
+            timestampString = "521798559.737452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
             landmarkName = "onClickHitButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp1Scene.swift"
-            timestampString = "519473079.724871"
+            timestampString = "521798559.737452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
             landmarkName = "onClickHitButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp1Scene.swift"
-            timestampString = "519473079.724871"
+            timestampString = "521799419.056701"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "onClickHitButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521797694.254513"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -218,23 +218,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "339"
-            endingLineNumber = "339"
-            landmarkName = "update(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521797694.254513"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "341"
@@ -247,14 +231,30 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "newblackjack/Netp2Scene.swift"
+            timestampString = "521797694.254513"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
+            landmarkName = "update(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
             ignoreCount = "5"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521799419.056701"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "393"
-            endingLineNumber = "393"
+            startingLineNumber = "402"
+            endingLineNumber = "402"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521799419.056701"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "428"
-            endingLineNumber = "428"
+            startingLineNumber = "437"
+            endingLineNumber = "437"
             landmarkName = "onClickHitButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521798559.737452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "436"
-            endingLineNumber = "436"
+            startingLineNumber = "447"
+            endingLineNumber = "447"
             landmarkName = "onClickHitButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521798559.737452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "439"
-            endingLineNumber = "439"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
             landmarkName = "onClickHitButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -330,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/waitingScene.swift"
-            timestampString = "511623541.889312"
+            timestampString = "521818190.092943"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -346,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/waitingScene.swift"
-            timestampString = "519818058.826206"
+            timestampString = "521818270.806404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -362,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/waitingScene.swift"
-            timestampString = "519818058.826206"
+            timestampString = "521818270.806404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -378,11 +378,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521798559.737452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "571"
-            endingLineNumber = "571"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
             landmarkName = "onClickResetButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -394,11 +394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521798559.737452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "573"
-            endingLineNumber = "573"
+            startingLineNumber = "584"
+            endingLineNumber = "584"
             landmarkName = "onClickResetButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -458,11 +458,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/waitingScene.swift"
-            timestampString = "519818058.826206"
+            timestampString = "521818270.806404"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -474,11 +474,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/waitingScene.swift"
-            timestampString = "519288443.446855"
+            timestampString = "521818190.092943"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -570,11 +570,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Netp2Scene.swift"
-            timestampString = "519882517.731699"
+            timestampString = "521797694.254513"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>

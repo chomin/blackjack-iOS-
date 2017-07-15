@@ -13,6 +13,7 @@ class waitingScene: SKScene {
 	
 	let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 	let breakButton=UIButton()	//対戦中じゃないのに対戦中から移動しないとき用
+	let cancelButton=UIButton()
 	let nets=net()
 	var last:CFTimeInterval!  //前に更新した時間
 	var didfirst=false
@@ -37,7 +38,20 @@ class waitingScene: SKScene {
 		Label.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 20)
 		self.addChild(Label)
 		
+		self.cancelButton.frame = CGRect(x: 0,y: 0,width: 160,height: 30)
+		self.cancelButton.backgroundColor = UIColor.gray
+		self.cancelButton.layer.masksToBounds = true
+		self.cancelButton.setTitle("キャンセル", for: UIControlState())
+		self.cancelButton.setTitleColor(UIColor.white, for: UIControlState())
+		self.cancelButton.setTitle("キャンセル", for: UIControlState.highlighted)
+		self.cancelButton.setTitleColor(UIColor.black, for: UIControlState.highlighted)
 		
+		self.cancelButton.layer.position = CGPoint(x: 100, y:self.view!.frame.height-20)
+		self.cancelButton.addTarget(self, action: #selector(self.onClickBreakButton(_:)), for: .touchUpInside)  //動作はbreakButtonと同じ
+		self.cancelButton.addTarget(self, action: #selector(self.touchDownCancelButton(_:)), for: .touchDown)
+		self.cancelButton.addTarget(self, action: #selector(self.enableButtons(_:)), for: .touchUpOutside)
+		self.view!.addSubview(self.cancelButton)
+
 	}
 	
 	
@@ -67,6 +81,7 @@ class waitingScene: SKScene {
 					gameScene.scaleMode = SKSceneScaleMode.fill
 					self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
 					self.breakButton.isHidden=true
+					self.cancelButton.isHidden=true
 					waitingScene.dobreak=false
 					self.didfirst=false
 					net.fLastId=0
@@ -182,11 +197,15 @@ class waitingScene: SKScene {
 	//同時押し対策
 	
 	func touchDownBreakButton(_ sender: UIButton){	  //他のボタンをdisableする
-		
+		cancelButton.isEnabled=false
+	}
+	func touchDownCancelButton(_ sender: UIButton){	  //他のボタンをdisableする
+		breakButton.isEnabled=false
 	}
 	
 	func enableButtons(_ sender:UIButton){
 		breakButton.isEnabled=true
+		cancelButton.isEnabled=true
 	}
 
 	
