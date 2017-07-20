@@ -9,8 +9,11 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 class PVPScene: SKScene {   //2人対戦用
+	//効果音を生成
+	var playcard : AVAudioPlayer! = nil  // 再生するサウンドのインスタンス
 	
 	var card:[SKSpriteNode] = []	  //カードの画像(空の配列)
 	let ppLabel = SKLabelNode(fontNamed: "HiraginoSans-W6") //得点表示用のラベル
@@ -34,7 +37,19 @@ class PVPScene: SKScene {   //2人対戦用
 	
 	
 	override func didMove(to view: SKView) {
-		
+		//効果音の設定
+		// サウンドファイルのパスを生成
+		let playcardPath = Bundle.main.path(forResource: "カード音", ofType: "mp3")!    //m4aは不可
+		let playcardsound:URL = URL(fileURLWithPath: playcardPath)
+		// AVAudioPlayerのインスタンスを作成
+		do {
+			playcard = try AVAudioPlayer(contentsOf: playcardsound, fileTypeHint:nil)
+		} catch {
+			print("AVAudioPlayerインスタンス作成失敗")
+		}
+		// バッファに保持していつでも再生できるようにする
+		playcard.prepareToPlay()
+
 		
 		
 		let cheight = view.frame.height/3	//カードの縦の長さは画面サイズによって変わる
@@ -193,6 +208,9 @@ class PVPScene: SKScene {   //2人対戦用
 	
 	
 	func onClickHitButton(_ sender : UIButton){
+		playcard.currentTime=0
+		playcard.play()
+		
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
 		
@@ -257,6 +275,8 @@ class PVPScene: SKScene {   //2人対戦用
 		let cwidth = cheight*2/3
 		
 		if scounter==0{ //p2のターンへ移行
+			playcard.currentTime=0
+			playcard.play()	//裏返す音
 			card[0].run(SKAction.hide())	  //裏面カードを非表示にする
 			
 			//2枚目を表に向ける

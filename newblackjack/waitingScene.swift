@@ -97,6 +97,7 @@ class waitingScene: SKScene {
 						
 						if (Cards.state=="start" && tmp=="waiting") || (Cards.state=="ready" && tmp=="start") {//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
 							self.breakButton.isHidden=true
+							self.cancelButton.isHidden=true
 							let gameScene:loadingScene = loadingScene(size: self.view!.bounds.size) // create your new scene
 							let transition = SKTransition.fade(withDuration: 0.3) // create type of transition (you can check in documentation for more transtions)
 							gameScene.scaleMode = SKSceneScaleMode.fill
@@ -128,6 +129,7 @@ class waitingScene: SKScene {
 								self.Label.text = "Waiting..."
 								self.breakButton.isHidden=true
 							}else if Cards.state=="waiting"{	//誰かが待っていたら→p2
+								self.cancelButton.isHidden=true
 								Cards.state="start"
 								self.nets.sendData()
 								Thread.sleep(forTimeInterval: 3.0)
@@ -167,6 +169,7 @@ class waitingScene: SKScene {
 							
 						}
 						if waitingScene.sendstart==true{
+							self.cancelButton.isHidden=true
 							Cards.state="start"
 							waitingScene.sendstart=false
 							self.nets.sendData()

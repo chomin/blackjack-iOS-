@@ -11,9 +11,11 @@
 		0F0E09091E7BDFA4005B85FB /* waitingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0E09081E7BDFA4005B85FB /* waitingScene.swift */; };
 		0F0E094D1E7BE5FA005B85FB /* net.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0E094C1E7BE5FA005B85FB /* net.swift */; };
 		0F0E094F1E7BFDF3005B85FB /* Netp2Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0E094E1E7BFDF3005B85FB /* Netp2Scene.swift */; };
+		0F41641E1F207F38004F9F03 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F41641D1F207F38004F9F03 /* AVFoundation.framework */; };
 		0F51A0831E7151A900A2ACE6 /* LaunchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */; };
 		0F51A0851E718F5900A2ACE6 /* PVPScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F51A0841E718F5900A2ACE6 /* PVPScene.swift */; };
 		0F5E748A1E6D688F003557A5 /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5E74891E6D688F003557A5 /* Cards.swift */; };
+		0F71DCD21F2086D00032FB30 /* カード音.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F71DCD11F2086D00032FB30 /* カード音.mp3 */; };
 		0F869AB31EF55EA20039832A /* preparingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F869AB21EF55EA20039832A /* preparingScene.swift */; };
 		0F869AB51EF55EC40039832A /* loadingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F869AB41EF55EC40039832A /* loadingScene.swift */; };
 		0F9EE1B61E66544000A78B59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9EE1B51E66544000A78B59 /* AppDelegate.swift */; };
@@ -29,9 +31,11 @@
 		0F0E09081E7BDFA4005B85FB /* waitingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = waitingScene.swift; sourceTree = "<group>"; };
 		0F0E094C1E7BE5FA005B85FB /* net.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = net.swift; sourceTree = "<group>"; };
 		0F0E094E1E7BFDF3005B85FB /* Netp2Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Netp2Scene.swift; sourceTree = "<group>"; };
+		0F41641D1F207F38004F9F03 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
 		0F51A0841E718F5900A2ACE6 /* PVPScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PVPScene.swift; sourceTree = "<group>"; };
 		0F5E74891E6D688F003557A5 /* Cards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cards.swift; sourceTree = "<group>"; };
+		0F71DCD11F2086D00032FB30 /* カード音.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "カード音.mp3"; sourceTree = "<group>"; };
 		0F869AB21EF55EA20039832A /* preparingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = preparingScene.swift; sourceTree = "<group>"; };
 		0F869AB41EF55EC40039832A /* loadingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loadingScene.swift; sourceTree = "<group>"; };
 		0F9EE1B21E66544000A78B59 /* newblackjack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newblackjack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,17 +53,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F41641E1F207F38004F9F03 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F41641C1F207F37004F9F03 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0F41641D1F207F38004F9F03 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0F9EE1A91E66544000A78B59 = {
 			isa = PBXGroup;
 			children = (
 				0F9EE1B41E66544000A78B59 /* newblackjack */,
 				0F9EE1B31E66544000A78B59 /* Products */,
+				0F41641C1F207F37004F9F03 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,6 +104,7 @@
 				0F9EE1C21E66544000A78B59 /* Assets.xcassets */,
 				0F9EE1C41E66544000A78B59 /* LaunchScreen.storyboard */,
 				0F9EE1C71E66544000A78B59 /* Info.plist */,
+				0F71DCD11F2086D00032FB30 /* カード音.mp3 */,
 			);
 			path = newblackjack;
 			sourceTree = "<group>";
@@ -157,6 +172,7 @@
 			files = (
 				0F9EE1C11E66544000A78B59 /* Main.storyboard in Resources */,
 				0F9EE1C31E66544000A78B59 /* Assets.xcassets in Resources */,
+				0F71DCD21F2086D00032FB30 /* カード音.mp3 in Resources */,
 				0F9EE1C61E66544000A78B59 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
