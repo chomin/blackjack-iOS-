@@ -32,6 +32,7 @@ class PVPScene: SKScene {   //2人対戦用
 	let p1Label=SKLabelNode(fontNamed: "HiraginoSans-W6")	//p1,p2と表示
 	let p2Label=SKLabelNode(fontNamed: "HiraginoSans-W6")
 	
+
 	
 	
 	
@@ -100,6 +101,12 @@ class PVPScene: SKScene {   //2人対戦用
 		for i in 1...13{
 			card.append(SKSpriteNode(imageNamed: "s\(i)-1"))
 		}
+		
+		card.append(SKSpriteNode(imageNamed: "Satan"))
+		card.append(SKSpriteNode(imageNamed: "Olivie"))
+		card.append(SKSpriteNode(imageNamed: "Bahamut"))
+		card.append(SKSpriteNode(imageNamed: "Zeus"))
+		card.append(SKSpriteNode(imageNamed: "Alice"))
 		
 		//cardのサイズを設定
 		for i in card{
@@ -208,8 +215,7 @@ class PVPScene: SKScene {   //2人対戦用
 	
 	
 	func onClickHitButton(_ sender : UIButton){
-		playcard.currentTime=0
-		playcard.play()
+	
 		
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
@@ -271,22 +277,7 @@ class PVPScene: SKScene {   //2人対戦用
 	
 	func onClickStandButton(_ sender : UIButton){
 		
-		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
-		let cwidth = cheight*2/3
-		
 		if scounter==0{ //p2のターンへ移行
-			playcard.currentTime=0
-			playcard.play()	//裏返す音
-			card[0].run(SKAction.hide())	  //裏面カードを非表示にする
-			
-			//2枚目を表に向ける
-			var ccards=Cards.ccards
-			card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:frame.size.height-cheight/2)
-			self.addChild(card[ccards[1]])
-			
-			//得点を表示する
-			let (_,cp0)=Cards().getpoints()
-			cpLabel.text=cp0
 			
 			scounter+=1
 			
@@ -388,7 +379,7 @@ class PVPScene: SKScene {   //2人対戦用
 		Cards.pcards.removeAll()
 		Cards.cards.removeAll()
 		Cards.ccards.removeAll()
-		Cards.cards=[Int](1...52)
+		Cards.cards=[Int](1...57)
 		
 		//ボタンを隠す
 		resetButton.isHidden=true
@@ -405,7 +396,7 @@ class PVPScene: SKScene {   //2人対戦用
 		Cards.pcards.removeAll()
 		Cards.cards.removeAll()
 		Cards.ccards.removeAll()
-		Cards.cards=[Int](1...52)
+		Cards.cards=[Int](1...57)
 		
 		//ボタンを隠す
 		resetButton.isHidden=true

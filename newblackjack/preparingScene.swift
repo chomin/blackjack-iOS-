@@ -72,15 +72,18 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 			
 			if(Cards.state=="p1turn"){	//相手の受信を確認（こちら側が一方的にどんどん進めるのを防ぐため）
 				if net.dealer==1{
-					let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
+					Cards.mode="netp1"
+					let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 					let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 					gameScene.scaleMode = SKSceneScaleMode.fill
-					self.view!.presentScene(gameScene, transition: transition) //Netp1Sceneに移動
+					self.view!.presentScene(gameScene, transition: transition) //GameSceneに移動
+					
 				}else if net.dealer==2{
-					let gameScene:Netp2Scene = Netp2Scene(size: self.view!.bounds.size) // create your new scene
+					Cards.mode="netp2"
+					let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 					let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 					gameScene.scaleMode = SKSceneScaleMode.fill
-					self.view!.presentScene(gameScene, transition: transition) //Netp2Sceneに移動
+					self.view!.presentScene(gameScene, transition: transition) //GameSceneに移動
 				}else{
 					print("dealerの値が\(net.dealer)です。")
 					exit(1)

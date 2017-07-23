@@ -101,6 +101,12 @@ class Netp1Scene:SKScene{
 			card.append(SKSpriteNode(imageNamed: "s\(i)-1"))
 		}
 		
+		card.append(SKSpriteNode(imageNamed: "Satan"))
+		card.append(SKSpriteNode(imageNamed: "Olivie"))
+		card.append(SKSpriteNode(imageNamed: "Bahamut"))
+		card.append(SKSpriteNode(imageNamed: "Zeus"))
+		card.append(SKSpriteNode(imageNamed: "Alice"))
+		
 		//cardのサイズを設定
 		for i in card{
 			i.size=CGSize(width:cwidth,height:cheight)
@@ -199,7 +205,7 @@ class Netp1Scene:SKScene{
 				Cards.pcards.removeAll()
 				Cards.cards.removeAll()
 				Cards.ccards.removeAll()
-				Cards.cards=[Int](1...52)
+				Cards.cards=[Int](1...57)
 				self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 				
 				self.ppLabel.text="Blackjack!"
@@ -243,17 +249,12 @@ class Netp1Scene:SKScene{
 		
 	}
 	
-	
-	
-	
 	func onClickHitButton(_ sender : UIButton){
-		playcard.currentTime=0
-		playcard.play()
 		
 		self.isPaused=true  //updateによる受信防止
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
-		repeat { //最新まで受信(←なぜrepeatする必要がある？)
+		repeat { //最新まで受信(受信防止しているが、後で更新時に前のデータを受信するとバグる）
 			nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
 		}while net.isLatest==false
 		
@@ -376,7 +377,6 @@ class Netp1Scene:SKScene{
 				}
 				if Cards.state=="judge"{
 					
-					
 					//最終判定(ループ外)
 					let j=Cards().judge(1)
 					if j==0{
@@ -406,7 +406,6 @@ class Netp1Scene:SKScene{
 					}
 				}
 				
-				
 				Netp1Scene.hitButton.isEnabled=true
 				Netp1Scene.standButton.isEnabled=true
 				Netp1Scene.resetButton.isEnabled=true
@@ -423,7 +422,6 @@ class Netp1Scene:SKScene{
 					
 					self.card[ccards[ccardsc-1]].position=CGPoint(x:cwidth/2+cwidth*CGFloat(ccardsc-1),y:self.frame.size.height-cheight/2)
 					
-					
 					//敵の得点表示
 					self.cpLabel.text=cp
 					self.fccardsc=ccardsc
@@ -436,23 +434,17 @@ class Netp1Scene:SKScene{
 						Cards.ccards.removeAll()
 						Cards.cards=[Int](1...52)
 						self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
-
 						
 						self.cpLabel.text! += " Bust!!!"
 						self.pwin()
 						
 					}
 					
-					
 				}
 				//				}
-				
 				self.last = currentTime
 			}
 		}//if last + 2 <= currentTime
-		
-		
-		
 	}
 	
 	
@@ -556,7 +548,7 @@ class Netp1Scene:SKScene{
 //				Cards.pcards.removeAll()
 //				Cards.cards.removeAll()
 //				Cards.ccards.removeAll()
-//				Cards.cards=[Int](1...52)
+//				Cards.cards=[Int](1...57)
 //				
 //				self.nets.sendData() //受け手側が送るようにする
 //				
@@ -589,7 +581,7 @@ class Netp1Scene:SKScene{
 //				Cards.pcards.removeAll()
 //				Cards.cards.removeAll()
 //				Cards.ccards.removeAll()
-//				Cards.cards=[Int](1...52)
+//				Cards.cards=[Int](1...57)
 //				
 //				self.nets.sendData() //受け手側が送るようにする
 //				Thread.sleep(forTimeInterval: 3.0)

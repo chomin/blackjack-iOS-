@@ -108,6 +108,12 @@ class Netp2Scene: SKScene {
 			card.append(SKSpriteNode(imageNamed: "s\(i)-1"))
 		}
 		
+		card.append(SKSpriteNode(imageNamed: "Satan"))
+		card.append(SKSpriteNode(imageNamed: "Olivie"))
+		card.append(SKSpriteNode(imageNamed: "Bahamut"))
+		card.append(SKSpriteNode(imageNamed: "Zeus"))
+		card.append(SKSpriteNode(imageNamed: "Alice"))
+		
 		//cardのサイズを設定
 		for i in card{
 			i.size=CGSize(width:cwidth,height:cheight)
@@ -391,7 +397,7 @@ class Netp2Scene: SKScene {
 						Cards.pcards.removeAll()
 						Cards.cards.removeAll()
 						Cards.ccards.removeAll()
-						Cards.cards=[Int](1...52)
+						Cards.cards=[Int](1...57)
 						self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 
 					}
@@ -431,9 +437,6 @@ class Netp2Scene: SKScene {
 	
 	
 	func onClickHitButton(_ sender : UIButton){
-		playcard.currentTime=0
-		playcard.play()
-		
 		self.isPaused=true  //updateによる受信防止
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
@@ -608,7 +611,7 @@ class Netp2Scene: SKScene {
 //			Cards.pcards.removeAll()
 //			Cards.cards.removeAll()
 //			Cards.ccards.removeAll()
-//			Cards.cards=[Int](1...52)
+//			Cards.cards=[Int](1...57)
 //			
 //			self.nets.sendData() //受け手側が送るようにする
 //			Thread.sleep(forTimeInterval: 3.0)
@@ -645,7 +648,7 @@ class Netp2Scene: SKScene {
 //			Cards.pcards.removeAll()
 //			Cards.cards.removeAll()
 //			Cards.ccards.removeAll()
-//			Cards.cards=[Int](1...52)
+//			Cards.cards=[Int](1...57)
 //			
 //			self.nets.sendData() //受け手側が送るようにする
 //			Thread.sleep(forTimeInterval: 3.0)

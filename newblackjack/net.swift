@@ -21,14 +21,11 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 	
 	func receiveData(){		//受信する
 		//送信とのクラッシュ対策
-		Netp1Scene.hitButton.isEnabled=false
-		Netp1Scene.standButton.isEnabled=false
-		Netp1Scene.resetButton.isEnabled=false
-		Netp1Scene.titleButton.isEnabled=false
-		Netp2Scene.hitButton.isEnabled=false
-		Netp2Scene.standButton.isEnabled=false
-		Netp2Scene.resetButton.isEnabled=false
-		Netp2Scene.titleButton.isEnabled=false
+		GameScene.hitButton.isEnabled=false
+		GameScene.standButton.isEnabled=false
+		GameScene.resetButton.isEnabled=false
+		GameScene.titleButton.isEnabled=false
+	
 		
 		// 通信用のConfigを生成.
 		//		let config: URLSessionConfiguration =  URLSessionConfiguration.default
@@ -224,14 +221,11 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 			
 		} //if data!=nil
 		
-		Netp1Scene.hitButton.isEnabled=true
-		Netp1Scene.standButton.isEnabled=true
-		Netp1Scene.resetButton.isEnabled=true
-		Netp1Scene.titleButton.isEnabled=true
-		Netp2Scene.hitButton.isEnabled=true
-		Netp2Scene.standButton.isEnabled=true
-		Netp2Scene.resetButton.isEnabled=true
-		Netp2Scene.titleButton.isEnabled=true
+		GameScene.hitButton.isEnabled=true
+		GameScene.standButton.isEnabled=true
+		GameScene.resetButton.isEnabled=true
+		GameScene.titleButton.isEnabled=true
+		
 		//		})
 		
 		
