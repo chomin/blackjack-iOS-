@@ -16,6 +16,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 	let nets=net()
 	var didchange=false   //攻守交代(netp2用)
 	
+	
 	//効果音を生成
 	var playcard : AVAudioPlayer! = nil  // 再生するサウンドのインスタンス
 	var summon : AVAudioPlayer! = nil
@@ -24,10 +25,17 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 	var bahamutIn : AVAudioPlayer! = nil
 	var zeusIn : AVAudioPlayer! = nil
 	var aliceIn : AVAudioPlayer! = nil
+	var breakcard : AVAudioPlayer! = nil
 	
 	var card:[SKSpriteNode] = []	  //カードの画像(空の配列)
+	let pBPim=SKSpriteNode(imageNamed:"進化")
+	let cBPim=SKSpriteNode(imageNamed:"進化2")
+	let pBPLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let cBPLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
+	
 	let ppLabel = SKLabelNode(fontNamed: "HiraginoSans-W6") //得点表示用のラベル
 	let cpLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
+	var tPointLabel:[SKLabelNode]=[]//0~51
 	var hcounter=0
 	var chcounter=0 //comがヒットした数
 	var scounter=0
@@ -43,17 +51,32 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 	
 	let p1Label=SKLabelNode(fontNamed: "HiraginoSans-W6")	//p1,comと表示
 	let comLabel=SKLabelNode(fontNamed: "HiraginoSans-W6")
-	var resevation:[(sound:Int,x:CGFloat?,y:CGFloat?,card:Int?,hide:Int?)]=[(0,nil,nil,nil,nil)]	//音付き描写の予約（音のみの場合もあり）をタプルの配列で表現
+	
+	let satanA=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let satanHP=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let olivieA=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let olivieHP=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let bahamutA=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let bahamutHP=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let zeusA=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let zeusHP=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let aliceA=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	let aliceHP=SKLabelNode(fontNamed: "HiraginoSans-W6")
+	
+	var resevation:[(sound:Int,x:CGFloat?,y:CGFloat?,card:Int?,hide:[Int])]=[(0,nil,nil,nil,[])]	//音付き描写の予約（音のみの場合もあり）をタプルの配列で表現
 	
 	/*
 	soundは
-	0:開始音、1:カード音、(2:カード召喚音)、3:サタンin、4:オリヴィエin,5:バハムートin,6:ゼウスin,7:アリスin,8:9:10:
+	0:無音、1:カード音、(2:カード召喚音)、3:サタンin、4:オリヴィエin,5:バハムートin,6:ゼウスin,7:アリスin,8:破壊音9:10:
 	*/
 	
 	
 	
 	
 	override func didMove(to view: SKView) {
+		Cards.pBP=0
+		Cards.cBP=1
+		
 		//効果音の設定
 		// サウンドファイルのパスを生成
 		let playcardPath = Bundle.main.path(forResource: "カード音", ofType: "mp3")!    //m4aは不可
@@ -77,7 +100,6 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 			print("AVAudioPlayerインスタンス作成失敗")
 		}
 		summon.prepareToPlay()
-		
 		summon.delegate=self
 		
 		let satanInsound:URL = URL(fileURLWithPath: Bundle.main.path(forResource: "絶望よ、来たれ", ofType: "mp3")!)
@@ -125,9 +147,42 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		aliceIn.prepareToPlay()
 		aliceIn.delegate=self
 		
+		let breakcardsound:URL = URL(fileURLWithPath: Bundle.main.path(forResource: "破壊音", ofType: "mp3")!)
+		do {
+			breakcard = try AVAudioPlayer(contentsOf: breakcardsound, fileTypeHint:nil)
+		} catch {
+			print("AVAudioPlayerインスタンス作成失敗")
+		}
+		breakcard.prepareToPlay()
+		breakcard.delegate=self
+
+		
 		//描写物の設定
-		let cheight = view.frame.height/3	//カードの縦の長さは画面サイズによって変わる
+		let cheight = view.frame.height/3	//カードの縦の長さは画面サイズによって変わる.7+で138?
 		let cwidth = cheight*2/3
+		
+		if Cards.mode=="scom"{
+			//EP表示の設定
+			pBPim.size=CGSize(width:cheight*30/138,height:cheight*30/138)
+			self.addChild(pBPim)
+			pBPim.position = CGPoint(x:view.frame.width/2-cheight*20/138, y:cheight+cheight*15/138)
+			
+			cBPim.size=CGSize(width:cheight*30/138,height:cheight*30/138)
+			self.addChild(cBPim)
+			cBPim.position = CGPoint(x:view.frame.width/2-cheight*20/138, y:view.frame.height-(cheight+cheight*20/138))
+			
+			pBPLabel.fontSize = cheight*30/138
+			pBPLabel.horizontalAlignmentMode = .left
+			pBPLabel.position=CGPoint(x:view.frame.width/2, y:cheight+cheight*5/138)
+			pBPLabel.text="×"+String(Cards.pBP)
+			self.addChild(pBPLabel)
+			
+			cBPLabel.fontSize = cheight*30/138
+			cBPLabel.horizontalAlignmentMode = .left
+			cBPLabel.position=CGPoint(x:view.frame.width/2, y:view.frame.height-(cheight+cheight*30/138))
+			cBPLabel.text="×"+String(Cards.cBP)
+			self.addChild(cBPLabel)
+		}
 		
 		//ラベルの設定をしておく
 		p1Label.fontSize = cheight*20/138
@@ -210,87 +265,160 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		card.append(SKSpriteNode(imageNamed: "Zeus"))
 		card.append(SKSpriteNode(imageNamed: "Alice"))
 		
+
 		
 		//cardのサイズを設定
 		for i in card{
 			i.size=CGSize(width:cwidth,height:cheight)
 			self.addChild(i)	//予め全カードを枠外に表示（重複描写防止の為）
 			i.position=CGPoint(x:-100,y:0)    //枠外に
-			
+			i.zPosition=1
+
 		}
+		
+		//トランプの得点のラベルを設定
+		for _ in 1...52{
+			tPointLabel.append(SKLabelNode(fontNamed: "HiraginoSans-W6"))
+		}
+		for i in tPointLabel{
+			i.fontSize=cheight*16/138
+			i.position=CGPoint(x:-100,y:0)
+			i.zPosition=2
+			i.fontColor=SKColor.white
+			self.addChild(i)
+		}
+		
 		
 		if Cards.mode=="com" || Cards.mode=="scom" || Cards.mode=="pvp"{
 			//最初の手札を獲得(pの手札、cの手札、pの得点、cの得点)
 			let pccards=Cards().setcard()
 			
-			
 			//各手札を表示
 			for (index,value) in pccards.pcards.enumerated(){
 				
 				//card[value].position=CGPoint(x:cwidth/2+cwidth*CGFloat(index),y:cheight/2)
-				if value<53{
-					resevation.append((1,cwidth/2+cwidth*CGFloat(index),cheight/2,value,nil))
-					
-					
+				if value.0<53{//トランプ
+					resevation.append((1,cwidth/2+cwidth*CGFloat(index),cheight/2,value.0,[]))
+					for i in Cards.pcards{//アリスの確認
+						if i.card==57{
+							Cards.pcards[index].point+=1
+							tPointLabel[value.0-1].fontColor=SKColor.orange
+						}
+					}
 				}else{
-					let i=value-53+3
-					resevation.append((i,cwidth/2+cwidth*CGFloat(index),cheight/2,value,nil))
+					let i=value.0-53+3
+					resevation.append((i,cwidth/2+cwidth*CGFloat(index),cheight/2,value.0,[]))
+					if value.0==54 {//オリヴィエ
+						Cards.pBP=3
+					}//アリス側からの得点操作は不要（最初に一気に配るから）
+				}
+			}
+			//cpuの1枚目は表,2枚目は裏向き
+			
+			if pccards.ccards[0].0<53{
+				resevation.append((1,cwidth/2,frame.size.height-cheight/2,pccards.ccards[0].0,[]))
+				
+			}else{
+				let i=pccards.ccards[0].0-53+3
+				resevation.append((i,cwidth/2,frame.size.height-cheight/2,pccards.ccards[0].0,[]))
+				if pccards.ccards[0].0==54{//オリヴィエ
+					Cards.cBP=3
+				}
+				//アリスの処理は不要
+			}
+			
+			resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,0,[]))
+			
+			//Aの得点の確認
+			let (ppoint,cpoint,_,_)=Cards().calculatepoints()
+			for (index,value) in Cards.pcards.enumerated(){
+				if value.card<53{//トランプ限定
+					if value.card%13 == 1 && ppoint.inA<22{
+						Cards.pcards[index].point+=10
+						break	  //二枚目以降は更新しない
+					}
+					if value.card%13==1 && value.point>9{
+						if ppoint.noA>21{
+							Cards.pcards[index].point-=10
+							break //後に直すべきAはないはず
+						}
+					}
+				}
+			}
+			for (index,value) in Cards.ccards.enumerated(){
+				if value.card<53{//トランプ限定
+					if value.point==1 && cpoint.inA<22{
+						Cards.ccards[index].point+=10
+						break	  //二枚目以降は更新しない
+					}
+					if value.card%13==1 && value.point>9 && cpoint.noA>21{
+						Cards.ccards[index].point-=10
+						break //後に直すべきAはないはず
+					}
 				}
 			}
 			
-			
-			//cpuの1枚目は表,2枚目は裏向き
-			
-			if pccards.ccards[0]<53{
-				resevation.append((1,cwidth/2,frame.size.height-cheight/2,pccards.ccards[0],nil))
-				
-			}else{
-				let i=pccards.ccards[0]-53+3
-				resevation.append((i,cwidth/2,frame.size.height-cheight/2,pccards.ccards[0],nil))
-				
-				
-			}
-			
-			resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,0,nil))
-			//得点表示
-			ppLabel.text=pccards.pp
-		}else{
-			let pcards:[Int]=Cards.pcards
-			let ccards:[Int]=Cards.ccards
-			let (pp,_)=Cards().getpoints()
+			//プレイヤーの得点表示
+			ppLabel.text=Cards().getpoints().pp
+		}else{//ネット系
+			let pcards:[(Int,Int)]=Cards.pcards
+			let ccards:[(Int,Int)]=Cards.ccards
 			
 			if Cards.mode=="netp2"{
 				//1p（敵）の各手札を表示
 				for (index,value) in pcards.enumerated(){
-					resevation.append((1,cwidth/2+cwidth*CGFloat(index),self.frame.size.height-cheight/2,value,nil))
+					resevation.append((1,cwidth/2+cwidth*CGFloat(index),self.frame.size.height-cheight/2,value.0,[]))
 				}
 				
 				//2pの1枚目は表,2枚目は裏向き
-				resevation.append((1,cwidth/2,cheight/2,ccards[0],nil))
-				resevation.append((1,cwidth/2+cwidth,cheight/2,0,nil))
+				resevation.append((1,cwidth/2,cheight/2,ccards[0].0,[]))
+				resevation.append((1,cwidth/2+cwidth,cheight/2,0,[]))
 			}else{//netp1
 				//1pの各手札を表示
 				for (index,value) in pcards.enumerated(){
-					resevation.append((1,cwidth/2+cwidth*CGFloat(index),cheight/2,value,nil))
+					resevation.append((1,cwidth/2+cwidth*CGFloat(index),cheight/2,value.0,[]))
 				}
 				
 				//2pの1枚目は表,2枚目は裏向き
-				resevation.append((1,cwidth/2,self.frame.size.height-cheight/2,ccards[0],nil))
-				resevation.append((1,cwidth/2+cwidth,self.frame.size.height-cheight/2,0,nil))
+				resevation.append((1,cwidth/2,self.frame.size.height-cheight/2,ccards[0].0,[]))
+				resevation.append((1,cwidth/2+cwidth,self.frame.size.height-cheight/2,0,[]))
 
 			}
+			
+			//Aの得点の確認
+			let (ppoint,cpoint,_,_)=Cards().calculatepoints()
+			for (index,value) in Cards.pcards.enumerated(){
+				if value.card<53{//トランプ限定
+					if value.card%13 == 1 && ppoint.inA<22{
+						Cards.pcards[index].point+=10
+						break	  //二枚目以降は更新しない
+					}
+					if value.card%13==1 && value.point>9{
+						if ppoint.noA>21{
+							Cards.pcards[index].point-=10
+							break //後に直すべきAはないはず
+						}
+					}
+				}
+			}
+			for (index,value) in Cards.ccards.enumerated(){
+				if value.card<53{//トランプ限定
+					if value.point==1 && cpoint.inA<22{
+						Cards.ccards[index].point+=10
+						break	  //二枚目以降は更新しない
+					}
+					if value.card%13==1 && value.point>9 && cpoint.noA>21{
+						Cards.ccards[index].point-=10
+						break //後に直すべきAはないはず
+					}
+				}
+			}
+			
 			//得点表示
-			ppLabel.text=pp
+			ppLabel.text=Cards().getpoints().pp
 		}
-		
-		
-		
-		
-		
-		
 		// ボタンを設定.
-		
-		GameScene.hitButton.frame = CGRect(x: 0,y: 0,width: 200,height: 40)
+		GameScene.hitButton.frame = CGRect(x: 0,y: 0,width: cheight*200/138,height: cheight*40/138)
 		GameScene.hitButton.backgroundColor = UIColor.red
 		GameScene.hitButton.layer.masksToBounds = true
 		GameScene.hitButton.setTitle("ヒット", for: UIControlState())
@@ -300,7 +428,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		GameScene.hitButton.setTitle("...", for: UIControlState.disabled)
 		GameScene.hitButton.setTitleColor(UIColor.black, for: UIControlState.disabled)
 		GameScene.hitButton.layer.cornerRadius = 20.0
-		GameScene.hitButton.layer.position = CGPoint(x: self.view!.frame.width-100, y:self.view!.frame.height/2-40)
+		GameScene.hitButton.layer.position = CGPoint(x: self.view!.frame.width-cheight*100/138, y:self.view!.frame.height/2-cheight*40/138)
 		GameScene.hitButton.addTarget(self, action: #selector(GameScene.onClickHitButton(_:)), for: .touchUpInside)
 		//同時押し対策
 		GameScene.hitButton.addTarget(self, action: #selector(GameScene.touchDownHitButton(_:)), for: .touchDown) //一旦standボタンを押せないようにする
@@ -309,11 +437,11 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		if Cards.mode=="netp2"{
 			GameScene.hitButton.isHidden=true
 		}else{
-			  GameScene.hitButton.isHidden=false
+			GameScene.hitButton.isHidden=false
 		}
 		
 		
-		GameScene.standButton.frame = CGRect(x: 0,y: 0,width: 200,height: 40)
+		GameScene.standButton.frame = CGRect(x: 0,y: 0,width: cheight*200/138,height: cheight*40/138)
 		GameScene.standButton.backgroundColor = UIColor.red;
 		GameScene.standButton.layer.masksToBounds = true
 		GameScene.standButton.setTitle("スタンド", for: UIControlState())
@@ -323,7 +451,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		GameScene.standButton.setTitle("...", for: UIControlState.disabled)
 		GameScene.standButton.setTitleColor(UIColor.black, for: UIControlState.disabled)
 		GameScene.standButton.layer.cornerRadius = 20.0
-		GameScene.standButton.layer.position = CGPoint(x: self.view!.frame.width-100, y:self.view!.frame.height/2+40)
+		GameScene.standButton.layer.position = CGPoint(x: self.view!.frame.width-cheight*100/138, y:self.view!.frame.height/2+cheight*40/138)
 		GameScene.standButton.addTarget(self, action: #selector(GameScene.onClickStandButton(_:)), for: .touchUpInside)
 		
 		GameScene.standButton.addTarget(self, action: #selector(GameScene.touchDownStandButton(_:)), for: .touchDown)
@@ -337,9 +465,64 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		
 		//ターンを表示
 		Label.text = "playerのターン"
-		Label.fontSize = 45
-		Label.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 20)
+		Label.fontSize = cheight*45/138
+		Label.position = CGPoint(x:self.frame.midX, y:self.frame.midY - cheight*20/138)
 		self.addChild(Label)
+		
+		//攻撃力と体力のラベルの設定
+		satanA.text="6"
+		satanHP.text="6"
+		olivieA.text="4"
+		olivieHP.text="4"
+		bahamutA.text="13"
+		bahamutHP.text="13"
+		zeusA.text="5"
+		zeusHP.text="10"
+		aliceA.text="3"
+		aliceHP.text="4"
+		satanA.fontSize=cheight*11/138
+		satanHP.fontSize=cheight*11/138
+		olivieA.fontSize=cheight*11/138
+		olivieHP.fontSize=cheight*11/138
+		bahamutA.fontSize=cheight*11/138
+		bahamutHP.fontSize=cheight*11/138
+		zeusA.fontSize=cheight*11/138
+		zeusHP.fontSize=cheight*11/138
+		aliceA.fontSize=cheight*11/138
+		aliceHP.fontSize=cheight*11/138
+		satanA.position=CGPoint(x:card[53].position.x-cwidth/2+cheight*11/138,y:card[53].position.y-cheight/2+cheight*8/138)
+		satanHP.position=CGPoint(x:card[53].position.x+cwidth/2-cheight*11/138,y:card[53].position.y-cheight/2+cheight*8/138)
+		olivieA.position=CGPoint(x:card[54].position.x-cwidth/2+cheight*11/138,y:card[54].position.y-cheight/2+cheight*8/138)
+		olivieHP.position=CGPoint(x:card[54].position.x+cwidth/2-cheight*11/138,y:card[54].position.y-cheight/2+cheight*8/138)
+		bahamutA.position=CGPoint(x:card[55].position.x-cwidth/2+cheight*11/138,y:card[55].position.y-cheight/2+cheight*8/138)
+		bahamutHP.position=CGPoint(x:card[55].position.x+cwidth/2-cheight*11/138,y:card[55].position.y-cheight/2+cheight*8/138)
+		zeusA.position=CGPoint(x:card[56].position.x-cwidth/2+cheight*11/138,y:card[56].position.y-cheight/2+cheight*8/138)
+		zeusHP.position=CGPoint(x:card[56].position.x+cwidth/2-cheight*11/138,y:card[56].position.y-cheight/2+cheight*8/138)
+		aliceA.position=CGPoint(x:card[57].position.x-cwidth/2+cheight*11/138,y:card[57].position.y-cheight/2+cheight*8/138)
+		aliceHP.position=CGPoint(x:card[57].position.x+cwidth/2-cheight*11/138,y:card[57].position.y-cheight/2+cheight*8/138)
+		satanA.zPosition=2
+		satanHP.zPosition=2
+		olivieA.zPosition=2
+		olivieHP.zPosition=2
+		bahamutA.zPosition=2
+		bahamutHP.zPosition=2
+		zeusA.zPosition=2
+		zeusHP.zPosition=2
+		aliceA.zPosition=2
+		aliceHP.zPosition=2
+		self.addChild(satanA)
+		self.addChild(satanHP)
+		self.addChild(olivieA)
+		self.addChild(olivieHP)
+		self.addChild(bahamutA)
+		self.addChild(bahamutHP)
+		self.addChild(zeusA)
+		self.addChild(zeusHP)
+		self.addChild(aliceA)
+		self.addChild(aliceHP)
+		
+		
+		
 		
 		
 		//BJの判定
@@ -351,18 +534,18 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 			
 			//2枚目を表に向ける
 			var ccards=Cards.ccards
-			if ccards[1]<53{
+			if ccards[1].0<53{
 				if Cards.mode=="netp2"{
-					resevation.append((1,cwidth/2+cwidth,cheight/2,ccards[1],0))
+					resevation.append((1,cwidth/2+cwidth,cheight/2,ccards[1].0,[0]))
 				}else{
-					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].0,[0]))
 				}
 			}else{
-				let i=ccards[1]-53+3
+				let i=ccards[1].0-53+3
 				if Cards.mode=="netp2"{
-					resevation.append((i,cwidth/2+cwidth,cheight/2,ccards[1],0))
+					resevation.append((i,cwidth/2+cwidth,cheight/2,ccards[1].0,[0]))
 				}else{
-					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].0,[0]))
 				}
 			}
 
@@ -371,19 +554,19 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 			
 			//2枚目を表に向ける
 			var ccards=Cards.ccards
-			if ccards[1]<53{
+			if ccards[1].0<53{
 				if Cards.mode=="netp2"{
-					resevation.append((1,cwidth/2+cwidth,cheight/2,ccards[1],0))
+					resevation.append((1,cwidth/2+cwidth,cheight/2,ccards[1].0,[0]))
 					
 				}else{
-					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].0,[0]))
 				}
 			}else{
-				let i=ccards[1]-53+3
+				let i=ccards[1].0-53+3
 				if Cards.mode=="netp2"{
-					resevation.append((i,cwidth/2+cwidth,cheight/2,ccards[1],0))
+					resevation.append((i,cwidth/2+cwidth,cheight/2,ccards[1].0,[0]))
 				}else{
-					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].0,[0]))
 				}
 				
 			}
@@ -397,18 +580,18 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 			
 			//2枚目を表に向ける
 			var ccards=Cards.ccards
-			if ccards[1]<53{
+			if ccards[1].0<53{
 				if Cards.mode=="netp2"{
-					resevation.append((1,cwidth/2+cwidth,cheight/2,ccards[1],0))
+					resevation.append((1,cwidth/2+cwidth,cheight/2,ccards[1].0,[0]))
 				}else{
-					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].0,[0]))
 				}
 			}else{
-				let i=ccards[1]-53+3
+				let i=ccards[1].0-53+3
 				if Cards.mode=="netp2"{
-					resevation.append((i,cwidth/2+cwidth,cheight/2,ccards[1],0))
+					resevation.append((i,cwidth/2+cwidth,cheight/2,ccards[1].0,[0]))
 				}else{
-					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].0,[0]))
 				}
 			}
 			
@@ -418,10 +601,45 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 
 			plose()
 		}
-		
 	}
 	
 	override func update(_ currentTime: CFTimeInterval) {
+		
+		
+		let cheight = (view?.frame.height)!/3	//カードの縦の長さは画面サイズによって変わる
+		let cwidth = cheight*2/3
+		
+		pBPLabel.text="×"+String(Cards.pBP)
+		cBPLabel.text="×"+String(Cards.cBP)
+		
+
+		
+		//トランプ得点ラベルの位置更新
+		for i in Cards.pcards{
+			if i.card<53{ //Cards.cards.cardは1~57の値を取り、tPointLabelは[0]~[51]まである。
+				tPointLabel[i.card-1].position=CGPoint(x:card[i.card].position.x+cwidth/2-cheight*16/138,y:card[i.card].position.y+cheight/2-cheight*28/138)
+				tPointLabel[i.card-1].text=String(i.point)
+			}
+		}
+		for i in Cards.ccards{
+			if i.card<53{ //Cards.cards.cardは1~57の値を取り、tPointLabelは[0]~[51]まである。
+				tPointLabel[i.card-1].position=CGPoint(x:card[i.card].position.x+cwidth/2-cheight*16/138,y:card[i.card].position.y+cheight/2-cheight*28/138)
+				tPointLabel[i.card-1].text=String(i.point)
+			}
+		}
+		
+		//ラベルとカードをくっつける
+		satanA.position=CGPoint(x:card[53].position.x-cwidth/2+cheight*11/138,y:card[53].position.y-cheight/2+cheight*8/138)
+		satanHP.position=CGPoint(x:card[53].position.x+cwidth/2-cheight*11/138,y:card[53].position.y-cheight/2+cheight*8/138)
+		olivieA.position=CGPoint(x:card[54].position.x-cwidth/2+cheight*11/138,y:card[54].position.y-cheight/2+cheight*8/138)
+		olivieHP.position=CGPoint(x:card[54].position.x+cwidth/2-cheight*11/138,y:card[54].position.y-cheight/2+cheight*8/138)
+		bahamutA.position=CGPoint(x:card[55].position.x-cwidth/2+cheight*11/138,y:card[55].position.y-cheight/2+cheight*8/138)
+		bahamutHP.position=CGPoint(x:card[55].position.x+cwidth/2-cheight*11/138,y:card[55].position.y-cheight/2+cheight*8/138)
+		zeusA.position=CGPoint(x:card[56].position.x-cwidth/2+cheight*11/138,y:card[56].position.y-cheight/2+cheight*8/138)
+		zeusHP.position=CGPoint(x:card[56].position.x+cwidth/2-cheight*11/138,y:card[56].position.y-cheight/2+cheight*8/138)
+		aliceA.position=CGPoint(x:card[57].position.x-cwidth/2+cheight*11/138,y:card[57].position.y-cheight/2+cheight*8/138)
+		aliceHP.position=CGPoint(x:card[57].position.x+cwidth/2-cheight*11/138,y:card[57].position.y-cheight/2+cheight*8/138)
+		
 		if audioFinish==true {
 			if resevation.count>0{
 				GameScene.resetButton.isEnabled=false
@@ -448,11 +666,16 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 				audioFinish=false
 				case 7 : aliceIn.play()
 				audioFinish=false
+				case 8: breakcard.play()
+				audioFinish=false
 				default : break
 				}
 				
-				if let hide=resevation[0].hide{
-					card[hide].run(SKAction.hide())
+				for i in resevation[0].hide{
+					card[i].position=CGPoint(x:-100,y:0)    //枠外に
+					if i<53 && i>0{//トランプ表の得点も隠す
+					tPointLabel[i-1].position=CGPoint(x:-100,y:0)
+					}
 				}
 				
 				resevation.removeFirst()
@@ -465,8 +688,6 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 			}
 		}
 		
-		let cheight = (view?.frame.height)!/3	//カードの縦の長さは画面サイズによって変わる
-		let cwidth = cheight*2/3
 		if Cards.mode=="netp1" || Cards.mode=="netp2"{
 			if last == nil{
 				last = currentTime
@@ -511,7 +732,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 								Cards.pcards.removeAll()
 								Cards.cards.removeAll()
 								Cards.ccards.removeAll()
-								Cards.cards=[Int](1...52)
+								
 								self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 								self.draw()
 							}else if j==1{
@@ -519,7 +740,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 								Cards.pcards.removeAll()
 								Cards.cards.removeAll()
 								Cards.ccards.removeAll()
-								Cards.cards=[Int](1...52)
+								
 								self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 								self.pwin()
 							}else if j==2{
@@ -527,7 +748,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 								Cards.pcards.removeAll()
 								Cards.cards.removeAll()
 								Cards.ccards.removeAll()
-								Cards.cards=[Int](1...52)
+								
 								self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 								self.plose()
 							}
@@ -539,12 +760,12 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 							self.playcard.currentTime=0
 							self.playcard.play()
 							
-							let ccards:[Int]=Cards.ccards
+							let ccards:[(Int,Int)]=Cards.ccards
 							
 							let (_,cp)=Cards().getpoints()
 							//2p（敵）の各手札を表示
 							
-							self.card[ccards[ccardsc-1]].position=CGPoint(x:cwidth/2+cwidth*CGFloat(ccardsc-1),y:self.frame.size.height-cheight/2)
+							self.card[ccards[ccardsc-1].0].position=CGPoint(x:cwidth/2+cwidth*CGFloat(ccardsc-1),y:self.frame.size.height-cheight/2)
 							
 							//敵の得点表示
 							self.cpLabel.text=cp
@@ -556,7 +777,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 								Cards.pcards.removeAll()
 								Cards.cards.removeAll()
 								Cards.ccards.removeAll()
-								Cards.cards=[Int](1...52)
+								
 								self.nets.sendData()	//サーバーをendに更新し、以後の受信を停止
 								
 								self.cpLabel.text! += " Bust!!!"
@@ -571,12 +792,12 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 							self.playcard.currentTime=0
 							self.playcard.play()
 							
-							let pcards:[Int]=Cards.pcards
+							let pcards:[(Int,Int)]=Cards.pcards
 							
 							let (pp,_)=Cards().getpoints()
 							//1p（敵）の各手札を表示
 							
-							self.card[pcards[pcardsc-1]].position=CGPoint(x:cwidth/2+cwidth*CGFloat(pcardsc-1),y:self.frame.size.height-cheight/2)
+							self.card[pcards[pcardsc-1].0].position=CGPoint(x:cwidth/2+cwidth*CGFloat(pcardsc-1),y:self.frame.size.height-cheight/2)
 							
 							//敵の得点表示
 							self.ppLabel.text=pp
@@ -592,7 +813,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 								
 								//2枚目を表に向ける
 								var ccards=Cards.ccards
-								self.resevation.append((1,cwidth/2+cwidth,cheight/2,ccards[1],nil))
+								self.resevation.append((1,cwidth/2+cwidth,cheight/2,ccards[1].0,[]))
 								
 								//得点を表示する
 								let (_,cp0)=Cards().getpoints()
@@ -616,7 +837,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 							
 							//2枚目を表に向ける
 							var ccards=Cards.ccards
-							self.card[ccards[1]].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
+							self.card[ccards[1].card].position=CGPoint(x:cwidth/2+cwidth,y:cheight/2)
 							
 							//得点を表示する
 							let (_,cp0)=Cards().getpoints()
@@ -632,6 +853,7 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		}
 	}
 	
+	
 	func onClickHitButton(_ sender : UIButton){
 		GameScene.hitButton.isEnabled=false
 		GameScene.standButton.isEnabled=false
@@ -642,49 +864,133 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		self.isPaused=true  //updateによる受信防止
 		
 		if Cards.mode=="com" || Cards.mode=="scom" {
-			
-			let (pcards,pp)=Cards().hit(hcounter)
+			let ccards=Cards.ccards	  //バハによる除去前の敵の手札
+			var (pcards,_)=Cards().hit()
 			
 			//手札追加
-			if pcards[2+hcounter]<53{
-				resevation.append((1,cwidth/2+cwidth*CGFloat(2+hcounter),cheight/2,pcards[2+hcounter],nil))
+			if pcards[2+hcounter].0<53{//引いたのがトランプのとき
+				resevation.append((1,cwidth/2+cwidth*CGFloat(2+hcounter),cheight/2,pcards[2+hcounter].0,[]))
+				for i in Cards.pcards{//アリスの確認
+					if i.card==57{
+						Cards.pcards[2+hcounter].point+=1
+						tPointLabel[Cards.pcards[2+hcounter].card-1].fontColor=SKColor.orange
+					}
+				}
 			}else{
-				let i=pcards[2+hcounter]-53+3
-				resevation.append((i,cwidth/2+cwidth*CGFloat(2+hcounter),cheight/2,pcards[2+hcounter],nil))
+				let i=pcards[2+hcounter].0-53+3
+				resevation.append((i,cwidth/2+cwidth*CGFloat(2+hcounter),cheight/2,pcards[2+hcounter].0,[]))
+				if pcards[2+hcounter].0==55{//バハ
+					hcounter = -2
+					scounter = -2 //敵の手札も消える
+					var remove=[0]
+					for i in pcards{
+						remove.append(i.0)
+					}
+					for i in ccards{
+						remove.append(i.0)
+					}
+					
+					resevation.append((8,nil,nil,nil,remove))
+					resevation.append((0,cwidth/2,cheight/2,55,[]))
+					Cards.pcards.removeAll()
+					Cards.ccards.removeAll()
+					Cards.pcards.append((55,10))
+					
+				}else if pcards[2+hcounter].0==54 {//オリヴィエ
+					Cards.pBP=3
+				}else if pcards[2+hcounter].0==57{//アリス
+					for (index,value) in Cards.pcards.enumerated(){
+						if value.card<53{//トランプの得点を増やす
+							Cards.pcards[index].point+=1
+							tPointLabel[value.0-1].fontColor=SKColor.orange
+						}else if value.card<57{
+							//特殊カードの攻撃、体力を増やす
+						}
+					}
+
+				}
+			}
+
+			//Aの得点の確認
+			let (ppoint,_,_,_)=Cards().calculatepoints()
+			for (index,value) in Cards.pcards.enumerated(){
+				if value.card<53{//トランプ限定
+					if value.card%13 == 1 && ppoint.inA<22{
+						Cards.pcards[index].point+=10
+						break	  //二枚目以降は更新しない
+					}
+					if value.card%13==1 && value.point>9{
+						if ppoint.noA>21{
+							Cards.pcards[index].point-=10
+							break //後に直すべきAはないはず
+						}
+					}
+				}
 			}
 			
 			//得点を更新
-			ppLabel.text=pp
-			
+			ppLabel.text=Cards().getpoints().pp
 			hcounter+=1
 			
 			//バストの判定
-			let j=Cards().judge(1)
-			if j==4{
-				ppLabel.text! += " Bust!!!"
-				plose()
-				
-				//2枚目を表に向ける
-				var ccards=Cards.ccards
-				if ccards[1]<53{
-					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+			var j=Cards().judge(1)
+			
+			while j==4{
+				if Cards.pBP>0 {
+					Cards.pBP -= 1	//--は抹消された...
+					resevation.append((8,nil,nil,nil,[Cards.pcards.last!.card]))
+					Cards.pcards.removeLast()
+					hcounter-=1
 					
+					let (pp,_)=Cards().getpoints()
+					ppLabel.text=pp
+					j=Cards().judge(1)
+					continue
 				}else{
-					let i=ccards[1]-53+3
+					ppLabel.text! += " Bust!!!"
+					plose()
 					
-					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
-					
+					//2枚目を表に向ける
+					var ccards=Cards.ccards
+					if ccards.count>0{//バハで消えてないか確認
+						if ccards[1].card<53{
+							resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].card,[0]))
+							
+						}else{
+							let i=ccards[1].card-53+3
+							resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].card,[0]))
+							
+						}
+						//得点を表示する
+						let (_,cp0)=Cards().getpoints()
+						cpLabel.text=cp0
+					}
+					break
 				}
-				//得点を表示する
-				let (_,cp0)=Cards().getpoints()
-				cpLabel.text=cp0
 			}
 		}else if Cards.mode=="pvp"{
 			if scounter==0{ //p1のターンで押されたとき
-				let (pcards,pp)=Cards().hit(hcounter)
+				let (pcards,pp)=Cards().hit()
 				
 				//p1の手札追加
-				resevation.append((1,cwidth/2+cwidth*CGFloat(2+hcounter),cheight/2,pcards[2+hcounter],nil))
+				resevation.append((1,cwidth/2+cwidth*CGFloat(2+hcounter),cheight/2,pcards[2+hcounter].0,[]))
+				
+				//Aの得点の確認
+				let (ppoint,_,_,_)=Cards().calculatepoints()
+				for (index,value) in Cards.pcards.enumerated(){
+					if value.card<53{//トランプ限定
+						if value.card%13 == 1 && ppoint.inA<22{
+							Cards.pcards[index].point+=10
+							break	  //二枚目以降は更新しない
+						}
+						if value.card%13==1 && value.point>9{
+							if ppoint.noA>21{
+								Cards.pcards[index].point-=10
+								break //後に直すべきAはないはず
+							}
+						}
+					}
+				}
 				
 				//得点を更新
 				ppLabel.text=pp
@@ -699,14 +1005,14 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 					
 					//2枚目を表に向ける
 					var ccards=Cards.ccards
-					if ccards[1]<53{
+					if ccards[1].card<53{
 						
-						resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+						resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].card,[0]))
 						
 					}else{
-						let i=ccards[1]-53+3
+						let i=ccards[1].card-53+3
 						
-						resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+						resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].card,[0]))
 						
 					}
 					
@@ -715,11 +1021,26 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 					cpLabel.text=cp0
 				}
 			}else if scounter==1{	//p2のターン
-				let (ccards,cp)=Cards().stand(hcounter+chcounter) //カードを引く
+				let (ccards,cp)=Cards().stand() //カードを引く
 				
 				
 				//手札追加
-				resevation.append((1,cwidth/2+cwidth*CGFloat(2+chcounter),frame.size.height-cheight/2,ccards[2+chcounter],nil))
+				resevation.append((1,cwidth/2+cwidth*CGFloat(2+chcounter),frame.size.height-cheight/2,ccards[2+chcounter].0,[]))
+				
+				//Aの得点の確認
+				let (_,cpoint,_,_)=Cards().calculatepoints()
+				for (index,value) in Cards.ccards.enumerated(){
+					if value.card<53{//トランプ限定
+						if value.point==1 && cpoint.inA<22{
+							Cards.ccards[index].point+=10
+							break	  //二枚目以降は更新しない
+						}
+						if value.card%13==1 && value.point>9 && cpoint.noA>21{
+							Cards.ccards[index].point-=10
+							break //後に直すべきAはないはず
+						}
+					}
+				}
 				
 				//得点を更新
 				cpLabel.text=cp
@@ -739,10 +1060,29 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 				nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
 			}while net.isLatest==false
 			
-			let (pcards,pp)=Cards().hit(hcounter)
+			let (pcards,pp)=Cards().hit()
 			
 			//p1の手札追加
-			resevation.append((1,cwidth/2+cwidth*CGFloat(2+hcounter),cheight/2,pcards[2+hcounter],nil))
+			resevation.append((1,cwidth/2+cwidth*CGFloat(2+hcounter),cheight/2,pcards[2+hcounter].0,[]))
+			
+			//Aの得点の確認
+			let (ppoint,_,_,_)=Cards().calculatepoints()
+			for (index,value) in Cards.pcards.enumerated(){
+				if value.card<53{//トランプ限定
+					if value.card%13 == 1 && ppoint.inA<22{
+						Cards.pcards[index].point+=10
+						break	  //二枚目以降は更新しない
+					}
+					if value.card%13==1 && value.point>9{
+						if ppoint.noA>21{
+							Cards.pcards[index].point-=10
+							break //後に直すべきAはないはず
+						}
+					}
+				}
+			}
+			
+		
 			
 			//得点を更新
 			ppLabel.text=pp
@@ -760,14 +1100,14 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 				
 				//2枚目を表に向ける
 				var ccards=Cards.ccards
-				if ccards[1]<53{
+				if ccards[1].card<53{
 					
-					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].card,[0]))
 					
 				}else{
-					let i=ccards[1]-53+3
+					let i=ccards[1].card-53+3
 					
-					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].card,[0]))
 					
 				}
 				
@@ -782,12 +1122,25 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 				nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
 			}while net.isLatest==false
 			
-			let hcounter=Cards.pcards.count-2
-			
-			let (ccards,cp)=Cards().stand(hcounter+chcounter) //カードを引く
+			let (ccards,cp)=Cards().stand() //カードを引く
 			
 			//手札追加
-			resevation.append((1,cwidth/2+cwidth*CGFloat(2+chcounter),cheight/2,ccards[2+chcounter],nil))
+			resevation.append((1,cwidth/2+cwidth*CGFloat(2+chcounter),cheight/2,ccards[2+chcounter].0,[]))
+			
+			//Aの得点の確認
+			let (_,cpoint,_,_)=Cards().calculatepoints()
+			for (index,value) in Cards.ccards.enumerated(){
+				if value.card<53{//トランプ限定
+					if value.point==1 && cpoint.inA<22{
+						Cards.ccards[index].point+=10
+						break	  //二枚目以降は更新しない
+					}
+					if value.card%13==1 && value.point>9 && cpoint.noA>21{
+						Cards.ccards[index].point-=10
+						break //後に直すべきAはないはず
+					}
+				}
+			}
 			
 			//得点を更新
 			cpLabel.text=cp
@@ -824,51 +1177,158 @@ class GameScene: SKScene , AVAudioPlayerDelegate{  //描写などの処理を主
 		if Cards.mode != "netp2"{
 			//2枚目を表に向ける
 			var ccards=Cards.ccards
-			if ccards[1]<53{
-				resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
-			}else{
-				let i=ccards[1]-53+3
-				resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1],0))
+			if ccards.count>0{//バハで消えてないか確認
+				if ccards[1].card<53{
+					resevation.append((1,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].card,[0]))
+					for i in Cards.ccards{//アリスの確認
+						if i.card==57{
+							Cards.ccards[1].point+=1
+							tPointLabel[ccards[1].card-1].fontColor=SKColor.orange
+						}
+					}
+
+				}else{
+					let i=ccards[1].card-53+3
+					resevation.append((i,cwidth/2+cwidth,frame.size.height-cheight/2,ccards[1].card,[0]))
+					if ccards[1].card==55 {//バハ
+						let pcards=Cards.pcards
+						scounter = -1
+						var remove:[Int]=[]
+						for i in pcards{
+							remove.append(i.card)
+						}
+						for i in ccards{
+							remove.append(i.card)
+						}
+						resevation.append((8,nil,nil,nil,remove))
+						resevation.append((0,cwidth/2,frame.size.height-cheight/2,55,[]))
+						Cards.pcards.removeAll()
+						Cards.ccards.removeAll()
+						Cards.ccards.append((55,10))
+					}else if ccards[1].card==54 {//オリヴィエ
+						Cards.cBP=3
+					}else if ccards[1].card==57{//アリス
+						for (index,value) in Cards.ccards.enumerated(){
+							if value.card<53{//トランプの得点を増やす
+								Cards.cards[index].point+=1
+								tPointLabel[value.0-1].fontColor=SKColor.orange
+							}else if value.card<57{
+								//特殊カードの攻撃、体力を増やす
+							}
+						}
+
+					}
+				}
 			}
+			
+			
+			
 			//得点を表示する
-			let (_,cp0)=Cards().getpoints()
+			let (pp,cp0)=Cards().getpoints()
 			cpLabel.text=cp0
+			ppLabel.text=pp
 		}
 		
 		if Cards.mode=="com" || Cards.mode=="scom" {
-			while true{
+			var j=Cards().judge(1)
+			while j != 3{//バストしてない間
 				//引く前に次に引くべきかを判定
-				let (_,cpoint,_,cA)=Cards().calculatepoints()
-				if (cpoint.inA>16 && cA==true && cpoint.inA<22) || cpoint.noA>16{
+				var (_,cpoint,_,cA)=Cards().calculatepoints()
+				if (cpoint.inA>16 && cA==true && cpoint.inA<22 && Cards.cBP==0) || cpoint.noA>16 && Cards.cBP==0{
 					break
 				}
 				
-				let (ccards,cp)=Cards().stand(hcounter+scounter)
-				
+				let pcards=Cards.pcards
+				var (ccards,cp)=Cards().stand()
+				var pp:String
 				
 				//手札追加
 				
-				if ccards[2+scounter]<53{
-					resevation.append((1,cwidth/2+cwidth*CGFloat(2+scounter),frame.size.height-cheight/2,ccards[2+scounter],nil))
+				if ccards[2+scounter].0<53{
+					resevation.append((1,cwidth/2+cwidth*CGFloat(2+scounter),frame.size.height-cheight/2,ccards[2+scounter].0,[]))
+					for i in Cards.ccards{//アリスの確認
+						if i.card==57{
+							Cards.ccards[2+scounter].point+=1
+							tPointLabel[Cards.ccards[2+scounter].card-1].fontColor=SKColor.orange
+						}
+					}
+
 				}else{
-					let i=ccards[2+scounter]-53+3
-					resevation.append((i,cwidth/2+cwidth*CGFloat(2+scounter),frame.size.height-cheight/2,ccards[2+scounter],nil))
+					let i=ccards[2+scounter].0-53+3
+					resevation.append((i,cwidth/2+cwidth*CGFloat(2+scounter),frame.size.height-cheight/2,ccards[2+scounter].0,[]))
+					if ccards[2+scounter].0==55{//バハ
+						scounter = -2
+						var remove:[Int]=[]
+						for i in pcards{
+							remove.append(i.card)
+						}
+						for i in ccards{
+							remove.append(i.0)
+						}
+						resevation.append((8,nil,nil,nil,remove))
+						resevation.append((0,cwidth/2,frame.size.height-cheight/2,55,[]))
+						Cards.pcards.removeAll()
+						Cards.ccards.removeAll()
+						Cards.ccards.append((55,10))
+						
+					}else if ccards[2+scounter].0==54 {//オリヴィエ
+						Cards.cBP=3
+					}else if ccards[2+scounter].0==57{//アリス
+						for (index,value) in Cards.ccards.enumerated(){
+							if value.card<53{//トランプの得点を増やす
+								Cards.ccards[index].point+=1
+								tPointLabel[value.0-1].fontColor=SKColor.orange
+							}else if value.card<57{
+								//特殊カードの攻撃、体力を増やす
+							}
+						}
+
+					}
+				}
+				
+				//Aの得点の確認
+				(_,cpoint,_,_)=Cards().calculatepoints()
+				for (index,value) in Cards.ccards.enumerated(){
+					if value.card<53{//トランプ限定
+						if value.point==1 && cpoint.inA<22{
+							Cards.ccards[index].point+=10
+							break	  //二枚目以降は更新しない
+						}
+						if value.card%13==1 && value.point>9 && cpoint.noA>21{
+							Cards.ccards[index].point-=10
+							break //後に直すべきAはないはず
+						}
+					}
 				}
 				
 				//得点を更新
+				(pp,cp)=Cards().getpoints()
 				cpLabel.text=cp
+				ppLabel.text=pp
 				
 				//引いた直後にバストの判定(ループ内)
-				let j=Cards().judge(1)
-				if j==3{
-					cpLabel.text! += " Bust!!!"
-					pwin()
-					break
+				j=Cards().judge(1)
+				while j==3{
+					if Cards.cBP>0 {
+						Cards.cBP -= 1	//--は抹消された...
+						resevation.append((8,nil,nil,nil,[Cards.ccards.last!.card]))
+						Cards.ccards.removeLast()
+						scounter-=1
+						
+						let (_,cp)=Cards().getpoints()
+						cpLabel.text=cp
+						j=Cards().judge(1)
+						continue
+					}else{
+						cpLabel.text! += " Bust!!!"
+						pwin()
+						break//一番内側からしか抜けられない！
+					}
 				}
 				scounter+=1
 			}
 			//最終判定(ループ外)
-			let j=Cards().judge(1)
+			j=Cards().judge(1)
 			if j==0{
 				draw()
 			}else if j==1{

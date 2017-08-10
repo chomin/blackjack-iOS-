@@ -21,6 +21,11 @@
 		0F71DCD41F20BB790032FB30 /* カード召喚音.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F71DCD31F20BB790032FB30 /* カード召喚音.mp3 */; };
 		0F869AB31EF55EA20039832A /* preparingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F869AB21EF55EA20039832A /* preparingScene.swift */; };
 		0F869AB51EF55EC40039832A /* loadingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F869AB41EF55EC40039832A /* loadingScene.swift */; };
+		0F8B07561F275C9D008320AE /* アスタロト.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F8B07511F275C9D008320AE /* アスタロト.mp3 */; };
+		0F8B07571F275C9D008320AE /* ディース（前）.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F8B07521F275C9D008320AE /* ディース（前）.mp3 */; };
+		0F8B07581F275C9D008320AE /* われは漆黒の迅雷.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F8B07531F275C9D008320AE /* われは漆黒の迅雷.mp3 */; };
+		0F8B07591F275C9D008320AE /* 破壊音.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F8B07541F275C9D008320AE /* 破壊音.mp3 */; };
+		0F8B075A1F275C9D008320AE /* 氷獄で眠れ.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F8B07551F275C9D008320AE /* 氷獄で眠れ.mp3 */; };
 		0F9EE1B61E66544000A78B59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9EE1B51E66544000A78B59 /* AppDelegate.swift */; };
 		0F9EE1BC1E66544000A78B59 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9EE1BB1E66544000A78B59 /* GameScene.swift */; };
 		0F9EE1BE1E66544000A78B59 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9EE1BD1E66544000A78B59 /* GameViewController.swift */; };
@@ -44,6 +49,11 @@
 		0F71DCD31F20BB790032FB30 /* カード召喚音.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "カード召喚音.mp3"; sourceTree = "<group>"; };
 		0F869AB21EF55EA20039832A /* preparingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = preparingScene.swift; sourceTree = "<group>"; };
 		0F869AB41EF55EC40039832A /* loadingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = loadingScene.swift; sourceTree = "<group>"; };
+		0F8B07511F275C9D008320AE /* アスタロト.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "アスタロト.mp3"; sourceTree = "<group>"; };
+		0F8B07521F275C9D008320AE /* ディース（前）.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "ディース（前）.mp3"; sourceTree = "<group>"; };
+		0F8B07531F275C9D008320AE /* われは漆黒の迅雷.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "われは漆黒の迅雷.mp3"; sourceTree = "<group>"; };
+		0F8B07541F275C9D008320AE /* 破壊音.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "破壊音.mp3"; sourceTree = "<group>"; };
+		0F8B07551F275C9D008320AE /* 氷獄で眠れ.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "氷獄で眠れ.mp3"; sourceTree = "<group>"; };
 		0F9EE1B21E66544000A78B59 /* newblackjack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newblackjack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F9EE1B51E66544000A78B59 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0F9EE1BB1E66544000A78B59 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -107,6 +117,11 @@
 				0F9EE1C21E66544000A78B59 /* Assets.xcassets */,
 				0F9EE1C41E66544000A78B59 /* LaunchScreen.storyboard */,
 				0F9EE1C71E66544000A78B59 /* Info.plist */,
+				0F8B07511F275C9D008320AE /* アスタロト.mp3 */,
+				0F8B07521F275C9D008320AE /* ディース（前）.mp3 */,
+				0F8B07531F275C9D008320AE /* われは漆黒の迅雷.mp3 */,
+				0F8B07541F275C9D008320AE /* 破壊音.mp3 */,
+				0F8B07551F275C9D008320AE /* 氷獄で眠れ.mp3 */,
 				0F62A3081F232B4100D01EB9 /* （バハ登場）.mp3 */,
 				0F62A3091F232B4100D01EB9 /* 我こそ唯一にして無二たる神なり.mp3 */,
 				0F62A30A1F232B4100D01EB9 /* 新たなる世界を求めて.mp3 */,
@@ -179,15 +194,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F8B07561F275C9D008320AE /* アスタロト.mp3 in Resources */,
+				0F8B07581F275C9D008320AE /* われは漆黒の迅雷.mp3 in Resources */,
 				0F62A3111F232B4100D01EB9 /* 不思議な世界、素敵な世界！.mp3 in Resources */,
 				0F62A3101F232B4100D01EB9 /* 絶望よ、来たれ.mp3 in Resources */,
+				0F8B07571F275C9D008320AE /* ディース（前）.mp3 in Resources */,
 				0F62A30D1F232B4100D01EB9 /* （バハ登場）.mp3 in Resources */,
 				0F9EE1C11E66544000A78B59 /* Main.storyboard in Resources */,
 				0F9EE1C31E66544000A78B59 /* Assets.xcassets in Resources */,
 				0F71DCD21F2086D00032FB30 /* カード音.mp3 in Resources */,
 				0F9EE1C61E66544000A78B59 /* LaunchScreen.storyboard in Resources */,
 				0F62A30F1F232B4100D01EB9 /* 新たなる世界を求めて.mp3 in Resources */,
+				0F8B075A1F275C9D008320AE /* 氷獄で眠れ.mp3 in Resources */,
 				0F71DCD41F20BB790032FB30 /* カード召喚音.mp3 in Resources */,
+				0F8B07591F275C9D008320AE /* 破壊音.mp3 in Resources */,
 				0F62A30E1F232B4100D01EB9 /* 我こそ唯一にして無二たる神なり.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

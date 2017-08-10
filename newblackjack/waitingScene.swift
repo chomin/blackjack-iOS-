@@ -73,7 +73,6 @@ class waitingScene: SKScene {
 					Cards.pcards.removeAll()
 					Cards.cards.removeAll()
 					Cards.ccards.removeAll()
-					Cards.cards=[Int](1...52)
 					self.nets.sendData()
 					
 					let gameScene = LaunchScene(size: self.view!.bounds.size) // create your new scene

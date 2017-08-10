@@ -85,9 +85,9 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 					var pcardsS:String
 					var ccardsS:String
 					var state:String
-					var cards:[Int]=[]
-					var pcards:[Int]=[]
-					var ccards:[Int]=[]
+					var cards:[(card:Int,point:Int)]=[]
+					var pcards:[(card:Int,point:Int)]=[]
+					var ccards:[(card:Int,point:Int)]=[]
 					let lastIndex=json.count-1
 					let lastId=json[lastIndex]["id"] as! Int
 					var fLastIdIndex = -1 //fLastIdのデータが入ってる位置
@@ -130,20 +130,22 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 							//それぞれの文字列を配列に戻す
 							
 							
-							for i in 0...52{
-								let hstart=cardS.characters.index(cardS.startIndex, offsetBy: 1+i)
-								
-								if let end=cardS.characters.index(of: ","){
-									let tmp=Int(cardS[hstart..<end])
-									cards.append(tmp!)
-									cardS.removeSubrange(hstart...end) //半角スペースと置き換え？
-								}else{//要エラー処理
-									let end=cardS.characters.index(of: "]")
-									let tmp=Int(cardS[hstart..<end!])
-									if tmp==nil{
-										break
-									}
-									cards.append(tmp!)
+							for _ in 0...52{
+								if var hstart=cardS.characters.index(of: "("){
+									hstart=cardS.characters.index(hstart, offsetBy: 7)
+									var end1=cardS.characters.index(of: ",")
+									let card=Int(cardS[hstart..<end1!])
+									cardS.removeSubrange(hstart..<end1!) //半角スペースと置き換え？
+									hstart=cardS.characters.index(of: ",")!
+									hstart=cardS.characters.index(hstart, offsetBy: 9)
+									end1=cardS.characters.index(of: ")")
+									let point=Int(cardS[hstart..<end1!])
+									cards.append((card!,point!))
+									
+									hstart=cardS.characters.index(of: "(")!
+									end1=cardS.index(after: end1!)
+									cardS.removeSubrange(hstart...end1!) //半角スペースと置き換え？
+								}else{
 									break
 								}
 							}
@@ -154,20 +156,21 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 						
 						if let tmp0=json[alast]["pcards"]{
 							pcardsS=tmp0 as! String
-							for i in 0...52{
-								let hstart=pcardsS.characters.index(pcardsS.startIndex, offsetBy: 1+i)
-								
-								if let end=pcardsS.characters.index(of: ","){
-									let tmp=Int(pcardsS[hstart..<end])
-									pcards.append(tmp!)
-									pcardsS.removeSubrange(hstart...end) //半角スペースと置き換え？
-								}else {
-									let end=pcardsS.characters.index(of: "]")
-									let tmp=Int(pcardsS[hstart..<end!])
-									if tmp==nil{
-										break
-									}
-									pcards.append(tmp!)
+							for _ in 1...52{
+								if var hstart=pcardsS.characters.index(of: "("){
+									hstart=pcardsS.characters.index(hstart, offsetBy: 7)
+									var end1=pcardsS.characters.index(of: ",")
+									let card=Int(pcardsS[hstart..<end1!])
+									pcardsS.removeSubrange(hstart..<end1!) //半角スペースと置き換え？
+									hstart=pcardsS.characters.index(of: ",")!
+									hstart=pcardsS.characters.index(hstart, offsetBy: 9)
+									end1=pcardsS.characters.index(of: ")")
+									let point=Int(pcardsS[hstart..<end1!])
+									pcards.append((card!,point!))
+									hstart=pcardsS.characters.index(of: "(")!
+									end1=pcardsS.index(after: end1!)
+									pcardsS.removeSubrange(hstart...end1!) //半角スペースと置き換え？
+								}else{
 									break
 								}
 							}
@@ -175,23 +178,23 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 						}
 						if let tmp0=json[alast]["ccards"]{
 							ccardsS=tmp0 as! String
-							for i in 0...52{
-								let hstart=ccardsS.characters.index(ccardsS.startIndex, offsetBy: 1+i)
-								
-								if let end=ccardsS.characters.index(of: ","){
-									let tmp=Int(ccardsS[hstart..<end])
-									ccards.append(tmp!)
-									ccardsS.removeSubrange(hstart...end) //半角スペースと置き換え？
+							for _ in 0...52{
+								if var hstart=ccardsS.characters.index(of: "("){
+									hstart=ccardsS.characters.index(hstart, offsetBy: 7)
+									var end1=ccardsS.characters.index(of: ",")
+									let card=Int(ccardsS[hstart..<end1!])
+									ccardsS.removeSubrange(hstart..<end1!) //半角スペースと置き換え？
+									hstart=ccardsS.characters.index(of: ",")!
+									hstart=ccardsS.characters.index(hstart, offsetBy: 9)
+									end1=ccardsS.characters.index(of: ")")
+									let point=Int(ccardsS[hstart..<end1!])
+									ccards.append((card!,point!))
+									hstart=ccardsS.characters.index(of: "(")!
+									end1=ccardsS.index(after: end1!)
+									ccardsS.removeSubrange(hstart...end1!) //半角スペースと置き換え？
 								}else{
-									let end=ccardsS.characters.index(of: "]")
-									let tmp=Int(ccardsS[hstart..<end!])
-									if tmp==nil{
-										break
-									}
-									ccards.append(tmp!)
 									break
-								}
-							}
+								}							}
 							Cards.ccards=ccards
 						}
 						if let tmp0=json[alast]["state"]{

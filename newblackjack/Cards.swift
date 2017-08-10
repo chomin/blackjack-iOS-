@@ -12,17 +12,25 @@ import UIKit
 class Cards{	//カードや得点の管理、勝敗判定などを行うクラス
 	
 	//クラスプロパティ（クラス自身が保持する値）	
-	static var pcards:[Int]=[]	//手札(各カードは1から52の通し番号)(空の配列であることに注意！)
-	static var ccards:[Int]=[]
-	static var cards=[Int](1...57)    //山札
+	static var pcards:[(card:Int,point:Int)]=[]	//手札(各カードは1から52の通し番号)(空の配列であることに注意！)
+	static var ccards:[(card:Int,point:Int)]=[]
+	static var cards:[(card:Int,point:Int)]=[]   //(山札,得点)
 	static var state:String="end"	  //end,waiting（1人が待っている状態）,start(配り終えた情報を送信するまで),ready(配り終えた情報を相手が受信するまで),p1turn,p2turn,judge,endと推移
 	static var mode:String="com"	//com,pvp,netp1,netp2,scom(shadowjackモード),spvp,snetp1,snetp2
+	static var pBP=0
+	static var cBP=0
 	
 	
-	func setcard() -> (pcards:[Int],ccards:[Int],pp:String,cp:String){
+	func setcard() -> (pcards:[(Int,Int)],ccards:[(Int,Int)],pp:String,cp:String){
 		
-		if Cards.mode=="1p" || Cards.mode=="pvp" || Cards.mode=="netp1" || Cards.mode=="netp2"{
-			Cards.cards=[Int](1...52)
+		if Cards.mode=="com" || Cards.mode=="pvp" || Cards.mode=="netp1" || Cards.mode=="netp2"{
+			for i in 1...52{
+				if (i-1)%13 > 8{	//10,J,Q,Kのとき
+					Cards.cards.append((i,10))
+				}else{
+					Cards.cards.append((i,i%13))
+				}
+			}
 			
 			for i in 0...51{
 				let j=Int(arc4random_uniform(51))%52  //上限をつけないとiPhone5では動かない。。。
@@ -32,7 +40,24 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 			}
 
 		}else{
-			Cards.cards=[Int](1...57)
+			for i in 1...57{
+				if i<53{
+					if (i-1)%13 > 8{	//10,J,Q,Kのとき
+						Cards.cards.append((i,10))
+					}else{
+						Cards.cards.append((i,i%13))
+					}
+				}else{//特殊カード
+					if i==53 || i==55 || i==56{
+						Cards.cards.append((i,10))
+					}else if i==57{
+						Cards.cards.append((i,4))
+					}else if i==54{
+						Cards.cards.append((i,9))
+					}
+				}
+			}
+			
 			
 			//Fisher–Yatesシャッフルアルゴルズム
 			for i in 0...56{
@@ -47,17 +72,13 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		
 		//カードを配る
 		Cards.pcards.append(Cards.cards[0])
-		Cards.pcards.append(Cards.cards[1])
-		Cards.ccards.append(Cards.cards[2])
-		Cards.ccards.append(Cards.cards[3])
-		
-		//
-		//		//念のため山札からカード消去 不要！（配列のindexを増やしている）
-		//		for _ in 1...4{
-		//
-		//			Cards.cards.removeFirst()
-		//		}
-		
+		Cards.cards.removeFirst()
+		Cards.pcards.append(Cards.cards[0])
+		Cards.cards.removeFirst()
+		Cards.ccards.append(Cards.cards[0])
+		Cards.cards.removeFirst()
+		Cards.ccards.append(Cards.cards[0])
+		Cards.cards.removeFirst()
 		
 		let (pp,cp)=getpoints()
 		
@@ -86,18 +107,19 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		
 		return (pp,cp)
 		
-	}
+	}//ラベル用のポイントを返す
 	
-	func hit(_ hcount:Int) -> (pcards:[Int],pp:String){
+	func hit() -> (pcards:[(Int,Int)],pp:String){//pcardsにcards[0]を配る
 		
-		Cards.pcards.append(Cards.cards[4+hcount])
-		//		Cards.cards.removeFirst()   不要！（配列のindexを増やしている）
+		Cards.pcards.append(Cards.cards[0])
+		Cards.cards.removeFirst()
 		let (pp,_)=getpoints()
 		return (Cards.pcards,pp)
 	}
 	
-	func stand(_ hscount:Int) -> (ccards:[Int],cp:String){
-		Cards.ccards.append(Cards.cards[4+hscount])
+	func stand() -> (ccards:[(Int,Int)],cp:String){
+		Cards.ccards.append(Cards.cards[0])
+		Cards.cards.removeFirst()
 		let (_,cp)=getpoints()
 		return (Cards.ccards,cp)
 		
@@ -117,11 +139,11 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		
 		//BJの判定
 		if i==0{
-			if ppoint==(11,21) && pA==true && cpoint==(11,21) && cA==true{
+			if ppoint.noA==21 && pA==true && cpoint.noA==21 && cA==true{
 				return 5
-			}else if ppoint==(11,21) && pA==true{
+			}else if ppoint.noA==21 && pA==true{
 				return 3
-			}else if cpoint==(11,21) && cA==true{
+			}else if cpoint.noA==21 && cA==true{
 				return 4
 			}
 		}
@@ -179,67 +201,53 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		
 		//初期化
 		var ppoint=(noA:0,inA:10)
-		var cpoint=(noA:0,inA:10)
+		var cpoint=(noA:0,inA:10)//inAは、もし今のポイントに、更に１０点加えたら...の値
 		
 		for i in Cards.pcards{
 			
-			if i<53{//トランプ
-				if (i-1)%13 > 8{	//10,J,Q,Kのとき
-					ppoint.inA+=10
-					ppoint.noA+=10
-				}else{
-					ppoint.inA+=i%13
-					ppoint.noA+=i%13
-				}
-			}else{//特殊カード
-				if i==53 || i==55 || i==56{
-					ppoint.inA+=10
-					ppoint.noA+=10
-				}else if i==57{
-					ppoint.inA+=4
-					ppoint.noA+=4
-				}else if i==54{
-					ppoint.inA+=9
-					ppoint.noA+=9
-				}
+				ppoint.inA+=i.point
+				ppoint.noA+=i.point
 			
-			}
+//			初期値不変の場合の計算
+//			if i.card<53{//トランプ
+//				if (i.card-1)%13 > 8{	//10,J,Q,Kのとき
+//					ppoint.inA+=10
+//					ppoint.noA+=10
+//				}else{
+//					ppoint.inA+=i.card%13
+//					ppoint.noA+=i.card%13
+//				}
+//			}else{//特殊カード
+//				if i.card==53 || i.card==55 || i.card==56{
+//					ppoint.inA+=10
+//					ppoint.noA+=10
+//				}else if i.card==57{
+//					ppoint.inA+=4
+//					ppoint.noA+=4
+//				}else if i.card==54{
+//					ppoint.inA+=9
+//					ppoint.noA+=9
+//				}
+//			
+//			}
 		}
 		
 		for i in Cards.ccards{
-			
-			if i<53{//トランプ
-				if (i-1)%13 > 8{	//10,J,Q,Kのとき
-					cpoint.inA+=10
-					cpoint.noA+=10
-				}else{
-					cpoint.inA+=i%13
-					cpoint.noA+=i%13
-				}
-			}else{//特殊カード
-				if i==53 || i==55 || i==56{
-					cpoint.inA+=10
-					cpoint.noA+=10
-				}else if i==57{
-					cpoint.inA+=4
-					cpoint.noA+=4
-				}else if i==54{
-					cpoint.inA+=9
-					cpoint.noA+=9
-				}
-			}
+
+				cpoint.inA+=i.point
+				cpoint.noA+=i.point
 			
 		}
 		
 		//Aを持っているかの判定
 		var pA=false,cA=false
 		for i in Cards.pcards{
-			if i%13 == 1 && i<53{
+			if i.card%13 == 1 && i.card<53{
 				pA=true
 			}
 		}
 		for i in Cards.ccards{
-			if i%13 == 1 && i<53{
+			if i.card%13 == 1 && i.card<53{
 				cA=true
 			}
 		}
