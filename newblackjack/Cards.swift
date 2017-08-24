@@ -40,7 +40,7 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 			}
 
 		}else{
-			for i in 1...57{
+			for i in 1...63{
 				if i<53{
 					if (i-1)%13 > 8{	//10,J,Q,Kのとき
 						Cards.cards.append((i,10))
@@ -48,11 +48,11 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 						Cards.cards.append((i,i%13))
 					}
 				}else{//特殊カード
-					if i==53 || i==55 || i==56{
+					if i==53 || i==55 || i==56 || i==60 || i==61{
 						Cards.cards.append((i,10))
-					}else if i==57{
+					}else if i==57 || i==62 || i==63{
 						Cards.cards.append((i,4))
-					}else if i==54{
+					}else if i==54 || i==58 || i==59{
 						Cards.cards.append((i,9))
 					}
 				}
@@ -60,8 +60,8 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 			
 			
 			//Fisher–Yatesシャッフルアルゴルズム
-			for i in 0...56{
-				let j=Int(arc4random_uniform(56))%57  //上限をつけないとiPhone5では動かない。。。
+			for i in 0...62{
+				let j=Int(arc4random_uniform(62))%63  //上限をつけないとiPhone5では動かない。。。
 				let t=Cards.cards[i]
 				Cards.cards[i]=Cards.cards[j]
 				Cards.cards[j]=t

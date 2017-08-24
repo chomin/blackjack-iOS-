@@ -32,6 +32,9 @@
 		0F9EE1C11E66544000A78B59 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F9EE1BF1E66544000A78B59 /* Main.storyboard */; };
 		0F9EE1C31E66544000A78B59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F9EE1C21E66544000A78B59 /* Assets.xcassets */; };
 		0F9EE1C61E66544000A78B59 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F9EE1C41E66544000A78B59 /* LaunchScreen.storyboard */; };
+		0FC5C0031F4E67F200789DB4 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC5C0021F4E67F200789DB4 /* Labels.swift */; };
+		0FC5C0051F4E6E2400789DB4 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC5C0041F4E6E2400789DB4 /* Images.swift */; };
+		0FC5C0071F4E6E4200789DB4 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC5C0061F4E6E4200789DB4 /* Sounds.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +65,9 @@
 		0F9EE1C21E66544000A78B59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0F9EE1C51E66544000A78B59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0F9EE1C71E66544000A78B59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0FC5C0021F4E67F200789DB4 /* Labels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; usesTabs = 1; };
+		0FC5C0041F4E6E2400789DB4 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		0FC5C0061F4E6E4200789DB4 /* Sounds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,9 @@
 			children = (
 				0F9EE1B51E66544000A78B59 /* AppDelegate.swift */,
 				0F9EE1BB1E66544000A78B59 /* GameScene.swift */,
+				0FC5C0041F4E6E2400789DB4 /* Images.swift */,
+				0FC5C0061F4E6E4200789DB4 /* Sounds.swift */,
+				0FC5C0021F4E67F200789DB4 /* Labels.swift */,
 				0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */,
 				0F0E09081E7BDFA4005B85FB /* waitingScene.swift */,
 				0F869AB21EF55EA20039832A /* preparingScene.swift */,
@@ -222,10 +231,13 @@
 				0F0E094D1E7BE5FA005B85FB /* net.swift in Sources */,
 				0F869AB51EF55EC40039832A /* loadingScene.swift in Sources */,
 				0F9EE1BC1E66544000A78B59 /* GameScene.swift in Sources */,
+				0FC5C0071F4E6E4200789DB4 /* Sounds.swift in Sources */,
+				0FC5C0051F4E6E2400789DB4 /* Images.swift in Sources */,
 				0F9EE1BE1E66544000A78B59 /* GameViewController.swift in Sources */,
 				0F5E748A1E6D688F003557A5 /* Cards.swift in Sources */,
 				0F9EE1B61E66544000A78B59 /* AppDelegate.swift in Sources */,
 				0F869AB31EF55EA20039832A /* preparingScene.swift in Sources */,
+				0FC5C0031F4E67F200789DB4 /* Labels.swift in Sources */,
 				0F51A0831E7151A900A2ACE6 /* LaunchScene.swift in Sources */,
 				0F0E09091E7BDFA4005B85FB /* waitingScene.swift in Sources */,
 			);
