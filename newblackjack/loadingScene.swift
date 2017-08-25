@@ -45,18 +45,18 @@ class loadingScene: SKScene {
 				
 				net().receiveData()
 				
-				if Cards.state=="ready"{
-					Cards.state="p1turn"
+				if Cards.state == .ready{
+					Cards.state = .p1turn
 					net().sendData()	//初期手札を受信したということを送信
 					
 					if net.dealer==2{
-						Cards.mode="netp1"
+						Cards.mode = .netp1
 						let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 						let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 						gameScene.scaleMode = SKSceneScaleMode.fill
 						self.view!.presentScene(gameScene, transition: transition) //GameSceneに移動
 					}else if net.dealer==1{
-						Cards.mode="netp2"
+						Cards.mode = .netp2
 						let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 						let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 						gameScene.scaleMode = SKSceneScaleMode.fill

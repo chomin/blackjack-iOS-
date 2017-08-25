@@ -200,7 +200,28 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 						if let tmp0=json[alast]["state"]{
 							
 							state=tmp0 as! String
-							Cards.state=state
+							switch state {
+							case "break":
+								Cards.state = .br
+							case "end":
+								Cards.state = .end
+							case "waiting":
+								Cards.state = .waiting
+							case "start":
+								Cards.state = .start
+							case "ready":
+								Cards.state = .ready
+							case "p1turn":
+								Cards.state = .p1turn
+							case "p2turn":
+								Cards.state = .p2turn
+							case "judge":
+								Cards.state = .judge
+							default:
+								print("state error")
+								exit(1)
+							}
+							
 							
 						}
 						if let tmp0=json[alast]["dealer"]{
@@ -247,8 +268,33 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		let Sccards=String(describing: Cards.ccards)
 		
 		print(net.dealer)
+		
+		//gameState型をStringに変換
+		var state:String
+		switch Cards.state {
+		case .br:
+			state="break"
+		case .end:
+			state="end"
+		case .waiting:
+			state="waiting"
+		case .start:
+			state="start"
+		case .ready:
+			state="ready"
+		case .p1turn:
+			state="p1turn"
+		case .p2turn:
+			state="p2turn"
+		case .judge:
+			state="judge"
+		default://追加し忘れ防止
+			print("state change error")
+			exit(1)
+		}
+		
 		// APIへ飛ばすデータをJSONに変換する(sendDataはData?型)
-		let sendData = String(format: "{ \"bj4\": { \"cards\":\"%@\", \"pcards\":\"%@\",\"ccards\":\"%@\",\"state\":\"%@\",\"uuid\":\"%@\", \"dealer\":\"%@\" } }", Scards, Spcards,Sccards,Cards.state,net.uuid,String(net.dealer)
+		let sendData = String(format: "{ \"bj4\": { \"cards\":\"%@\", \"pcards\":\"%@\",\"ccards\":\"%@\",\"state\":\"%@\",\"uuid\":\"%@\", \"dealer\":\"%@\" } }", Scards, Spcards,Sccards,state,net.uuid,String(net.dealer)
 			).data(using: String.Encoding.utf8)  //%@の部分にそれぞれの変数が入るようになっている？
 		
 //		 print(String(data: sendData!, encoding: String.Encoding.utf8)!)

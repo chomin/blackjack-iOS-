@@ -35,6 +35,7 @@
 		0FC5C0031F4E67F200789DB4 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC5C0021F4E67F200789DB4 /* Labels.swift */; };
 		0FC5C0051F4E6E2400789DB4 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC5C0041F4E6E2400789DB4 /* Images.swift */; };
 		0FC5C0071F4E6E4200789DB4 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC5C0061F4E6E4200789DB4 /* Sounds.swift */; };
+		0FC5C0431F4FC57100789DB4 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC5C0421F4FC57100789DB4 /* Buttons.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		0FC5C0021F4E67F200789DB4 /* Labels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; usesTabs = 1; };
 		0FC5C0041F4E6E2400789DB4 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		0FC5C0061F4E6E4200789DB4 /* Sounds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
+		0FC5C0421F4FC57100789DB4 /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 			children = (
 				0F9EE1B51E66544000A78B59 /* AppDelegate.swift */,
 				0F9EE1BB1E66544000A78B59 /* GameScene.swift */,
+				0FC5C0421F4FC57100789DB4 /* Buttons.swift */,
 				0FC5C0041F4E6E2400789DB4 /* Images.swift */,
 				0FC5C0061F4E6E4200789DB4 /* Sounds.swift */,
 				0FC5C0021F4E67F200789DB4 /* Labels.swift */,
@@ -231,6 +234,7 @@
 				0F0E094D1E7BE5FA005B85FB /* net.swift in Sources */,
 				0F869AB51EF55EC40039832A /* loadingScene.swift in Sources */,
 				0F9EE1BC1E66544000A78B59 /* GameScene.swift in Sources */,
+				0FC5C0431F4FC57100789DB4 /* Buttons.swift in Sources */,
 				0FC5C0071F4E6E4200789DB4 /* Sounds.swift in Sources */,
 				0FC5C0051F4E6E2400789DB4 /* Images.swift in Sources */,
 				0F9EE1BE1E66544000A78B59 /* GameViewController.swift in Sources */,

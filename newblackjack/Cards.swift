@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum gameState {
+	case end,waiting,start,ready,p1turn,p2turn,judge,br
+}
+enum gameMode {
+	case com,pvp,netp1,netp2,scom,spvp,snetp1,snetp2
+}
 
 class Cards{	//カードや得点の管理、勝敗判定などを行うクラス
 	
@@ -15,15 +21,15 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 	static var pcards:[(card:Int,point:Int)]=[]	//手札(各カードは1から52の通し番号)(空の配列であることに注意！)
 	static var ccards:[(card:Int,point:Int)]=[]
 	static var cards:[(card:Int,point:Int)]=[]   //(山札,得点)
-	static var state:String="end"	  //end,waiting（1人が待っている状態）,start(配り終えた情報を送信するまで),ready(配り終えた情報を相手が受信するまで),p1turn,p2turn,judge,endと推移
-	static var mode:String="com"	//com,pvp,netp1,netp2,scom(shadowjackモード),spvp,snetp1,snetp2
+	static var state:gameState = .end	  //end,waiting（1人が待っている状態）,start(配り終えた情報を送信するまで),ready(配り終えた情報を相手が受信するまで),p1turn,p2turn,judge,endと推移
+	static var mode:gameMode = .com	//com,pvp,netp1,netp2,scom(shadowjackモード),spvp,snetp1,snetp2
 	static var pBP=0
 	static var cBP=0
 	
 	
 	func setcard() -> (pcards:[(Int,Int)],ccards:[(Int,Int)],pp:String,cp:String){
 		
-		if Cards.mode=="com" || Cards.mode=="pvp" || Cards.mode=="netp1" || Cards.mode=="netp2"{
+		if Cards.mode == .com || Cards.mode == .pvp || Cards.mode == .netp1 || Cards.mode == .netp2{
 			for i in 1...52{
 				if (i-1)%13 > 8{	//10,J,Q,Kのとき
 					Cards.cards.append((i,10))

@@ -68,7 +68,7 @@ class waitingScene: SKScene {
 			queue.async { //3秒以上たっても処理が終わるまで次の処理を行わない
 				
 				if waitingScene.dobreak==true{
-					Cards.state="break"
+					Cards.state = .br
 					//クラス変数を初期化
 					Cards.pcards.removeAll()
 					Cards.cards.removeAll()
@@ -94,7 +94,7 @@ class waitingScene: SKScene {
 
 					if net.isLatest==true{
 						
-						if (Cards.state=="start" && tmp=="waiting") || (Cards.state=="ready" && tmp=="start") {//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
+						if (Cards.state == .start && tmp == .waiting) || (Cards.state == .ready && tmp == .start) {//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
 							self.breakButton.isHidden=true
 							self.cancelButton.isHidden=true
 							let gameScene:loadingScene = loadingScene(size: self.view!.bounds.size) // create your new scene
@@ -122,14 +122,14 @@ class waitingScene: SKScene {
 //						}
 						
 						if self.didfirst==false{//最初だけ行うべき内容？
-							if Cards.state=="end"||Cards.state=="break"{
-								Cards.state="waiting"
+							if Cards.state == .end||Cards.state == .br{
+								Cards.state = .waiting
 								self.nets.sendData()
 								self.Label.text = "Waiting..."
 								self.breakButton.isHidden=true
-							}else if Cards.state=="waiting"{	//誰かが待っていたら→p2
+							}else if Cards.state == .waiting{	//誰かが待っていたら→p2
 								self.cancelButton.isHidden=true
-								Cards.state="start"
+								Cards.state = .start
 								self.nets.sendData()
 								Thread.sleep(forTimeInterval: 3.0)
 								let gameScene:preparingScene = preparingScene(size: self.view!.bounds.size) // create your new scene
@@ -160,8 +160,8 @@ class waitingScene: SKScene {
 						
 						
 						
-						if (Cards.state=="end")||(Cards.state=="break"){//??
-							Cards.state="waiting"
+						if (Cards.state == .end)||(Cards.state == .br){//??
+							Cards.state = .waiting
 							self.nets.sendData()
 							self.Label.text = "Waiting..."
 							self.breakButton.isHidden=true
@@ -169,7 +169,7 @@ class waitingScene: SKScene {
 						}
 						if waitingScene.sendstart==true{
 							self.cancelButton.isHidden=true
-							Cards.state="start"
+							Cards.state = .start
 							waitingScene.sendstart=false
 							self.nets.sendData()
 							let gameScene:preparingScene = preparingScene(size: self.view!.bounds.size) // create your new scene

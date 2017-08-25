@@ -176,7 +176,7 @@ class LaunchScene: SKScene {
 		netButton.isHidden=true
 		cancelButton.isHidden=true
 		
-		Cards.mode="com"
+		Cards.mode = .com
 		let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 		gameScene.scaleMode = SKSceneScaleMode.fill
@@ -198,7 +198,7 @@ class LaunchScene: SKScene {
 		netButton.isHidden=true
 		cancelButton.isHidden=true
 		
-		Cards.mode="pvp"
+		Cards.mode = .pvp
 		let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 		gameScene.scaleMode = SKSceneScaleMode.fill
@@ -219,7 +219,7 @@ class LaunchScene: SKScene {
 		netButton.isHidden=true
 		cancelButton.isHidden=true
 		
-		Cards.mode="netp1"  //setcardでの認識に必要
+		Cards.mode = .netp1  //setcardでの認識に必要
 		let gameScene:waitingScene = waitingScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 		gameScene.scaleMode = SKSceneScaleMode.fill
@@ -237,7 +237,7 @@ class LaunchScene: SKScene {
 		scomButton.isHidden=true
 		cancelButton.isHidden=true
 		
-		Cards.mode="scom"
+		Cards.mode = .scom
 		let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 		gameScene.scaleMode = SKSceneScaleMode.fill

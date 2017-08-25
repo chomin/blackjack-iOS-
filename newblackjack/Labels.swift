@@ -10,7 +10,7 @@ import SpriteKit
 
 class Labels{
 	
-	func setLabels(frame_height:CGFloat,frame_width:CGFloat) -> (pBPLabel:SKLabelNode,cBPLabel:SKLabelNode,ppLabel:SKLabelNode,cpLabel:SKLabelNode,pbjLabel:SKLabelNode,cbjLabel:SKLabelNode,tPointLabel:[SKLabelNode],centerLabel:SKLabelNode,p1Label:SKLabelNode,comLabel:SKLabelNode,satanA:SKLabelNode,satanHP:SKLabelNode,olivieA:SKLabelNode,olivieHP:SKLabelNode,bahamutA:SKLabelNode,bahamutHP:SKLabelNode,zeusA:SKLabelNode,zeusHP:SKLabelNode,aliceA:SKLabelNode,aliceHP:SKLabelNode){
+	func setLabels(frame_height:CGFloat,frame_width:CGFloat) -> (pBPLabel:SKLabelNode,cBPLabel:SKLabelNode,ppLabel:SKLabelNode,cpLabel:SKLabelNode,pbjLabel:SKLabelNode,cbjLabel:SKLabelNode,tPointLabel:[SKLabelNode],centerLabel:SKLabelNode,p1Label:SKLabelNode,comLabel:SKLabelNode,specialLabels:[String:SKLabelNode]){
 		
 		let cheight = frame_height/3	//カードの縦の長さは画面サイズによって変わる。7+で138?
 		
@@ -18,7 +18,8 @@ class Labels{
 		var cBPLabel = SKLabelNode()
 		var tPointLabel:[SKLabelNode]=[]
 		
-		if Cards.mode=="scom"{
+		
+		if Cards.mode == .scom{
 			pBPLabel = {() -> SKLabelNode in  //設定先を誤るミスを防ぐため、クロージャーで設定
 				let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 				Label.fontSize = cheight*30/138
@@ -44,7 +45,7 @@ class Labels{
 			
 			Label.fontSize = cheight*30/138
 			Label.horizontalAlignmentMode = .left	//左寄せ
-			if Cards.mode=="netp2"{
+			if Cards.mode == .netp2 {
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*30/138)
 				Label.isHidden=true
 			}else{
@@ -60,7 +61,7 @@ class Labels{
 			
 			Label.fontSize = cheight*30/138
 			Label.horizontalAlignmentMode = .left
-			if Cards.mode=="netp2"{
+			if Cards.mode == .netp2{
 				Label.position = CGPoint(x:0, y:cheight+cheight*5/138)
 			}else{
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*30/138)
@@ -76,7 +77,7 @@ class Labels{
 			
 			Label.fontSize=cheight*30/138
 			Label.horizontalAlignmentMode = .left
-			if Cards.mode=="netp2"{
+			if Cards.mode == .netp2 {
 				Label.position = CGPoint(x:cheight*30/138*2, y:(frame_height)-cheight-cheight*30/138)
 			}else{
 				Label.position = CGPoint(x:cheight*30/138*2, y:cheight+cheight*5/138)
@@ -93,7 +94,7 @@ class Labels{
 			
 			Label.fontSize = cheight*30/138
 			Label.horizontalAlignmentMode = .left
-			if Cards.mode=="netp2"{
+			if Cards.mode == .netp2 {
 				Label.position = CGPoint(x:cheight*30/138*2, y:cheight+cheight*5/138)
 			}else{
 				Label.position = CGPoint(x:cheight*30/138*2, y:(frame_height)-cheight-cheight*30/138)
@@ -120,11 +121,11 @@ class Labels{
 		let centerLabel = {() -> SKLabelNode in
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			
-			if Cards.mode=="pvp"{
+			if Cards.mode == .pvp{
 				Label.text = "P1のターン"
-			}else if Cards.mode=="netp1"{
+			}else if Cards.mode == .netp1{
 				Label.text = "あなたのターン"
-			}else if Cards.mode=="netp2"{
+			}else if Cards.mode == .netp2 {
 				Label.text = "相手のターン"
 			}else{
 				Label.text = "playerのターン"
@@ -143,7 +144,7 @@ class Labels{
 			Label.text="P1"
 			Label.fontColor=SKColor.blue
 			
-			if Cards.mode=="com" || Cards.mode=="pvp" || Cards.mode=="netp1" || Cards.mode=="scom"{
+			if Cards.mode == .com || Cards.mode == .pvp || Cards.mode == .netp1 || Cards.mode == .scom{
 				Label.position = CGPoint(x:0, y:cheight+cheight*35/138)
 			}else{  //netp2
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*55/138)
@@ -157,11 +158,11 @@ class Labels{
 			
 			Label.fontSize = cheight*20/138
 			Label.horizontalAlignmentMode = .left	//左寄せ
-			if Cards.mode=="com" || Cards.mode=="scom"{
+			if Cards.mode == .com || Cards.mode == .scom{
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*50/138)
-				Label.text="com"
+				Label.text = "com"
 				Label.fontColor=SKColor.yellow
-			}else if Cards.mode=="pvp" || Cards.mode=="netp1"{
+			}else if Cards.mode == .pvp || Cards.mode == .netp1{
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*50/138)
 				Label.text="P2"
 				Label.fontColor=SKColor.red
@@ -175,19 +176,21 @@ class Labels{
 		}()
 		
 		//攻撃力と体力のラベルの設定
-		let satanA = setSpecialCardLabel(text: "6", cheight: cheight)
-		let olivieA = setSpecialCardLabel(text: "4", cheight: cheight)
-		let bahamutA = setSpecialCardLabel(text: "13", cheight: cheight)
-		let zeusA = setSpecialCardLabel(text: "5", cheight: cheight)
-		let aliceA = setSpecialCardLabel(text: "3", cheight: cheight)
-		let satanHP = setSpecialCardLabel(text: "6", cheight: cheight)
-		let olivieHP = setSpecialCardLabel(text: "4", cheight: cheight)
-		let bahamutHP = setSpecialCardLabel(text: "13", cheight: cheight)
-		let zeusHP = setSpecialCardLabel(text: "10", cheight: cheight)
-		let aliceHP = setSpecialCardLabel(text: "4", cheight: cheight)
+		var specialLabels:[String:SKLabelNode]=[:]
+		
+		specialLabels["satanA"] = setSpecialCardLabel(text: "6", cheight: cheight)
+		specialLabels["olivieA"] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels["bahamutA"] = setSpecialCardLabel(text: "13", cheight: cheight)
+		specialLabels["zeusA"] = setSpecialCardLabel(text: "5", cheight: cheight)
+		specialLabels["aliceA"] = setSpecialCardLabel(text: "3", cheight: cheight)
+		specialLabels["satanHP"] = setSpecialCardLabel(text: "6", cheight: cheight)
+		specialLabels["olivieHP"] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels["bahamutHP"] = setSpecialCardLabel(text: "13", cheight: cheight)
+		specialLabels["zeusHP"] = setSpecialCardLabel(text: "10", cheight: cheight)
+		specialLabels["aliceHP"] = setSpecialCardLabel(text: "4", cheight: cheight)
 
 		
-		return (pBPLabel,cBPLabel,ppLabel,cpLabel,pbjLabel,cbjLabel,tPointLabel,centerLabel,p1Label,comLabel,satanA,satanHP,olivieA,olivieHP,bahamutA,bahamutHP,zeusA,zeusHP,aliceA,aliceHP)
+		return (pBPLabel,cBPLabel,ppLabel,cpLabel,pbjLabel,cbjLabel,tPointLabel,centerLabel,p1Label,comLabel,specialLabels)
 	}
 	
 	func setSpecialCardLabel(text:String,cheight:CGFloat) -> SKLabelNode {

@@ -64,7 +64,7 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 
 
 		
-		Cards.state="ready"
+		Cards.state = .ready
 		net().sendData()	  //初期手札を送信
 		Thread.sleep(forTimeInterval: 3.0)
 		
@@ -82,7 +82,7 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 		if last + 1 <= currentTime  {
 			net().receiveData()
 			
-			if Cards.state=="break"{	  //breakを受信したら強制終了
+			if Cards.state == .br{	  //breakを受信したら強制終了
 				let gameScene = LaunchScene(size: self.view!.bounds.size)
 				let transition = SKTransition.fade(withDuration: 1.0)
 				gameScene.scaleMode = SKSceneScaleMode.fill
@@ -90,16 +90,16 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 			}
 
 			
-			if(Cards.state=="p1turn"){	//相手の受信を確認（こちら側が一方的にどんどん進めるのを防ぐため）
+			if(Cards.state == .p1turn){	//相手の受信を確認（こちら側が一方的にどんどん進めるのを防ぐため）
 				if net.dealer==1{
-					Cards.mode="netp1"
+					Cards.mode = .netp1
 					let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 					let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 					gameScene.scaleMode = SKSceneScaleMode.fill
 					self.view!.presentScene(gameScene, transition: transition) //GameSceneに移動
 					
 				}else if net.dealer==2{
-					Cards.mode="netp2"
+					Cards.mode = .netp2
 					let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 					let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 					gameScene.scaleMode = SKSceneScaleMode.fill
