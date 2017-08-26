@@ -25,55 +25,54 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 	static var mode:gameMode = .com	//com,pvp,netp1,netp2,scom(shadowjackモード),spvp,snetp1,snetp2
 	static var pBP=0
 	static var cBP=0
+	static var cardSum=0  //カードの合計枚数
 	
 	
 	func setcard() -> (pcards:[(Int,Int)],ccards:[(Int,Int)],pp:String,cp:String){
 		
 		if Cards.mode == .com || Cards.mode == .pvp || Cards.mode == .netp1 || Cards.mode == .netp2{
-			for i in 1...52{
+			Cards.cardSum=52
+		}else{
+			Cards.cardSum=63
+		}
+		
+		var removeCount=0
+		
+		for i in 1...Cards.cardSum{
+			
+			if i==53 || i==56{//サタンとゼウスは禁止カード
+				removeCount += 1
+				continue
+			}
+			
+			if i<53{
 				if (i-1)%13 > 8{	//10,J,Q,Kのとき
 					Cards.cards.append((i,10))
 				}else{
 					Cards.cards.append((i,i%13))
 				}
-			}
-			
-			for i in 0...51{
-				let j=Int(arc4random_uniform(51))%52  //上限をつけないとiPhone5では動かない。。。
-				let t=Cards.cards[i]
-				Cards.cards[i]=Cards.cards[j]
-				Cards.cards[j]=t
-			}
-
-		}else{
-			for i in 1...63{
-				if i<53{
-					if (i-1)%13 > 8{	//10,J,Q,Kのとき
-						Cards.cards.append((i,10))
-					}else{
-						Cards.cards.append((i,i%13))
-					}
-				}else{//特殊カード
-					if i==53 || i==55 || i==56 || i==60 || i==61{
-						Cards.cards.append((i,10))
-					}else if i==57 || i==62 || i==63{
-						Cards.cards.append((i,4))
-					}else if i==54 || i==58 || i==59{
-						Cards.cards.append((i,9))
-					}
+			}else{//特殊カード
+				if i==53 || i==55 || i==56 || i==60 || i==61{
+					Cards.cards.append((i,10))
+				}else if i==57 || i==62 || i==63{
+					Cards.cards.append((i,4))
+				}else if i==54 || i==58 || i==59{
+					Cards.cards.append((i,9))
 				}
 			}
-			
-			
-			//Fisher–Yatesシャッフルアルゴルズム
-			for i in 0...62{
-				let j=Int(arc4random_uniform(62))%63  //上限をつけないとiPhone5では動かない。。。
-				let t=Cards.cards[i]
-				Cards.cards[i]=Cards.cards[j]
-				Cards.cards[j]=t
-			}
-
 		}
+		
+		Cards.cardSum -= removeCount
+		
+		
+		//Fisher–Yatesシャッフルアルゴルズム
+		for i in 0...Cards.cardSum-1{
+			let j=Int(arc4random_uniform(UInt32(Cards.cardSum-1)))%Cards.cardSum  //上限をつけないとiPhone5では動かない。。。
+			let t=Cards.cards[i]
+			Cards.cards[i]=Cards.cards[j]
+			Cards.cards[j]=t
+		}
+
 		
 		
 		//カードを配る

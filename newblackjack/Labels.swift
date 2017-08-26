@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class Labels{
+extension GameScene{//labelに関する拡張
 	
 	func setLabels(frame_height:CGFloat,frame_width:CGFloat) -> (pBPLabel:SKLabelNode,cBPLabel:SKLabelNode,ppLabel:SKLabelNode,cpLabel:SKLabelNode,pbjLabel:SKLabelNode,cbjLabel:SKLabelNode,tPointLabel:[SKLabelNode],centerLabel:SKLabelNode,p1Label:SKLabelNode,comLabel:SKLabelNode,specialLabels:[String:SKLabelNode]){
 		

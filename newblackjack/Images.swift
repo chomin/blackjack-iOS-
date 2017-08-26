@@ -8,7 +8,7 @@
 
 import  SpriteKit
 
-class Images{
+extension GameScene{//画像に関する拡張
 	func setImages(frame_height: CGFloat, frame_width: CGFloat) -> (pBPim:SKSpriteNode,cBPim:SKSpriteNode,card:[SKSpriteNode]){
 		
 		let cheight = frame_height/3

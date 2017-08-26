@@ -10,7 +10,9 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
-class GameScene: Sounds {  //描写などの処理を主に行うクラス。音の再生終了の通知を受け取るためDelegateを実装。(SKSceneはSoundsで継承)
+class GameScene: Sounds{  //描写などの処理を主に行うクラス。音の再生終了の通知を受け取るためDelegateを実装。(SKSceneはSoundsで継承)
+	//Buttons.swift,Labels.swift,Images.swiftでこのクラスを拡張している。
+	
 	var last:CFTimeInterval!
 	let queue = DispatchQueue.main    //メインスレッド
 	let nets=net()	//netクラスのインスタンス化
@@ -37,11 +39,13 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 	var comLabel=SKLabelNode(fontNamed: "HiraginoSans-W6")
 
 
-	//ボタンを生成(他のクラスから設定できるようにクラス変数)
-	static let hitButton = UIButton()
-	static let standButton = UIButton()
-	static let resetButton = UIButton()
-	static let titleButton = UIButton()
+	//ボタンを生成
+	var hitButton=UIButton()
+	var standButton=UIButton()
+	var resetButton=UIButton()
+	var titleButton=UIButton()
+	
+
 	
 	
 	var hcounter=0
@@ -103,7 +107,7 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 		
 		//ラベルの設定
 		
-		(pBPLabel,cBPLabel,ppLabel,cpLabel,pbjLabel,cbjLabel,tPointLabel,centerLabel,p1Label,comLabel,specialLabels)=Labels().setLabels(frame_height: view.frame.height, frame_width: view.frame.width)
+		(pBPLabel,cBPLabel,ppLabel,cpLabel,pbjLabel,cbjLabel,tPointLabel,centerLabel,p1Label,comLabel,specialLabels)=setLabels(frame_height: view.frame.height, frame_width: view.frame.width)
 		
 		self.addChild(pBPLabel)
 		self.addChild(cBPLabel)
@@ -130,7 +134,7 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 		
 		
 		//画像の設定
-		(pBPim,cBPim,card)=Images().setImages(frame_height: view.frame.height, frame_width: view.frame.width)
+		(pBPim,cBPim,card)=setImages(frame_height: view.frame.height, frame_width: view.frame.width)
 		
 		self.addChild(pBPim)
 		self.addChild(cBPim)
@@ -323,25 +327,25 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 		}
 		
 		// ボタンを設定.
-		Buttons().setButtons(frame_height: view.frame.height, frame_width: view.frame.width)
+		setButtons(frame_height: view.frame.height, frame_width: view.frame.width)
 
-		GameScene.hitButton.addTarget(self, action: #selector(GameScene.onClickHitButton(_:)), for: .touchUpInside)
-		GameScene.hitButton.addTarget(self, action: #selector(GameScene.touchDownHitButton(_:)), for: .touchDown) //一旦standボタンを押せないようにする
-		GameScene.hitButton.addTarget(self, action: #selector(GameScene.enableButtons(_:)), for: .touchUpOutside)	//押せるように戻す
-		GameScene.standButton.addTarget(self, action: #selector(GameScene.onClickStandButton(_:)), for: .touchUpInside)
-		GameScene.standButton.addTarget(self, action: #selector(GameScene.touchDownStandButton(_:)), for: .touchDown)
-		GameScene.standButton.addTarget(self, action: #selector(GameScene.enableButtons(_:)), for: .touchUpOutside)
-		GameScene.resetButton.addTarget(self, action: #selector(GameScene.onClickResetButton(_:)), for: .touchUpInside)
-		GameScene.resetButton.addTarget(self, action: #selector(GameScene.touchDownResetButton(_:)), for: .touchDown)
-		GameScene.resetButton.addTarget(self, action: #selector(GameScene.enableButtons(_:)), for: .touchUpOutside)
-		GameScene.titleButton.addTarget(self, action: #selector(GameScene.onClickTitleButton(_:)), for: .touchUpInside)
-		GameScene.titleButton.addTarget(self, action: #selector(GameScene.touchDownTitleButton(_:)), for: .touchDown)
-		GameScene.titleButton.addTarget(self, action: #selector(GameScene.enableButtons(_:)), for: .touchUpOutside)
+		hitButton.addTarget(self, action: #selector(GameScene.onClickHitButton(_:)), for: .touchUpInside)
+		hitButton.addTarget(self, action: #selector(GameScene.touchDownHitButton(_:)), for: .touchDown) //一旦standボタンを押せないようにする
+		hitButton.addTarget(self, action: #selector(GameScene.enableButtons(_:)), for: .touchUpOutside)	//押せるように戻す
+		standButton.addTarget(self, action: #selector(GameScene.onClickStandButton(_:)), for: .touchUpInside)
+		standButton.addTarget(self, action: #selector(GameScene.touchDownStandButton(_:)), for: .touchDown)
+		standButton.addTarget(self, action: #selector(GameScene.enableButtons(_:)), for: .touchUpOutside)
+		resetButton.addTarget(self, action: #selector(GameScene.onClickResetButton(_:)), for: .touchUpInside)
+		resetButton.addTarget(self, action: #selector(GameScene.touchDownResetButton(_:)), for: .touchDown)
+		resetButton.addTarget(self, action: #selector(GameScene.enableButtons(_:)), for: .touchUpOutside)
+		titleButton.addTarget(self, action: #selector(GameScene.onClickTitleButton(_:)), for: .touchUpInside)
+		titleButton.addTarget(self, action: #selector(GameScene.touchDownTitleButton(_:)), for: .touchDown)
+		titleButton.addTarget(self, action: #selector(GameScene.enableButtons(_:)), for: .touchUpOutside)
 		
-		self.view!.addSubview(GameScene.hitButton)
-		self.view!.addSubview(GameScene.standButton)
-		self.view!.addSubview(GameScene.resetButton)
-		self.view!.addSubview(GameScene.titleButton)
+		self.view!.addSubview(hitButton)
+		self.view!.addSubview(standButton)
+		self.view!.addSubview(resetButton)
+		self.view!.addSubview(titleButton)
 		
 				
 		//BJの判定
@@ -529,10 +533,10 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 		//音の処理
 		if GameScene.audioFinish==true {
 			if resevation.count>0{
-				GameScene.resetButton.isEnabled=false
-				GameScene.titleButton.isEnabled=false
-				GameScene.hitButton.isEnabled=false
-				GameScene.standButton.isEnabled=false
+				resetButton.isEnabled=false
+				titleButton.isEnabled=false
+				hitButton.isEnabled=false
+				standButton.isEnabled=false
 				
 				//カードを隠す処理（バハのため、先に隠してから表示）
 				for i in resevation[0].hide{
@@ -599,10 +603,10 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 				resevation.removeFirst()
 				
 			}else{
-				GameScene.resetButton.isEnabled=true
-				GameScene.titleButton.isEnabled=true
-				GameScene.hitButton.isEnabled=true
-				GameScene.standButton.isEnabled=true
+				resetButton.isEnabled=true
+				titleButton.isEnabled=true
+				hitButton.isEnabled=true
+				standButton.isEnabled=true
 			}
 		}
 		
@@ -623,10 +627,10 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 					}
 					
 					if Cards.state == .br{	  //breakを受信したら強制終了
-						GameScene.hitButton.isHidden=true
-						GameScene.standButton.isHidden=true
-						GameScene.resetButton.isHidden=true
-						GameScene.titleButton.isHidden=true
+						self.hitButton.isHidden=true
+						self.standButton.isHidden=true
+						self.resetButton.isHidden=true
+						self.titleButton.isHidden=true
 						
 						let gameScene = LaunchScene(size: self.view!.bounds.size) // create your new scene
 						let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
@@ -634,10 +638,10 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 						self.view!.presentScene(gameScene, transition: transition) //LaunchSceneに移動
 					}
 					
-					GameScene.hitButton.isEnabled=true
-					GameScene.standButton.isEnabled=true
-					GameScene.resetButton.isEnabled=true
-					GameScene.titleButton.isEnabled=true
+					self.hitButton.isEnabled=true
+					self.standButton.isEnabled=true
+					self.resetButton.isEnabled=true
+					self.titleButton.isEnabled=true
 					
 					if Cards.mode == .netp1{
 						let ccardsc=Cards.ccards.count
@@ -768,8 +772,8 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 						}
 						if Cards.state == .p2turn && self.didchange==false{//こちらにターンが回ってきたとき
 							
-							GameScene.hitButton.isHidden=false
-							GameScene.standButton.isHidden=false
+							self.hitButton.isHidden=false
+							self.standButton.isHidden=false
 							
 							//2枚目を表に向ける
 							var ccards=Cards.ccards
@@ -789,8 +793,8 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 	}
 	
 	func onClickHitButton(_ sender : UIButton){
-		GameScene.hitButton.isEnabled=false
-		GameScene.standButton.isEnabled=false
+		hitButton.isEnabled=false
+		standButton.isEnabled=false
 		
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
@@ -1141,7 +1145,6 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 			if ccards.count>0{//バハで消えてないか確認
 				if ccards[1].card<53{
 					
-
 					if Cards.ccards[0].card==57 || Cards.ccards[0].card==62 || Cards.ccards[0].card==63{//アリスの確認
 						Cards.ccards[1].point+=1
 						tPointLabel[ccards[1].card-1].fontColor=SKColor.orange
@@ -1350,8 +1353,8 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 			Cards.state = .p2turn
 			nets.sendData()
 			
-			GameScene.hitButton.isHidden=true
-			GameScene.standButton.isHidden=true
+			hitButton.isHidden=true
+			standButton.isHidden=true
 			self.isPaused=false
 
 		}else {//netp2
@@ -1373,19 +1376,19 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 				plose()
 			}
 			
-			GameScene.hitButton.isHidden=true
-			GameScene.standButton.isHidden=true
+			hitButton.isHidden=true
+			standButton.isHidden=true
 		}
 		//hitボタンを押せるようにする
-		GameScene.hitButton.isEnabled=true
+		hitButton.isEnabled=true
 		self.isPaused=false
 		
 	}
 	
 	func pwin(){
 		
-		GameScene.hitButton.isHidden=true
-		GameScene.standButton.isHidden=true
+		hitButton.isHidden=true
+		standButton.isHidden=true
 		
 		if Cards.mode == .pvp{
 			centerLabel.text="P1 Win!"
@@ -1399,8 +1402,8 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 	
 	func plose(){
 		
-		GameScene.hitButton.isHidden=true
-		GameScene.standButton.isHidden=true
+		hitButton.isHidden=true
+		standButton.isHidden=true
 		
 		if Cards.mode == .pvp{
 			centerLabel.text="P2 Win!"
@@ -1414,8 +1417,8 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 	
 	func draw(){  //引き分け！「描く」とは関係ない！
 		
-		GameScene.hitButton.isHidden=true
-		GameScene.standButton.isHidden=true
+		hitButton.isHidden=true
+		standButton.isHidden=true
 		
 		
 		
@@ -1426,9 +1429,9 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 	
 	func endofthegame(){
 		// リセット、タイトルボタンを表示.
-		GameScene.resetButton.isHidden=false
+		resetButton.isHidden=false
 		
-		GameScene.titleButton.isHidden=false
+		titleButton.isHidden=false
 
 	}
 	
@@ -1440,8 +1443,8 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 			Cards.ccards.removeAll()
 		}
 		//ボタンを隠す
-		GameScene.resetButton.isHidden=true
-		GameScene.titleButton.isHidden=true
+		resetButton.isHidden=true
+		titleButton.isHidden=true
 		
 		if Cards.mode == .pvp || Cards.mode == .com || Cards.mode == .scom{
 			let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
@@ -1466,8 +1469,8 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 		}
 		
 		//ボタンを隠す
-		GameScene.resetButton.isHidden=true
-		GameScene.titleButton.isHidden=true
+		resetButton.isHidden=true
+		titleButton.isHidden=true
 		
 		let gameScene = LaunchScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
@@ -1477,35 +1480,31 @@ class GameScene: Sounds {  //描写などの処理を主に行うクラス。音
 	
 	//同時押し対策
 	func touchDownHitButton(_ sender: UIButton){  //(disableされたボタンは外にドラッグして戻したときに表示がhilightされなくなる)
-		GameScene.standButton.isEnabled=false
-		GameScene.hitButton.isEnabled=false
+		standButton.isEnabled=false
+		hitButton.isEnabled=false
 	}
 	func touchDownStandButton(_ sender: UIButton){
-		GameScene.hitButton.isEnabled=false
+		hitButton.isEnabled=false
 	}
 	func touchDownTitleButton(_ sender: UIButton){
-		GameScene.resetButton.isEnabled=false
+		resetButton.isEnabled=false
 	}
 	func touchDownResetButton(_ sender: UIButton){
-		GameScene.titleButton.isEnabled=false
+		titleButton.isEnabled=false
 	}
 	func enableButtons(_ sender:UIButton){
-		GameScene.resetButton.isEnabled=true
-		GameScene.titleButton.isEnabled=true
-		GameScene.hitButton.isEnabled=true
-		GameScene.standButton.isEnabled=true
+		resetButton.isEnabled=true
+		titleButton.isEnabled=true
+		hitButton.isEnabled=true
+		standButton.isEnabled=true
 	}
 	
 	//再生終了時の呼び出しメソッド
 	func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {//playしたクラスと同じクラスに入れる必要あり？
 		GameScene.audioFinish=true
-		print("呼び出し成功")
 	}
 	// デコード中にエラーが起きた時に呼ばれるメソッド
 	func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?){
 		print(error as Any)
 	}
 }
-
-
-

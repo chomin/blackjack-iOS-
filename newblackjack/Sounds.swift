@@ -8,10 +8,9 @@
 
 
 import SpriteKit
-import GameplayKit
 import AVFoundation
 
-class Sounds: SKScene, AVAudioPlayerDelegate{//通知を受け取るためAVAudioPlayerDelegateを、更にエラー回避のためNSObject
+class Sounds: SKScene, AVAudioPlayerDelegate{//通知を受け取るためAVAudioPlayerDelegateを、更にエラー回避のためSKScene(これは多重継承ではないらしい)
 	//効果音を生成
 	var playcard : AVAudioPlayer! = nil  // 再生するサウンドのインスタンス
 	var summon : AVAudioPlayer! = nil
@@ -49,46 +48,6 @@ class Sounds: SKScene, AVAudioPlayerDelegate{//通知を受け取るためAVAudi
 		// バッファに保持していつでも再生できるようにする
 		sound.prepareToPlay()
 		
-		
-		
 		return sound
 	}
-
-	//再生関数群
-//	func playPlaycard(){
-//		playcard.currentTime=0
-//		playcard.play()
-//	}
-//	func playSummon(){
-//		summon.currentTime=0
-//		summon.play()
-//	}
-//	func playSatanIn(){
-//		satanIn.currentTime=0
-//		satanIn.play()
-//	}
-//	func playOlivieIn(){
-//		olivieIn.currentTime=0
-//		olivieIn.play()
-//	}
-//	func playBahamutIn(){
-//		bahamutIn.currentTime=0
-//		bahamutIn.play()
-//	}
-//	func playZeusIn(){
-//		zeusIn.currentTime=0
-//		zeusIn.play()
-//	}
-//	func playAliceIn(){
-//		aliceIn.currentTime=0
-//		aliceIn.play()
-//	}
-//	func playBreakcard(){
-//		breakcard.currentTime=0
-//		breakcard.play()
-//	}
-
-	
-	
-	
 }

@@ -20,12 +20,6 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 	
 	
 	func receiveData(){		//受信する
-		//送信とのクラッシュ対策
-		GameScene.hitButton.isEnabled=false
-		GameScene.standButton.isEnabled=false
-		GameScene.resetButton.isEnabled=false
-		GameScene.titleButton.isEnabled=false
-	
 		
 		// 通信用のConfigを生成.
 		//		let config: URLSessionConfiguration =  URLSessionConfiguration.default
@@ -245,10 +239,6 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 			
 		} //if data!=nil
 		
-		GameScene.hitButton.isEnabled=true
-		GameScene.standButton.isEnabled=true
-		GameScene.resetButton.isEnabled=true
-		GameScene.titleButton.isEnabled=true
 		
 		//		})
 		
