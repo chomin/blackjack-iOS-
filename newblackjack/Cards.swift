@@ -93,21 +93,20 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 	
 	func getpoints() ->(pp:String,cp:String){
 		
-		let (ppoint,cpoint,pA,cA)=calculatepoints()
+		let (ppoint,cpoint,_,_)=calculatepoints()
 		//ppoint,cpointはそれぞれ(noA:Int,inA:Int)、pAとcAはAを持っているか(Bool)
 		
 		//得点をcp,ppにまとめた後、ラベルに表示（ラベルはオプショナルだから足し算できない）
 		var cp,pp:String
 		
 		cp=String(cpoint.noA)
-		if cA==true && cpoint.inA<22{
-			cp += "/\(cpoint.inA)"
+		if cpoint.noA>21{
+			cp+=" Bust!!"
 		}
 		
-		
 		pp=String(ppoint.noA)
-		if pA==true && ppoint.inA<22{
-			pp += "/\(ppoint.inA)"
+		if ppoint.noA>21{
+			pp+=" Bust!!"
 		}
 		
 		return (pp,cp)

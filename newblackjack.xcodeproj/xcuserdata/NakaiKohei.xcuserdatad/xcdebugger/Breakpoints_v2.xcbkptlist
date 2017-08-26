@@ -569,22 +569,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "newblackjack/Cards.swift"
-            timestampString = "525410626.412478"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "getpoints()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "newblackjack/LaunchScene.swift"
             timestampString = "522423586.555174"
             startingColumnNumber = "9223372036854775807"
@@ -634,11 +618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525440294.790771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1401"
-            endingLineNumber = "1401"
+            startingLineNumber = "1410"
+            endingLineNumber = "1410"
             landmarkName = "pwin()"
             landmarkType = "7">
          </BreakpointContent>
@@ -650,11 +634,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525440294.790771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "612"
-            endingLineNumber = "612"
+            startingLineNumber = "629"
+            endingLineNumber = "629"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -666,11 +650,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525440294.790771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1255"
-            endingLineNumber = "1255"
+            startingLineNumber = "1267"
+            endingLineNumber = "1267"
             landmarkName = "onClickStandButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -682,11 +666,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525440294.790771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1256"
-            endingLineNumber = "1256"
+            startingLineNumber = "1268"
+            endingLineNumber = "1268"
             landmarkName = "onClickStandButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -698,11 +682,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525427192.862436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "makeAliceResevation(x:y:card:tPointLabel:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -714,11 +698,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525427192.862436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
             landmarkName = "makeAliceResevation(x:y:card:tPointLabel:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -730,11 +714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525440636.180481"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "588"
-            endingLineNumber = "588"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -746,11 +730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525440636.180481"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "541"
-            endingLineNumber = "541"
+            startingLineNumber = "509"
+            endingLineNumber = "509"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -762,12 +746,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "525410626.412478"
+            timestampString = "525440636.180481"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
+            startingLineNumber = "500"
+            endingLineNumber = "500"
             landmarkName = "update(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "newblackjack/Labels.swift"
+            timestampString = "525432147.824131"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
+            landmarkName = "setLabels(frame_height:frame_width:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "newblackjack/Sounds.swift"
+            timestampString = "525426957.096615"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "setSound(fileName:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

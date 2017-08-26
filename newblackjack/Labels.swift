@@ -10,14 +10,9 @@ import SpriteKit
 
 extension GameScene{//labelに関する拡張
 	
-	func setLabels(frame_height:CGFloat,frame_width:CGFloat) -> (pBPLabel:SKLabelNode,cBPLabel:SKLabelNode,ppLabel:SKLabelNode,cpLabel:SKLabelNode,pbjLabel:SKLabelNode,cbjLabel:SKLabelNode,tPointLabel:[SKLabelNode],centerLabel:SKLabelNode,p1Label:SKLabelNode,comLabel:SKLabelNode,specialLabels:[String:SKLabelNode]){
+	func setLabels(frame_height:CGFloat,frame_width:CGFloat){
 		
 		let cheight = frame_height/3	//カードの縦の長さは画面サイズによって変わる。7+で138?
-		
-		var pBPLabel = SKLabelNode()
-		var cBPLabel = SKLabelNode()
-		var tPointLabel:[SKLabelNode]=[]
-		
 		
 		if Cards.mode == .scom{
 			pBPLabel = {() -> SKLabelNode in  //設定先を誤るミスを防ぐため、クロージャーで設定
@@ -26,6 +21,7 @@ extension GameScene{//labelに関する拡張
 				Label.horizontalAlignmentMode = .left
 				Label.position = CGPoint(x:frame_width/2, y:cheight+cheight*5/138)
 				Label.text = "×"+String(Cards.pBP)
+				self.addChild(Label)
 				return Label
 			}()
 			
@@ -35,12 +31,13 @@ extension GameScene{//labelに関する拡張
 				Label.horizontalAlignmentMode = .left
 				Label.position=CGPoint(x:frame_width/2, y:frame_height-(cheight+cheight*30/138))
 				Label.text="×"+String(Cards.cBP)
+				self.addChild(Label)
 				return Label
 			}()
 		}
 		
 		//両者の得点表示のラベル
-		let ppLabel = {() -> SKLabelNode in
+		ppLabel = {() -> SKLabelNode in
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			
 			Label.fontSize = cheight*30/138
@@ -52,11 +49,11 @@ extension GameScene{//labelに関する拡張
 				Label.position = CGPoint(x:0, y:cheight+cheight*5/138)
 			}
 
-			
+			self.addChild(Label)
 			return Label
 		}()
 
-		let cpLabel = {() -> SKLabelNode in
+		cpLabel = {() -> SKLabelNode in
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			
 			Label.fontSize = cheight*30/138
@@ -67,12 +64,12 @@ extension GameScene{//labelに関する拡張
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*30/138)
 				Label.isHidden=true
 			}
-			
+			self.addChild(Label)
 			return Label
 		}()
 
 		//両者のbj表示用のラベル
-		let pbjLabel = {() -> SKLabelNode in
+		pbjLabel = {() -> SKLabelNode in
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			
 			Label.fontSize=cheight*30/138
@@ -85,11 +82,11 @@ extension GameScene{//labelに関する拡張
 			Label.isHidden=true
 			Label.text="Blackjack!"
 			Label.fontColor=SKColor.magenta
-			
+			self.addChild(Label)
 			return Label
 		}()
 
-		let cbjLabel = {() -> SKLabelNode in
+		cbjLabel = {() -> SKLabelNode in
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			
 			Label.fontSize = cheight*30/138
@@ -102,7 +99,7 @@ extension GameScene{//labelに関する拡張
 			Label.isHidden=true
 			Label.text="Blackjack!"
 			Label.fontColor=SKColor.magenta
-			
+			self.addChild(Label)
 			return Label
 		}()
 
@@ -115,10 +112,11 @@ extension GameScene{//labelに関する拡張
 			i.position=CGPoint(x:-1000,y:0)
 			i.zPosition=2
 			i.fontColor=SKColor.white
+			self.addChild(i)
 		}
 		
 		//ターンを表示
-		let centerLabel = {() -> SKLabelNode in
+		centerLabel = {() -> SKLabelNode in
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			
 			if Cards.mode == .pvp{
@@ -132,12 +130,12 @@ extension GameScene{//labelに関する拡張
 			}
 			Label.fontSize = cheight*45/138
 			Label.position = CGPoint(x:frame_width/2, y:frame_height/2 - cheight*20/138)
-
+			self.addChild(Label)
 			return Label
 		}()
 		
 		//対戦者表示のラベル
-		let p1Label = {() -> SKLabelNode in
+		p1Label = {() -> SKLabelNode in
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			Label.fontSize = cheight*20/138
 			Label.horizontalAlignmentMode = .left
@@ -149,11 +147,11 @@ extension GameScene{//labelに関する拡張
 			}else{  //netp2
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*55/138)
 			}
-			
+			self.addChild(Label)
 			return Label
 		}()
 		
-		let comLabel = {() -> SKLabelNode in
+		comLabel = {() -> SKLabelNode in
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			
 			Label.fontSize = cheight*20/138
@@ -171,26 +169,35 @@ extension GameScene{//labelに関する拡張
 				Label.text="P2"
 				Label.fontColor=SKColor.red
 			}
-			
+			self.addChild(Label)
 			return Label
 		}()
 		
 		//攻撃力と体力のラベルの設定
-		var specialLabels:[String:SKLabelNode]=[:]
 		
-		specialLabels["satanA"] = setSpecialCardLabel(text: "6", cheight: cheight)
-		specialLabels["olivieA"] = setSpecialCardLabel(text: "4", cheight: cheight)
-		specialLabels["bahamutA"] = setSpecialCardLabel(text: "13", cheight: cheight)
-		specialLabels["zeusA"] = setSpecialCardLabel(text: "5", cheight: cheight)
-		specialLabels["aliceA"] = setSpecialCardLabel(text: "3", cheight: cheight)
-		specialLabels["satanHP"] = setSpecialCardLabel(text: "6", cheight: cheight)
-		specialLabels["olivieHP"] = setSpecialCardLabel(text: "4", cheight: cheight)
-		specialLabels["bahamutHP"] = setSpecialCardLabel(text: "13", cheight: cheight)
-		specialLabels["zeusHP"] = setSpecialCardLabel(text: "10", cheight: cheight)
-		specialLabels["aliceHP"] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.satanA] = setSpecialCardLabel(text: "6", cheight: cheight)
+		specialLabels[.olivieA] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.bahamutA] = setSpecialCardLabel(text: "13", cheight: cheight)
+		specialLabels[.zeusA] = setSpecialCardLabel(text: "5", cheight: cheight)
+		specialLabels[.aliceA] = setSpecialCardLabel(text: "3", cheight: cheight)
+		specialLabels[.satanHP] = setSpecialCardLabel(text: "6", cheight: cheight)
+		specialLabels[.olivieHP] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.bahamutHP] = setSpecialCardLabel(text: "13", cheight: cheight)
+		specialLabels[.zeusHP] = setSpecialCardLabel(text: "10", cheight: cheight)
+		specialLabels[.aliceHP] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.olivieA2] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.bahamutA2] = setSpecialCardLabel(text: "13", cheight: cheight)
+		specialLabels[.aliceA2] = setSpecialCardLabel(text: "3", cheight: cheight)
+		specialLabels[.olivieHP2] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.bahamutHP2] = setSpecialCardLabel(text: "13", cheight: cheight)
+		specialLabels[.aliceHP2] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.olivieA3] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.bahamutA3] = setSpecialCardLabel(text: "13", cheight: cheight)
+		specialLabels[.aliceA3] = setSpecialCardLabel(text: "3", cheight: cheight)
+		specialLabels[.olivieHP3] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.bahamutHP3] = setSpecialCardLabel(text: "13", cheight: cheight)
+		specialLabels[.aliceHP3] = setSpecialCardLabel(text: "4", cheight: cheight)
 
-		
-		return (pBPLabel,cBPLabel,ppLabel,cpLabel,pbjLabel,cbjLabel,tPointLabel,centerLabel,p1Label,comLabel,specialLabels)
 	}
 	
 	func setSpecialCardLabel(text:String,cheight:CGFloat) -> SKLabelNode {
@@ -199,8 +206,60 @@ extension GameScene{//labelに関する拡張
 		Label.text=text
 		Label.fontSize=cheight*11/138
 		Label.zPosition=2
-		
+		self.addChild(Label)
 		return Label
 	}
+	
+	func setTPointLabelsText(){
+		for i in Cards.cards{//初期値を設定
+			if i.card<53{//トランプ限定
+				tPointLabel[i.card-1].text=String(i.point)
+			}
+		}
+		for i in Cards.pcards{
+			if i.card<53{
+				tPointLabel[i.card-1].text=String(i.point)
+			}
+		}
+		for i in Cards.ccards{
+			if i.card<53{
+				tPointLabel[i.card-1].text=String(i.point)
+			}
+		}
+	}
+	
+	func updateSpecialLabelsPosition(cheight:CGFloat){
+		let cwidth = cheight*2/3
+		
+		if specialLabels.count>0{
+			
+			specialLabels[.satanA]!.position=CGPoint(x:card[53].position.x-cwidth/2+cheight*11/138,y:card[53].position.y-cheight/2+cheight*8/138)
+			specialLabels[.satanHP]!.position=CGPoint(x:card[53].position.x+cwidth/2-cheight*11/138,y:card[53].position.y-cheight/2+cheight*8/138)
+			specialLabels[.olivieA]!.position=CGPoint(x:card[54].position.x-cwidth/2+cheight*11/138,y:card[54].position.y-cheight/2+cheight*8/138)
+			specialLabels[.olivieHP]!.position=CGPoint(x:card[54].position.x+cwidth/2-cheight*11/138,y:card[54].position.y-cheight/2+cheight*8/138)
+			specialLabels[.bahamutA]!.position=CGPoint(x:card[55].position.x-cwidth/2+cheight*11/138,y:card[55].position.y-cheight/2+cheight*8/138)
+			specialLabels[.bahamutHP]!.position=CGPoint(x:card[55].position.x+cwidth/2-cheight*11/138,y:card[55].position.y-cheight/2+cheight*8/138)
+			specialLabels[.zeusA]!.position=CGPoint(x:card[56].position.x-cwidth/2+cheight*11/138,y:card[56].position.y-cheight/2+cheight*8/138)
+			specialLabels[.zeusHP]!.position=CGPoint(x:card[56].position.x+cwidth/2-cheight*11/138,y:card[56].position.y-cheight/2+cheight*8/138)
+			specialLabels[.aliceA]!.position=CGPoint(x:card[57].position.x-cwidth/2+cheight*11/138,y:card[57].position.y-cheight/2+cheight*8/138)
+			specialLabels[.aliceHP]!.position=CGPoint(x:card[57].position.x+cwidth/2-cheight*11/138,y:card[57].position.y-cheight/2+cheight*8/138)
+			specialLabels[.olivieA2]!.position=CGPoint(x:card[58].position.x-cwidth/2+cheight*11/138,y:card[58].position.y-cheight/2+cheight*8/138)
+			specialLabels[.olivieHP2]!.position=CGPoint(x:card[58].position.x+cwidth/2-cheight*11/138,y:card[58].position.y-cheight/2+cheight*8/138)
+			specialLabels[.bahamutA2]!.position=CGPoint(x:card[60].position.x-cwidth/2+cheight*11/138,y:card[60].position.y-cheight/2+cheight*8/138)
+			specialLabels[.bahamutHP2]!.position=CGPoint(x:card[60].position.x+cwidth/2-cheight*11/138,y:card[60].position.y-cheight/2+cheight*8/138)
+			specialLabels[.aliceA2]!.position=CGPoint(x:card[62].position.x-cwidth/2+cheight*11/138,y:card[62].position.y-cheight/2+cheight*8/138)
+			specialLabels[.aliceHP2]!.position=CGPoint(x:card[62].position.x+cwidth/2-cheight*11/138,y:card[62].position.y-cheight/2+cheight*8/138)
+			specialLabels[.olivieA3]!.position=CGPoint(x:card[59].position.x-cwidth/2+cheight*11/138,y:card[59].position.y-cheight/2+cheight*8/138)
+			specialLabels[.olivieHP3]!.position=CGPoint(x:card[59].position.x+cwidth/2-cheight*11/138,y:card[59].position.y-cheight/2+cheight*8/138)
+			specialLabels[.bahamutA3]!.position=CGPoint(x:card[61].position.x-cwidth/2+cheight*11/138,y:card[61].position.y-cheight/2+cheight*8/138)
+			specialLabels[.bahamutHP3]!.position=CGPoint(x:card[61].position.x+cwidth/2-cheight*11/138,y:card[61].position.y-cheight/2+cheight*8/138)
+			specialLabels[.aliceA3]!.position=CGPoint(x:card[63].position.x-cwidth/2+cheight*11/138,y:card[63].position.y-cheight/2+cheight*8/138)
+			specialLabels[.aliceHP3]!.position=CGPoint(x:card[63].position.x+cwidth/2-cheight*11/138,y:card[63].position.y-cheight/2+cheight*8/138)
+			
+			
+		}
+	}
+	
+	
 	
 }
