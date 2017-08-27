@@ -44,7 +44,6 @@ extension GameScene{//labelに関する拡張
 			Label.horizontalAlignmentMode = .left	//左寄せ
 			if Cards.mode == .netp2 {
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*30/138)
-				Label.isHidden=true
 			}else{
 				Label.position = CGPoint(x:0, y:cheight+cheight*5/138)
 			}
@@ -53,7 +52,7 @@ extension GameScene{//labelに関する拡張
 			return Label
 		}()
 
-		cpLabel = {() -> SKLabelNode in
+		cpLabel = {() -> SKLabelNode in//ディーラーの得点
 			let Label = SKLabelNode(fontNamed: "HiraginoSans-W6")
 			
 			Label.fontSize = cheight*30/138
@@ -62,8 +61,9 @@ extension GameScene{//labelに関する拡張
 				Label.position = CGPoint(x:0, y:cheight+cheight*5/138)
 			}else{
 				Label.position = CGPoint(x:0, y:(frame_height)-cheight-cheight*30/138)
-				Label.isHidden=true
 			}
+			
+			Label.isHidden=true
 			self.addChild(Label)
 			return Label
 		}()

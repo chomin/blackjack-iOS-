@@ -475,7 +475,6 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	
 	override func update(_ currentTime: CFTimeInterval) {
 		
-		
 		let cheight = (view?.frame.height)!/3	//カードの縦の長さは画面サイズによって変わる
 		let cwidth = cheight*2/3
 		
@@ -487,11 +486,29 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		for i in Cards.pcards{
 			if i.card<53{ //Cards.cards.cardは1~57の値を取り、tPointLabelは[0]~[51]まである。
 				tPointLabel[i.card-1].text=String(i.point)
+				
+				//得点が増えてるものをオレンジ色にする
+				if (i.card-1)%13 > 8 && i.point>10{//10,J,Q,K
+					tPointLabel[i.card-1].fontColor=SKColor.orange
+				}else if (i.card-1)%13 <= 8 && i.point>i.card%13{
+					tPointLabel[i.card-1].fontColor=SKColor.orange
+				}else{
+					tPointLabel[i.card-1].fontColor=SKColor.white
+				}
 			}
 		}
 		for i in Cards.ccards{
 			if i.card<53{ //Cards.cards.cardは1~57の値を取り、tPointLabelは[0]~[51]まである。
 				tPointLabel[i.card-1].text=String(i.point)
+				
+				//得点が増えてるものをオレンジ色にする
+				if (i.card-1)%13 > 8 && i.point>10{//10,J,Q,K
+					tPointLabel[i.card-1].fontColor=SKColor.orange
+				}else if (i.card-1)%13 <= 8 && i.point>i.card%13{
+					tPointLabel[i.card-1].fontColor=SKColor.orange
+				}else{
+					tPointLabel[i.card-1].fontColor=SKColor.white
+				}
 			}
 		}
 		
@@ -554,7 +571,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				cpLabel.text=resevation[0].pointLabel.cp
 				
 				//tPointLabelの更新[(どれ,String,UIColor)]（アリスを３枚め以降引いたときのみ）
-				for i in resevation[0].tPointLabel{
+				for i in resevation[0].tPointLabel{//（今は重複するので不要だが,Aのタイミングも合わせるときに使う？）
 					
 					tPointLabel[i.index].text=i.value
 					tPointLabel[i.index].fontColor=i.color	//(注)fontColor!=color
@@ -727,16 +744,13 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 						let pcardsc=Cards.pcards.count    //毎回更新
 						if (pcardsc > self.fpcardsc) && (Cards.state == .p1turn||Cards.state == .p2turn){//更新されたら(startはまだ配った手札が来てない状態、end,breakは手札がからの状態、judgeでもエラー発生)
 							
-							self.playcard.currentTime=0
-							self.playcard.play()
-							
 							let pcards:[(Int,Int)]=Cards.pcards
 							
-							//1p（敵）の各手札を表示
+							//敵が引いたカードを表示
+							self.makePaintResevation(sound: 1, x: cwidth/2+cwidth*CGFloat(pcardsc-1), y: self.frame.size.height-cheight/2, card: pcards[pcardsc-1].0)
 							
-							self.card[pcards[pcardsc-1].0].position=CGPoint(x:cwidth/2+cwidth*CGFloat(pcardsc-1),y:self.frame.size.height-cheight/2)
 							
-							//敵の得点表示
+							//敵の得点表示????????
 							self.ppLabel.isHidden=false
 							
 							self.fpcardsc=pcardsc
