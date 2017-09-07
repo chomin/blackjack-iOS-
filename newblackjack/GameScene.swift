@@ -13,7 +13,7 @@ import AVFoundation
 class GameScene: Sounds{  //描写などの処理を主に行うクラス。音の再生終了の通知を受け取るためDelegateを実装。(SKSceneはSoundsで継承)
 	//Buttons.swift,Labels.swift,Images.swiftでこのクラスを拡張している。
 	
-	var last:CFTimeInterval!
+	var last:CFTimeInterval!  //!をつけることで、初期化不要？
 	let queue = DispatchQueue.main    //メインスレッド
 	let nets=net()	//netクラスのインスタンス化
 	var didchange=false   //攻守交代(netp2用)
@@ -94,8 +94,8 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	
 	override func didMove(to view: SKView) {//このシーンに移ったときに最初に実行される
 		
-		Cards.pBP=0
-		Cards.cBP=1
+		Cards.pBP=1
+		Cards.cBP=2
 		
 		//音の設定
 		setAllSounds()
