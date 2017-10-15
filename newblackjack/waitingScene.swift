@@ -30,7 +30,7 @@ class waitingScene: SKScene {
 		let uuid1=UIDevice.current.identifierForVendor!.uuidString //識別子
 		let start=uuid1.startIndex
 		let end=uuid1.characters.index(start, offsetBy: 4)
-		net.uuid=uuid1[start...end]
+		net.uuid=String(uuid1[start...end])
 		
 		backgroundColor=SKColor.init(red: 0.8, green: 0.3, blue: 0.3, alpha: 0.3)
 		Label.text = "Waiting..."
@@ -192,20 +192,20 @@ class waitingScene: SKScene {
 		
 	}
 	
-	func onClickBreakButton(_ sender : UIButton){
+	@objc func onClickBreakButton(_ sender : UIButton){
 		waitingScene.dobreak=true
 	}
 	
 	//同時押し対策
 	
-	func touchDownBreakButton(_ sender: UIButton){	  //他のボタンをdisableする
+	@objc func touchDownBreakButton(_ sender: UIButton){	  //他のボタンをdisableする
 		cancelButton.isEnabled=false
 	}
-	func touchDownCancelButton(_ sender: UIButton){	  //他のボタンをdisableする
+	@objc func touchDownCancelButton(_ sender: UIButton){	  //他のボタンをdisableする
 		breakButton.isEnabled=false
 	}
 	
-	func enableButtons(_ sender:UIButton){
+	@objc func enableButtons(_ sender:UIButton){
 		breakButton.isEnabled=true
 		cancelButton.isEnabled=true
 	}

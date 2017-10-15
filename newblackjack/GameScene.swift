@@ -110,7 +110,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		breakcard.delegate=self
 		
 		//描写物の設定
-		let cheight = view.frame.height/3	//カードの縦の長さは画面サイズによって変わる。7+で138?
+		let cheight = view.frame.height/3	//カードの縦の長さは画面サイズによって変わる。7+で138? 
 		let cwidth = cheight*2/3
 		
 		
@@ -572,9 +572,10 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				
 				//tPointLabelの更新[(どれ,String,UIColor)]（アリスを３枚め以降引いたときのみ）
 				for i in resevation[0].tPointLabel{//（今は重複するので不要だが,Aのタイミングも合わせるときに使う？）
-					
-					tPointLabel[i.index].text=i.value
-					tPointLabel[i.index].fontColor=i.color	//(注)fontColor!=color
+					if i.index < 52{//トランプ
+						tPointLabel[i.index].text = i.value
+						tPointLabel[i.index].fontColor = i.color	//(注)fontColor!=color
+					}
 				}
 				
 				//pBP,cBPLabelの更新(String,String)
@@ -822,7 +823,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		}
 	}
 	
-	func onClickHitButton(_ sender : UIButton){
+	@objc func onClickHitButton(_ sender : UIButton){
 		hitButton.isEnabled=false
 		standButton.isEnabled=false
 		
@@ -1156,7 +1157,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		
 	}
 	
-	func onClickStandButton(_ sender : UIButton){
+	@objc func onClickStandButton(_ sender : UIButton){
 		self.isPaused=true  //updateによる受信防止
 		
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
@@ -1455,7 +1456,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 
 	}
 	
-	func onClickResetButton(_ sender : UIButton){
+	@objc func onClickResetButton(_ sender : UIButton){
 		if Cards.mode == .pvp || Cards.mode == .com || Cards.mode == .scom{
 			//クラス変数を初期化
 			Cards.pcards.removeAll()
@@ -1480,7 +1481,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		}
 	}
 	
-	func onClickTitleButton(_ sender : UIButton){
+	@objc func onClickTitleButton(_ sender : UIButton){
 		if Cards.mode == .pvp || Cards.mode == .com || Cards.mode == .scom{
 			//クラス変数を初期化
 			Cards.pcards.removeAll()
@@ -1499,20 +1500,20 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	}
 	
 	//同時押し対策
-	func touchDownHitButton(_ sender: UIButton){  //(disableされたボタンは外にドラッグして戻したときに表示がhilightされなくなる)
+	@objc func touchDownHitButton(_ sender: UIButton){  //(disableされたボタンは外にドラッグして戻したときに表示がhilightされなくなる)
 		standButton.isEnabled=false
 		hitButton.isEnabled=false
 	}
-	func touchDownStandButton(_ sender: UIButton){
+	@objc func touchDownStandButton(_ sender: UIButton){
 		hitButton.isEnabled=false
 	}
-	func touchDownTitleButton(_ sender: UIButton){
+	@objc func touchDownTitleButton(_ sender: UIButton){
 		resetButton.isEnabled=false
 	}
-	func touchDownResetButton(_ sender: UIButton){
+	@objc func touchDownResetButton(_ sender: UIButton){
 		titleButton.isEnabled=false
 	}
-	func enableButtons(_ sender:UIButton){
+	@objc func enableButtons(_ sender:UIButton){
 		resetButton.isEnabled=true
 		titleButton.isEnabled=true
 		hitButton.isEnabled=true

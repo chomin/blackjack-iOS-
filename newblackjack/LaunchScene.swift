@@ -144,7 +144,7 @@ class LaunchScene: SKScene {
 	
 	
 	
-	func onClickbjButton(_ sender : UIButton){
+	@objc func onClickbjButton(_ sender : UIButton){
 		bjButton.isHidden=true
 		sjButton.isHidden=true
 		cancelButton.isHidden=false
@@ -155,7 +155,7 @@ class LaunchScene: SKScene {
 		sjButton.isEnabled=true	//cancel用に戻しておく
 	}
 	
-	func onClicksjButton(_ sender : UIButton){
+	@objc func onClicksjButton(_ sender : UIButton){
 		bjButton.isHidden=true
 		sjButton.isHidden=true
 		cancelButton.isHidden=false
@@ -164,7 +164,7 @@ class LaunchScene: SKScene {
 		bjButton.isEnabled=true
 	}
 	
-	func onClickCOMButton(_ sender : UIButton){
+	@objc func onClickCOMButton(_ sender : UIButton){
 		//クラス変数を初期化（不要？）
 		Cards.pcards.removeAll()
 		Cards.cards.removeAll()
@@ -185,7 +185,7 @@ class LaunchScene: SKScene {
 		
 	}
 	
-	func onClickPVPButton(_ sender : UIButton){
+	@objc func onClickPVPButton(_ sender : UIButton){
 		
 		//クラス変数を初期化（不要？）
 		Cards.pcards.removeAll()
@@ -206,7 +206,7 @@ class LaunchScene: SKScene {
 		
 	}
 	
-	func onClickNetButton(_ sender : UIButton){
+	@objc func onClickNetButton(_ sender : UIButton){
 		
 		//クラス変数を初期化（不要？）
 		Cards.pcards.removeAll()
@@ -227,7 +227,7 @@ class LaunchScene: SKScene {
 		
 	}
 	
-	func onClicksCOMButton(_ sender : UIButton){
+	@objc func onClicksCOMButton(_ sender : UIButton){
 		//クラス変数を初期化（不要？）
 		Cards.pcards.removeAll()
 		Cards.cards.removeAll()
@@ -246,7 +246,7 @@ class LaunchScene: SKScene {
 		
 	}
 	
-	func onClickCancelButton(_ sender : UIButton){
+	@objc func onClickCancelButton(_ sender : UIButton){
 		bjButton.isHidden=false
 		sjButton.isHidden=false
 		pvpButton.isHidden=true
@@ -263,42 +263,42 @@ class LaunchScene: SKScene {
 	
 	
 	//同時押し対策
-	func touchDownbjButton(_ sender: UIButton){
+	@objc func touchDownbjButton(_ sender: UIButton){
 		sjButton.isEnabled=false
 	}
-	func touchDownsjButton(_ sender: UIButton){
+	@objc func touchDownsjButton(_ sender: UIButton){
 		bjButton.isEnabled=false
 	}
-	func touchDownCOMButton(_ sender: UIButton){
+	@objc func touchDownCOMButton(_ sender: UIButton){
 		pvpButton.isEnabled=false
 		netButton.isEnabled=false
 	}
-	func touchDownPVPButton(_ sender: UIButton){
+	@objc func touchDownPVPButton(_ sender: UIButton){
 		comButton.isEnabled=false
 		netButton.isEnabled=false
 	}
-	func touchDownNetButton(_ sender: UIButton){
+	@objc func touchDownNetButton(_ sender: UIButton){
 		comButton.isEnabled=false
 		pvpButton.isEnabled=false
 	}
-	func touchDownsCOMButton(_ sender: UIButton){
+	@objc func touchDownsCOMButton(_ sender: UIButton){
 		
 	}
-	func touchDownCancelButton(_ sender: UIButton){
+	@objc func touchDownCancelButton(_ sender: UIButton){
 		comButton.isEnabled=false
 		pvpButton.isEnabled=false
 		netButton.isEnabled=false
 		scomButton.isEnabled=false
 	}
 	
-	func enableButtons(_ sender:UIButton){
+	@objc func enableButtons(_ sender:UIButton){
 		pvpButton.isEnabled=true
 		comButton.isEnabled=true
 		netButton.isEnabled=true
 		scomButton.isEnabled=true
 		cancelButton.isEnabled=true
 	}
-	func enableButtons2(_ sender:UIButton){
+	@objc func enableButtons2(_ sender:UIButton){
 		sjButton.isEnabled=true
 		bjButton.isEnabled=true
 	}
