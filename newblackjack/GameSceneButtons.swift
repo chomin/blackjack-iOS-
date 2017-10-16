@@ -139,8 +139,9 @@ extension GameScene{//ボタンに関する拡張
 			if pcards[2+hcounter].0<53{//引いたのがトランプのとき
 				for i in Cards.pcards{//アリスの確認
 					if i.card==57 || i.card==62 || i.card==63{
-						Cards.pcards[2+hcounter].point+=1
-						tPointLabel[Cards.pcards[2+hcounter].card-1].fontColor=SKColor.orange
+						Cards.pcards[2+hcounter].point += 1
+						tPointLabel[Cards.pcards[2+hcounter].card-1].fontColor = SKColor.orange
+						tPointLabel[Cards.pcards[2+hcounter].card-1].text = String(Cards.pcards[2+hcounter].point)
 					}
 				}
 				
@@ -433,9 +434,9 @@ extension GameScene{//ボタンに関する拡張
 				if ccards[1].card<53{
 					
 					if Cards.ccards[0].card==57 || Cards.ccards[0].card==62 || Cards.ccards[0].card==63{//アリスの確認
-						Cards.ccards[1].point+=1
-						tPointLabel[ccards[1].card-1].fontColor=SKColor.orange
-						tPointLabel[ccards[1].card-1].text=String(Cards.ccards[1].point)
+						Cards.ccards[1].point += 1
+						tPointLabel[ccards[1].card-1].fontColor = SKColor.orange
+						tPointLabel[ccards[1].card-1].text = String(Cards.ccards[1].point)
 					}
 					makeHideAndPaintResevation(sound: .card, x: cwidth/2+cwidth, y: frame.size.height-cheight/2, card: ccards[1].card, hide: [0])
 					
@@ -446,8 +447,9 @@ extension GameScene{//ボタンに関する拡張
 					
 					if ccards[1].card==57 || ccards[1].card==62 || ccards[1].card==63{//アリス(得点更新の関係でこの位置)
 						if ccards[0].card<53{//トランプの得点を増やす
-							Cards.ccards[0].point+=1
-							tPointLabel[ccards[0].card-1].fontColor=SKColor.orange
+							Cards.ccards[0].point += 1
+							tPointLabel[ccards[0].card-1].fontColor = SKColor.orange
+							tPointLabel[ccards[0].card-1].text = String(Cards.ccards[0].point)
 						}else{
 							//特殊カードの攻撃、体力を増やす
 						}
@@ -490,15 +492,15 @@ extension GameScene{//ボタンに関する拡張
 			var j = Cards().judge(1)
 			while j != 3{//バストしてない間
 				//引く前に次に引くべきかを判定
-				var (ppoint,cpoint,_,_)=Cards().calculatepoints()
+				let (ppoint,cpoint,_,_) = Cards().calculatepoints()
 				if cpoint.noA>16 && cpoint.noA>ppoint.noA{//17以上でcomが勝ってるとき
 					break
 				}else if cpoint.noA>16 && Cards.cBP==0{//17以上でBPがもうないとき
 					break
 				}
 				
-				let pcards=Cards.pcards
-				var (ccards,_)=Cards().stand()
+				let pcards = Cards.pcards
+				var (ccards,_) = Cards().stand()
 				
 				//Aの得点の確認
 				checkA()
@@ -519,17 +521,18 @@ extension GameScene{//ボタンに関する拡張
 //				}
 //
 				//手札追加&得点更新
-				if ccards[2+scounter].0<53{
+				if ccards[2+scounter].0 < 53{
 					for i in Cards.ccards{//アリスの確認
 						if i.card==57 || i.card==62 || i.card==63{
-							Cards.ccards[2+scounter].point+=1
-							tPointLabel[Cards.ccards[2+scounter].card-1].fontColor=SKColor.orange
+							Cards.ccards[2+scounter].point += 1
+							tPointLabel[Cards.ccards[2+scounter].card-1].fontColor = .orange
+							tPointLabel[Cards.ccards[2+scounter].card-1].text = String(Cards.ccards[2+scounter].point)
 							
 						}
 					}
 					
 					makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(2+scounter), y: frame.size.height-cheight/2, card: ccards[2+scounter].0)
-					//アリスがある場合のtpointlabelの更新は？→即時
+					
 					
 				}else if ccards[2+scounter].0==54 || ccards[2+scounter].0==58 || ccards[2+scounter].0==59{//オリヴィエ
 					Cards.cBP=3

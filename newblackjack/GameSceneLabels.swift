@@ -261,6 +261,12 @@ extension GameScene{//labelに関する拡張
 			specialLabels[.bahamutHP3]!.position=CGPoint(x:card[61].position.x+cwidth/2-cheight*11/138,y:card[61].position.y-cheight/2+cheight*8/138)
 			specialLabels[.aliceA3]!.position=CGPoint(x:card[63].position.x-cwidth/2+cheight*11/138,y:card[63].position.y-cheight/2+cheight*8/138)
 			specialLabels[.aliceHP3]!.position=CGPoint(x:card[63].position.x+cwidth/2-cheight*11/138,y:card[63].position.y-cheight/2+cheight*8/138)
+			specialLabels[.luciferA]!.position=CGPoint(x:card[64].position.x-cwidth/2+cheight*11/138,y:card[64].position.y-cheight/2+cheight*8/138)
+			specialLabels[.luciferHP]!.position=CGPoint(x:card[64].position.x+cwidth/2-cheight*11/138,y:card[64].position.y-cheight/2+cheight*8/138)
+			specialLabels[.luciferA2]!.position=CGPoint(x:card[65].position.x-cwidth/2+cheight*11/138,y:card[65].position.y-cheight/2+cheight*8/138)
+			specialLabels[.luciferHP2]!.position=CGPoint(x:card[65].position.x+cwidth/2-cheight*11/138,y:card[65].position.y-cheight/2+cheight*8/138)
+			specialLabels[.luciferA3]!.position=CGPoint(x:card[66].position.x-cwidth/2+cheight*11/138,y:card[66].position.y-cheight/2+cheight*8/138)
+			specialLabels[.luciferHP3]!.position=CGPoint(x:card[66].position.x+cwidth/2-cheight*11/138,y:card[66].position.y-cheight/2+cheight*8/138)
 			
 			
 		}

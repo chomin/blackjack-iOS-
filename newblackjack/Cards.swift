@@ -27,7 +27,7 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 	static var cBP=0
 	static var cardSum=0  //カードの合計枚数
 	
-	
+	@discardableResult	//結果を使わなくてもいいよ
 	func setcard() -> (pcards:[(Int,Int)],ccards:[(Int,Int)],pp:String,cp:String){
 		
 		if Cards.mode == .com || Cards.mode == .pvp || Cards.mode == .netp1 || Cards.mode == .netp2{

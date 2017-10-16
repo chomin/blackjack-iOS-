@@ -278,9 +278,9 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 			state="p2turn"
 		case .judge:
 			state="judge"
-		default://追加し忘れ防止
-			print("state change error")
-			exit(1)
+//		default://追加し忘れ防止
+//			print("state change error")
+//			exit(1)
 		}
 		
 		// APIへ飛ばすデータをJSONに変換する(sendDataはData?型)

@@ -90,6 +90,8 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	
 	override func didMove(to view: SKView) {//このシーンに移ったときに最初に実行される
 		
+		resevation.append((sound: .none, x: nil, y: nil, card: nil, hide: [], pointLabel: (pp: nil, cp: nil), tPointLabel: [], BPLabel: (pBP: nil, cBP: nil)))
+		
 		Cards.pBP=1
 		Cards.cBP=2
 		
@@ -182,6 +184,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 					if Cards.pcards[0].card==57 || Cards.pcards[0].card==62 || Cards.pcards[0].card==63{
 						Cards.pcards[1].point += 1
 						tPointLabel[value.0-1].fontColor = .orange
+						tPointLabel[value.0-1].text = String(Cards.pcards[1].point)
 					}
 					
 					makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(index), y: cheight/2, card: value.0)
@@ -245,6 +248,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 							if i.card == 57 || i.card == 62 || i.card == 63{
 								Cards.pcards[index].point += 1
 								tPointLabel[value.0-1].fontColor = .orange
+								tPointLabel[value.0-1].text = String(Cards.pcards[index].point)
 							}
 						}
 					}else if value.0==54 || value.0==58 || value.0==59{//オリヴィエ
@@ -860,9 +864,9 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				}
 				if value.card%13==1 && value.point>9{
 					if ppoint.noA>21{
-						Cards.pcards[index].point-=10
-						tPointLabel[value.card-1].text=String(Cards.pcards[index].point)
-						tPointLabel[value.card-1].fontColor = .orange
+						Cards.pcards[index].point -= 10
+						tPointLabel[value.card-1].text = String(Cards.pcards[index].point)
+						tPointLabel[value.card-1].fontColor = .white
 						break //後に直すべきAはないはず
 					}
 				}
@@ -877,9 +881,9 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 					break	  //二枚目以降は更新しない
 				}
 				if value.card%13==1 && value.point>9 && cpoint.noA>21{
-					Cards.ccards[index].point-=10
-					tPointLabel[value.card-1].text=String(Cards.pcards[index].point)
-					tPointLabel[value.card-1].fontColor = .orange
+					Cards.ccards[index].point -= 10
+					tPointLabel[value.card-1].text = String(Cards.pcards[index].point)
+					tPointLabel[value.card-1].fontColor = .white
 					break //後に直すべきAはないはず
 				}
 			}
