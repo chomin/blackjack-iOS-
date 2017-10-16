@@ -197,6 +197,12 @@ extension GameScene{//labelに関する拡張
 		specialLabels[.olivieHP3] = setSpecialCardLabel(text: "4", cheight: cheight)
 		specialLabels[.bahamutHP3] = setSpecialCardLabel(text: "13", cheight: cheight)
 		specialLabels[.aliceHP3] = setSpecialCardLabel(text: "4", cheight: cheight)
+		specialLabels[.luciferA] = setSpecialCardLabel(text: "6", cheight: cheight)
+		specialLabels[.luciferA2] = setSpecialCardLabel(text: "6", cheight: cheight)
+		specialLabels[.luciferA3] = setSpecialCardLabel(text: "6", cheight: cheight)
+		specialLabels[.luciferHP] = setSpecialCardLabel(text: "7", cheight: cheight)
+		specialLabels[.luciferHP2] = setSpecialCardLabel(text: "7", cheight: cheight)
+		specialLabels[.luciferHP3] = setSpecialCardLabel(text: "7", cheight: cheight)
 
 	}
 	

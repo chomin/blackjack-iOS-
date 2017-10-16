@@ -33,7 +33,7 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		if Cards.mode == .com || Cards.mode == .pvp || Cards.mode == .netp1 || Cards.mode == .netp2{
 			Cards.cardSum=52
 		}else{
-			Cards.cardSum=63
+			Cards.cardSum=66
 		}
 		
 		var removeCount=0
@@ -58,6 +58,8 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 					Cards.cards.append((i,4))
 				}else if i==54 || i==58 || i==59{
 					Cards.cards.append((i,9))
+				}else if i==64 || i==65 || i==66 {
+					Cards.cards.append((i,8))
 				}
 			}
 		}
@@ -85,13 +87,13 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		Cards.ccards.append(Cards.cards[0])
 		Cards.cards.removeFirst()
 		
-		let (pp,cp)=getpoints()
+		let (pp,cp) = getpoints()
 		
 		
-		return (Cards.pcards,Cards.ccards,pp,cp)
+		return (Cards.pcards,Cards.ccards,pp!,cp!)
 	}
 	
-	func getpoints() ->(pp:String,cp:String){
+	func getpoints() ->(pp:String?,cp:String?){
 		
 		let (ppoint,cpoint,_,_)=calculatepoints()
 		//ppoint,cpointはそれぞれ(noA:Int,inA:Int)、pAとcAはAを持っているか(Bool)
@@ -118,14 +120,14 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		Cards.pcards.append(Cards.cards[0])
 		Cards.cards.removeFirst()
 		let (pp,_)=getpoints()
-		return (Cards.pcards,pp)
+		return (Cards.pcards,pp!)
 	}
 	
 	func stand() -> (ccards:[(Int,Int)],cp:String){
 		Cards.ccards.append(Cards.cards[0])
 		Cards.cards.removeFirst()
 		let (_,cp)=getpoints()
-		return (Cards.ccards,cp)
+		return (Cards.ccards,cp!)
 		
 	}
 	

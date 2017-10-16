@@ -586,27 +586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.247923"
+            timestampString = "529846725.308881"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1403"
-            endingLineNumber = "1403"
-            landmarkName = "onClickStandButton(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.24838"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "625"
-            endingLineNumber = "625"
+            startingLineNumber = "615"
+            endingLineNumber = "615"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -618,44 +602,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.24869"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1260"
-            endingLineNumber = "1260"
-            landmarkName = "onClickStandButton(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.248987"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1261"
-            endingLineNumber = "1261"
-            landmarkName = "onClickStandButton(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.249282"
+            timestampString = "529846725.309398"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "81"
             endingLineNumber = "81"
-            landmarkName = "makeAliceResevation(x:y:card:tPointLabel:)"
+            landmarkName = "makeLuciferCureResevation()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -666,12 +618,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.249573"
+            timestampString = "529846725.309821"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
             endingLineNumber = "83"
-            landmarkName = "makeAliceResevation(x:y:card:tPointLabel:)"
+            landmarkName = "makeHideAndPaintResevation(sound:x:y:card:hide:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -682,11 +634,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.249875"
+            timestampString = "529846725.310322"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "554"
-            endingLineNumber = "554"
+            startingLineNumber = "544"
+            endingLineNumber = "544"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -698,11 +650,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.250174"
+            timestampString = "529846725.310758"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "507"
-            endingLineNumber = "507"
+            startingLineNumber = "497"
+            endingLineNumber = "497"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -714,11 +666,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/GameScene.swift"
-            timestampString = "527919748.250472"
+            timestampString = "529846725.311493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "498"
-            endingLineNumber = "498"
+            startingLineNumber = "488"
+            endingLineNumber = "488"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -746,12 +698,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "newblackjack/Sounds.swift"
-            timestampString = "525426957.096615"
+            timestampString = "529739763.614124"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "36"
             endingLineNumber = "36"
-            landmarkName = "setSound(fileName:)"
+            landmarkName = "setAllSounds()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

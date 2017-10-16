@@ -19,18 +19,27 @@ class Sounds: SKScene, AVAudioPlayerDelegate{//通知を受け取るためAVAudi
 	var bahamutIn : AVAudioPlayer! = nil
 	var zeusIn : AVAudioPlayer! = nil
 	var aliceIn : AVAudioPlayer! = nil
+	var luciferIn : AVAudioPlayer! = nil
+	var luciferEffect : AVAudioPlayer! = nil
 	var breakcard : AVAudioPlayer! = nil
-	
+	var BP3Sound : AVAudioPlayer! = nil
+	var cureSound : AVAudioPlayer! = nil
+	var debuffSound : AVAudioPlayer! = nil
 	
 	func setAllSounds() {
-		playcard=Sounds().setSound(fileName: "カード音")
-		summon=Sounds().setSound(fileName: "カード召喚音")
+		playcard=Sounds().setSound(fileName: "カード音")	//トランプ
+		summon=Sounds().setSound(fileName: "カード+召喚音")	//特殊カード？
 		satanIn=Sounds().setSound(fileName: "絶望よ、来たれ")
 		olivieIn=Sounds().setSound(fileName: "新たなる世界を求めて")
 		bahamutIn=Sounds().setSound(fileName: "（バハ登場）")
 		zeusIn=Sounds().setSound(fileName: "我こそ唯一にして無二たる神なり")
 		aliceIn=Sounds().setSound(fileName: "不思議な世界、素敵な世界！")
+		luciferIn = Sounds().setSound(fileName: "世界の調和こそが、私の望みだ")
+		luciferEffect = Sounds().setSound(fileName: "神の慈悲だ")
 		breakcard=Sounds().setSound(fileName: "破壊音")
+		BP3Sound = Sounds().setSound(fileName: "BP3音")
+		cureSound = Sounds().setSound(fileName: "回復音")
+		debuffSound = Sounds().setSound(fileName: "場のデバフ")
 	}
 	
 	func setSound(fileName:String) -> AVAudioPlayer!{//効果音を設定する関数

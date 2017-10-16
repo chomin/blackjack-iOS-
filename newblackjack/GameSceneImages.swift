@@ -64,6 +64,9 @@ extension GameScene{//画像に関する拡張
 		card.append(SKSpriteNode(imageNamed: "Bahamut"))//61
 		card.append(SKSpriteNode(imageNamed: "Alice"))//62
 		card.append(SKSpriteNode(imageNamed: "Alice"))//63
+		card.append(SKSpriteNode(imageNamed: "Lucifer"))//64
+		card.append(SKSpriteNode(imageNamed: "Lucifer"))//65
+		card.append(SKSpriteNode(imageNamed: "Lucifer"))//66
 		
 		
 		//cardのサイズを設定
