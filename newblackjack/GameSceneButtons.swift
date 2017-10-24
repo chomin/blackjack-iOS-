@@ -32,9 +32,9 @@ extension GameScene{//ボタンに関する拡張
 		hitButton.addTarget(self, action: #selector(enableButtons(_:)), for: .touchUpOutside)	//押せるように戻す
 		
 		if Cards.mode == .netp2{
-			hitButton.isHidden=true
+			hitButton.isHidden = true
 		}else{
-			hitButton.isHidden=false
+			hitButton.isHidden = false
 		}
 		
 		
@@ -54,9 +54,9 @@ extension GameScene{//ボタンに関する拡張
 		standButton.addTarget(self, action: #selector(enableButtons(_:)), for: .touchUpOutside)
 						
 		if Cards.mode == .netp2{
-			standButton.isHidden=true
+			standButton.isHidden = true
 		}else{
-			standButton.isHidden=false
+			standButton.isHidden = false
 		}
 		
 		resetButton.frame = CGRect(x: 0,y: 0,width: 200,height: 40)
@@ -74,7 +74,7 @@ extension GameScene{//ボタンに関する拡張
 		resetButton.addTarget(self, action: #selector(touchDownResetButton(_:)), for: .touchDown)
 		resetButton.addTarget(self, action: #selector(enableButtons(_:)), for: .touchUpOutside)
 		
-		resetButton.isHidden=true
+		resetButton.isHidden = true
 		
 		titleButton.frame = CGRect(x: 0,y: 0,width: 200,height: 40)
 		titleButton.backgroundColor = UIColor.red;
@@ -91,7 +91,7 @@ extension GameScene{//ボタンに関する拡張
 		titleButton.addTarget(self, action: #selector(touchDownTitleButton(_:)), for: .touchDown)
 		titleButton.addTarget(self, action: #selector(enableButtons(_:)), for: .touchUpOutside)
 		
-		titleButton.isHidden=true
+		titleButton.isHidden = true
 
 		
 		self.view!.addSubview(hitButton)
@@ -117,28 +117,10 @@ extension GameScene{//ボタンに関する拡張
 			//Aの得点の確認
 			checkA()
 			
-//			let (ppoint,_,_,_)=Cards().calculatepoints()
-//			for (index,value) in Cards.pcards.enumerated(){
-//				if value.card<53{//トランプ限定
-//					if value.card%13 == 1 && ppoint.inA<22{
-//						Cards.pcards[index].point+=10
-//						tPointLabel[value.card-1].text=String(Cards.pcards[index].point)
-//						break	  //二枚目以降は更新しない
-//					}
-//					if value.card%13==1 && value.point>9{
-//						if ppoint.noA>21{
-//							Cards.pcards[index].point-=10
-//							tPointLabel[value.card-1].text=String(Cards.pcards[index].point)
-//							break //後に直すべきAはないはず
-//						}
-//					}
-//				}
-//			}
-			
 			//手札追加
 			if pcards[2+hcounter].0<53{//引いたのがトランプのとき
 				for i in Cards.pcards{//アリスの確認
-					if i.card==57 || i.card==62 || i.card==63{
+					if i.card == 57 || i.card == 62 || i.card == 63{
 						Cards.pcards[2+hcounter].point += 1
 						tPointLabel[Cards.pcards[2+hcounter].card-1].fontColor = SKColor.orange
 						tPointLabel[Cards.pcards[2+hcounter].card-1].text = String(Cards.pcards[2+hcounter].point)
@@ -146,14 +128,14 @@ extension GameScene{//ボタンに関する拡張
 				}
 				
 				makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(2+hcounter), y: cheight/2, card: pcards[2+hcounter].0)
-			}else if pcards[2+hcounter].0==54 || pcards[2+hcounter].0==58 || pcards[2+hcounter].0==59 {//オリヴィエ
-				Cards.pBP=3
+			}else if pcards[2+hcounter].0 == 54 || pcards[2+hcounter].0 == 58 || pcards[2+hcounter].0 == 59 {//オリヴィエ
+				Cards.pBP = 3
 				makeOlivieResevation(x: cwidth/2+cwidth*CGFloat(2+hcounter), y: cheight/2, card: pcards[2+hcounter].0, BPLabel: ("3",nil))
-			}else if pcards[2+hcounter].0==57 || pcards[2+hcounter].0==62 || pcards[2+hcounter].0==63{//アリス
+			}else if pcards[2+hcounter].0 == 57 || pcards[2+hcounter].0 == 62 || pcards[2+hcounter].0 == 63{//アリス
 				var changeTPointLabels:[(index:Int,value:String,color:UIColor?)]=[]
 				for (index,value) in Cards.pcards.enumerated(){
 					if value.card<53{//トランプの得点を増やす
-						Cards.pcards[index].point+=1
+						Cards.pcards[index].point += 1
 						changeTPointLabels.append((value.card-1,String(Cards.pcards[index].point),SKColor.orange))
 					}else{
 						//特殊カードの攻撃、体力を増やす
@@ -164,10 +146,10 @@ extension GameScene{//ボタンに関する拡張
 				let i = getSpecialEnteringSoundType(card: pcards[2+hcounter].0)
 				
 				makePaintResevation(sound: i, x: cwidth/2+cwidth*CGFloat(2+hcounter), y: cheight/2, card: pcards[2+hcounter].0)//特殊カードの表示
-				if pcards[2+hcounter].0==55 || pcards[2+hcounter].0==60 || pcards[2+hcounter].0==61{//バハ
+				if pcards[2+hcounter].0 == 55 || pcards[2+hcounter].0 == 60 || pcards[2+hcounter].0 == 61{//バハ
 					hcounter = -2
 					scounter = -2 //敵の手札も消える
-					var remove=[0]
+					var remove = [0]
 					for i in pcards{
 						remove.append(i.0)
 					}
@@ -201,10 +183,10 @@ extension GameScene{//ボタンに関する拡張
 				if Cards.pBP>0 {
 					Cards.pBP -= 1	//--は抹消された...
 					
-					let removecard=Cards.pcards.last!.card	//消す前に保存
+					let removecard = Cards.pcards.last!.card	//消す前に保存
 					Cards.pcards.removeLast()
 					makeUseBPResevation(hide: [removecard], BPLabel: (String(Cards.pBP),nil)) //得点計算のためremoveLastの後
-					hcounter-=1
+					hcounter -= 1
 					
 					j = Cards().judge(1)
 					continue	//まだバストしていたらさらにBPを消費
@@ -212,7 +194,7 @@ extension GameScene{//ボタンに関する拡張
 					plose()
 					
 					//2枚目を表に向ける
-					var ccards=Cards.ccards
+					var ccards = Cards.ccards
 					if ccards.count>0{//バハで消えてないか確認
 						if ccards[1].card<53{
 							makeHideAndPaintResevation(sound: .card, x: cwidth/2+cwidth, y: frame.size.height-cheight/2, card: ccards[1].card, hide: [0])
@@ -223,47 +205,28 @@ extension GameScene{//ボタンに関する拡張
 						}
 					}
 					//敵の得点を表示
-					cpLabel.isHidden=false
+					cpLabel.isHidden = false
 					
 					break
 				}
 			}
 			
-			hcounter+=1
+			hcounter += 1
 			
 		}else if Cards.mode == .pvp{
-			if scounter==0{ //p1のターンで押されたとき
+			if scounter == 0{ //p1のターンで押されたとき
 				let (pcards,_)=Cards().hit()
 				
 				//Aの得点の確認
 				checkA()
-//				let (ppoint,_,_,_)=Cards().calculatepoints()
-//				for (index,value) in Cards.pcards.enumerated(){
-//					if value.card<53{//トランプ限定
-//						if value.card%13 == 1 && ppoint.inA<22{
-//							Cards.pcards[index].point+=10
-//							tPointLabel[value.card-1].text=String(Cards.pcards[index].point)
-//							break	  //二枚目以降は更新しない
-//						}
-//						if value.card%13==1 && value.point>9{
-//							if ppoint.noA>21{
-//								Cards.pcards[index].point-=10
-//								tPointLabel[value.card-1].text=String(Cards.pcards[index].point)
-//								break //後に直すべきAはないはず
-//							}
-//						}
-//					}
-//				}
 				
 				//p1の手札追加&得点の更新
 				makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(2+hcounter), y: cheight/2, card: pcards[2+hcounter].0)
 				
-				
-				
-				hcounter+=1
+				hcounter += 1
 				
 				//バストの判定
-				var j=Cards().judge(1)
+				var j = Cards().judge(1)
 				
 				//ルシフェル探し
 				if j == 4{
@@ -271,11 +234,11 @@ extension GameScene{//ボタンに関する拡張
 					j = Cards().judge(1)
 				}
 				
-				if j==4{
+				if j == 4{
 					plose()
 					
 					//2枚目を表に向ける
-					var ccards=Cards.ccards
+					var ccards = Cards.ccards
 					if ccards[1].card<53{
 						makeHideAndPaintResevation(sound: .card, x: cwidth/2+cwidth, y: frame.size.height-cheight/2, card: ccards[1].card, hide: [0])
 					}else{
@@ -285,29 +248,14 @@ extension GameScene{//ボタンに関する拡張
 					}
 					
 					//得点を表示する
-					cpLabel.isHidden=false
+					cpLabel.isHidden = false
 				}
-			}else if scounter==1{	//p2のターン
-				let (ccards,_)=Cards().stand() //カードを引く
+			}else if scounter == 1{	//p2のターン
+				let (ccards,_) = Cards().stand() //カードを引く
 				
 				
 				//Aの得点の確認
 				checkA()
-//				let (_,cpoint,_,_)=Cards().calculatepoints()
-//				for (index,value) in Cards.ccards.enumerated(){
-//					if value.card<53{//トランプ限定
-//						if value.point==1 && cpoint.inA<22{
-//							Cards.ccards[index].point+=10
-//							tPointLabel[value.card-1].text=String(Cards.ccards[index].point)
-//							break	  //二枚目以降は更新しない
-//						}
-//						if value.card%13==1 && value.point>9 && cpoint.noA>21{
-//							Cards.ccards[index].point-=10
-//							tPointLabel[value.card-1].text=String(Cards.ccards[index].point)
-//							break //後に直すべきAはないはず
-//						}
-//					}
-//				}
 				
 				//手札追加&得点更新
 				makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(2+chcounter), y: frame.size.height-cheight/2, card: ccards[2+chcounter].0)
@@ -315,55 +263,38 @@ extension GameScene{//ボタンに関する拡張
 				
 				
 				//引いた直後にバストの判定(ループ内)
-				let j=Cards().judge(1)
-				if j==3{
+				let j = Cards().judge(1)
+				if j == 3{
 					pwin()
 					
 				}
-				chcounter+=1
+				chcounter += 1
 			}
 			
 		}else if Cards.mode == .netp1{
 			repeat { //最新まで受信(受信防止しているが、後で更新時に前のデータを受信するとバグる）
 				nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
-			}while net.isLatest==false
+			}while net.isLatest == false
 			
-			let (pcards,_)=Cards().hit()
+			let (pcards,_) = Cards().hit()
 			
 			//Aの得点の確認
 			checkA()
-//			let (ppoint,_,_,_)=Cards().calculatepoints()
-//			for (index,value) in Cards.pcards.enumerated(){
-//				if value.card<53{//トランプ限定
-//					if value.card%13 == 1 && ppoint.inA<22{
-//						Cards.pcards[index].point+=10
-//						tPointLabel[value.card-1].text=String(Cards.pcards[index].point)
-//						break	  //二枚目以降は更新しない
-//					}
-//					if value.card%13==1 && value.point>9{
-//						if ppoint.noA>21{
-//							Cards.pcards[index].point-=10
-//							tPointLabel[value.card-1].text=String(Cards.pcards[index].point)
-//							break //後に直すべきAはないはず
-//						}
-//					}
-//				}
-//			}
 			
 			//p1の手札追加&得点の更新
 			makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(2+hcounter), y: cheight/2, card: pcards[2+hcounter].0)
 			
-			hcounter+=1
+			hcounter += 1
 			
 			nets.sendData()
 			
 			//バストの判定
-			let j=Cards().judge(1)
-			if j==4{
+			let j = Cards().judge(1)
+			if j == 4{
 				plose()
 				
 				//2枚目を表に向ける
-				var ccards=Cards.ccards
+				var ccards = Cards.ccards
 				if ccards[1].card<53{
 					makeHideAndPaintResevation(sound: .card, x: cwidth/2+cwidth, y: frame.size.height-cheight/2, card: ccards[1].card, hide: [0])
 				}else{
@@ -374,32 +305,17 @@ extension GameScene{//ボタンに関する拡張
 				}
 				
 				//得点を表示する
-				cpLabel.isHidden=false
+				cpLabel.isHidden = false
 			}
 		}else{//netp2
 			repeat { //最新まで受信（こっちの状態を送信する直前のデータを受信した状態だとエラー）
 				nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
-			}while net.isLatest==false
+			}while net.isLatest == false
 			
 			let (ccards,_)=Cards().stand() //カードを引く
 			
 			//Aの得点の確認
 			checkA()
-//			let (_,cpoint,_,_)=Cards().calculatepoints()
-//			for (index,value) in Cards.ccards.enumerated(){
-//				if value.card<53{//トランプ限定
-//					if value.point==1 && cpoint.inA<22{
-//						Cards.ccards[index].point+=10
-//						tPointLabel[value.card-1].text=String(Cards.ccards[index].point)
-//						break	  //二枚目以降は更新しない
-//					}
-//					if value.card%13==1 && value.point>9 && cpoint.noA>21{
-//						Cards.ccards[index].point-=10
-//						tPointLabel[value.card-1].text=String(Cards.ccards[index].point)
-//						break //後に直すべきAはないはず
-//					}
-//				}
-//			}
 			
 			//手札追加&得点更新
 			makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(2+chcounter), y: cheight/2, card: ccards[2+chcounter].0)
@@ -407,29 +323,24 @@ extension GameScene{//ボタンに関する拡張
 			nets.sendData()
 			
 			//引いた直後にバストの判定(ループ内)
-			let j=Cards().judge(1)
-			if j==3{
+			let j = Cards().judge(1)
+			if j == 3{
 				pwin()
-				
 			}
-			
-			chcounter+=1
-			
+			chcounter += 1
 		}
-		
 		self.isPaused=false
-		
 	}
 	
 	@objc func onClickStandButton(_ sender : UIButton){
-		self.isPaused=true  //updateによる受信防止
+		self.isPaused = true  //updateによる受信防止
 		
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
 		
 		if Cards.mode != .netp2{
 			//2枚目を表に向ける
-			var ccards=Cards.ccards
+			var ccards = Cards.ccards
 			if ccards.count>0{//バハで消えてないか確認
 				if ccards[1].card<53{
 					
@@ -445,7 +356,7 @@ extension GameScene{//ボタンに関する拡張
 					//まず裏を隠し、登場音とともに登場させる
 					let i = getSpecialEnteringSoundType(card: ccards[1].card)
 					
-					if ccards[1].card==57 || ccards[1].card==62 || ccards[1].card==63{//アリス(得点更新の関係でこの位置)
+					if ccards[1].card == 57 || ccards[1].card == 62 || ccards[1].card == 63{//アリス(得点更新の関係でこの位置)
 						if ccards[0].card<53{//トランプの得点を増やす
 							Cards.ccards[0].point += 1
 							tPointLabel[ccards[0].card-1].fontColor = SKColor.orange
@@ -458,10 +369,10 @@ extension GameScene{//ボタンに関する拡張
 					makeHideAndPaintResevation(sound: i, x: cwidth/2+cwidth, y: frame.size.height-cheight/2, card: ccards[1].card, hide: [0])
 					
 					//各特殊能力の処理（登場音は済なので不要）
-					if ccards[1].card==55 || ccards[1].0==60 || ccards[1].0==61{//バハ
+					if ccards[1].card == 55 || ccards[1].0 == 60 || ccards[1].0 == 61{//バハ
 						let pcards=Cards.pcards
 						scounter = -1
-						var remove:[Int]=[]
+						var remove:[Int] = []
 						for i in pcards{
 							remove.append(i.card)
 						}
@@ -474,15 +385,14 @@ extension GameScene{//ボタンに関する拡張
 						Cards.ccards.append((55,10))
 						makeHideAndPaintResevation(sound: .br, x: cwidth/2, y: frame.size.height-cheight/2, card: 55, hide: remove)
 						
-					}else if ccards[1].card==54  || ccards[1].0==58 || ccards[1].0==59{//オリヴィエ
-						Cards.cBP=3
-						cBPLabel.text="×3"
+					}else if ccards[1].card == 54  || ccards[1].0 == 58 || ccards[1].0 == 59{//オリヴィエ
+						Cards.cBP = 3
+						resevation.append((sound: .BP3, x: nil, y: nil, card: nil, hide: [], pointLabel: (pp: nil, cp: nil), tPointLabel: [], BPLabel: (pBP: nil, cBP: "×3")))
 					}
 				}
 			}
-			
 			//得点を表示する
-			cpLabel.isHidden=false
+			cpLabel.isHidden = false
 		}
 		
 		if Cards.mode == .com || Cards.mode == .scom {
@@ -717,23 +627,23 @@ extension GameScene{//ボタンに関する拡張
 	
 	//同時押し対策
 	@objc func touchDownHitButton(_ sender: UIButton){  //(disableされたボタンは外にドラッグして戻したときに表示がhilightされなくなる)
-		standButton.isEnabled=false
-		hitButton.isEnabled=false
+		standButton.isEnabled = false
+		hitButton.isEnabled = false
 	}
 	@objc func touchDownStandButton(_ sender: UIButton){
-		hitButton.isEnabled=false
+		hitButton.isEnabled = false
 	}
 	@objc func touchDownTitleButton(_ sender: UIButton){
-		resetButton.isEnabled=false
+		resetButton.isEnabled = false
 	}
 	@objc func touchDownResetButton(_ sender: UIButton){
-		titleButton.isEnabled=false
+		titleButton.isEnabled = false
 	}
 	@objc func enableButtons(_ sender:UIButton){
-		resetButton.isEnabled=true
-		titleButton.isEnabled=true
-		hitButton.isEnabled=true
-		standButton.isEnabled=true
+		resetButton.isEnabled = true
+		titleButton.isEnabled = true
+		hitButton.isEnabled = true
+		standButton.isEnabled = true
 	}
 	
 }
