@@ -29,7 +29,7 @@ class waitingScene: SKScene {
 	override func didMove(to view: SKView) {
 		let uuid1=UIDevice.current.identifierForVendor!.uuidString //識別子
 		let start=uuid1.startIndex
-		let end=uuid1.characters.index(start, offsetBy: 4)
+		let end=uuid1.index(start, offsetBy: 4)
 		net.uuid=String(uuid1[start...end])
 		
 		backgroundColor=SKColor.init(red: 0.8, green: 0.3, blue: 0.3, alpha: 0.3)
