@@ -46,9 +46,6 @@ class ScrollNode: SKSpriteNode {
 		let touch = touches.first
 		let location = touch!.location(in: self)
 		
-//		if location.y > self.size.height  || location.y < 0{
-//			return
-//		}
 		
 		startX = location.x
 		lastX = location.x
@@ -57,9 +54,6 @@ class ScrollNode: SKSpriteNode {
 	}
 	
 	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//		if !self.touching {
-//			return
-//		}
 		
 		let touch = touches.first
 		let location = touch!.location(in: self)
@@ -92,7 +86,7 @@ class ScrollNode: SKSpriteNode {
 		// 左と右端の設定
 		let limitFactor: CGFloat = 0.3
 		let leftLimitX: CGFloat = self.size.width * (-limitFactor)
-		let rightLimitX: CGFloat = self.size.width * limitFactor
+		let rightLimitX: CGFloat = 0
 		if self.contentNode.position.x < leftLimitX {
 			// 行き過ぎたから戻す
 			self.contentNode.position.x = leftLimitX

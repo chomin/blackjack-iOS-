@@ -338,7 +338,7 @@ extension GameScene{//ボタンに関する拡張
 		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
 		let cwidth = cheight*2/3
 		
-		if Cards.mode != .netp2{
+		if Cards.mode != .netp2 && (Cards.mode != .pvp || scounter == 0){
 			//2枚目を表に向ける
 			var ccards = Cards.ccards
 			if ccards.count>0{//バハで消えてないか確認
@@ -518,13 +518,13 @@ extension GameScene{//ボタンに関する拡張
 				plose()
 			}
 		}else if Cards.mode == .pvp {
-			if scounter==0{ //p2のターンへ移行
+			if scounter == 0{ //p2のターンへ移行
 				
 				scounter+=1
 				
 				centerLabel.text="P2のターン"
 				
-			}else if scounter==1{
+			}else if scounter == 1{
 				//最終判定(ループ外)
 				let j=Cards().judge(1)
 				if j==0{

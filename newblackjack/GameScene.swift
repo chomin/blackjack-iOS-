@@ -434,6 +434,9 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				
 				//カードの表示、移動
 				if let cardnum = resevation[0].card{
+					
+					print("\(cardnum)を追加")
+					
 					if resevation[0].y! > (view?.frame.height)!/2{
 						//カード
 						self.cScrollNode.contentNode.addChild(card[cardnum])
