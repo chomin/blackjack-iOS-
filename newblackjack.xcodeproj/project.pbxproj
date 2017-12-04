@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0F0E09091E7BDFA4005B85FB /* waitingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0E09081E7BDFA4005B85FB /* waitingScene.swift */; };
 		0F0E094D1E7BE5FA005B85FB /* net.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0E094C1E7BE5FA005B85FB /* net.swift */; };
+		0F121EB11FD3A7F3009A24EB /* ScrollNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F121EB01FD3A7F3009A24EB /* ScrollNode.swift */; };
 		0F41641E1F207F38004F9F03 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F41641D1F207F38004F9F03 /* AVFoundation.framework */; };
 		0F4484741F93504B009511BB /* 世界の調和こそが、私の望みだ.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F4484721F93504A009511BB /* 世界の調和こそが、私の望みだ.mp3 */; };
 		0F44847C1F94A22C009511BB /* 不思議な世界、素敵な世界！.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0F4484781F9355D8009511BB /* 不思議な世界、素敵な世界！.mp3 */; };
@@ -47,15 +48,16 @@
 /* Begin PBXFileReference section */
 		0F0E09081E7BDFA4005B85FB /* waitingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = waitingScene.swift; sourceTree = "<group>"; };
 		0F0E094C1E7BE5FA005B85FB /* net.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = net.swift; sourceTree = "<group>"; };
+		0F121EB01FD3A7F3009A24EB /* ScrollNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollNode.swift; sourceTree = "<group>"; };
 		0F41641D1F207F38004F9F03 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0F4484721F93504A009511BB /* 世界の調和こそが、私の望みだ.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "世界の調和こそが、私の望みだ.mp3"; sourceTree = "<group>"; };
-		0F4484751F9355D7009511BB /* BP3音.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "BP3音.mp3"; path = "BP3音.mp3"; sourceTree = "<group>"; };
-		0F4484761F9355D7009511BB /* ハンドのデバフ.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "ハンドのデバフ.mp3"; path = "ハンドのデバフ.mp3"; sourceTree = "<group>"; };
-		0F4484771F9355D8009511BB /* 回復音.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "回復音.mp3"; path = "回復音.mp3"; sourceTree = "<group>"; };
-		0F4484781F9355D8009511BB /* 不思議な世界、素敵な世界！.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "不思議な世界、素敵な世界！.mp3"; path = "不思議な世界、素敵な世界！.mp3"; sourceTree = "<group>"; };
-		0F4484791F9355D9009511BB /* 新たなる世界を求めて.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "新たなる世界を求めて.mp3"; path = "新たなる世界を求めて.mp3"; sourceTree = "<group>"; };
-		0F44847A1F9355DA009511BB /* 神の慈悲だ.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "神の慈悲だ.mp3"; path = "神の慈悲だ.mp3"; sourceTree = "<group>"; };
-		0F44847B1F9355DA009511BB /* 場のデバフ.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "場のデバフ.mp3"; path = "場のデバフ.mp3"; sourceTree = "<group>"; };
+		0F4484751F9355D7009511BB /* BP3音.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "BP3音.mp3"; sourceTree = "<group>"; };
+		0F4484761F9355D7009511BB /* ハンドのデバフ.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "ハンドのデバフ.mp3"; sourceTree = "<group>"; };
+		0F4484771F9355D8009511BB /* 回復音.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "回復音.mp3"; sourceTree = "<group>"; };
+		0F4484781F9355D8009511BB /* 不思議な世界、素敵な世界！.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "不思議な世界、素敵な世界！.mp3"; sourceTree = "<group>"; };
+		0F4484791F9355D9009511BB /* 新たなる世界を求めて.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "新たなる世界を求めて.mp3"; sourceTree = "<group>"; };
+		0F44847A1F9355DA009511BB /* 神の慈悲だ.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "神の慈悲だ.mp3"; sourceTree = "<group>"; };
+		0F44847B1F9355DA009511BB /* 場のデバフ.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "場のデバフ.mp3"; sourceTree = "<group>"; };
 		0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
 		0F5E74891E6D688F003557A5 /* Cards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cards.swift; sourceTree = "<group>"; };
 		0F62A3081F232B4100D01EB9 /* （バハ登場）.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "（バハ登場）.mp3"; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				0F5E74891E6D688F003557A5 /* Cards.swift */,
 				0F0E094C1E7BE5FA005B85FB /* net.swift */,
 				0F9EE1BD1E66544000A78B59 /* GameViewController.swift */,
+				0F121EB01FD3A7F3009A24EB /* ScrollNode.swift */,
 				0F9EE1BF1E66544000A78B59 /* Main.storyboard */,
 				0F9EE1C21E66544000A78B59 /* Assets.xcassets */,
 				0F9EE1C41E66544000A78B59 /* LaunchScreen.storyboard */,
@@ -261,6 +264,7 @@
 				0FC5C0431F4FC57100789DB4 /* GameSceneButtons.swift in Sources */,
 				0FC5C0071F4E6E4200789DB4 /* Sounds.swift in Sources */,
 				0FC5C0051F4E6E2400789DB4 /* GameSceneImages.swift in Sources */,
+				0F121EB11FD3A7F3009A24EB /* ScrollNode.swift in Sources */,
 				0F9EE1BE1E66544000A78B59 /* GameViewController.swift in Sources */,
 				0F5E748A1E6D688F003557A5 /* Cards.swift in Sources */,
 				0F9EE1B61E66544000A78B59 /* AppDelegate.swift in Sources */,

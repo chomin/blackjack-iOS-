@@ -13,12 +13,17 @@ import AVFoundation
 class GameScene: Sounds{  //描写などの処理を主に行うクラス。音の再生終了の通知を受け取るためDelegateを実装。(SKSceneはSoundsで継承)
 	//Buttons.swift,Labels.swift,Images.swiftでこのクラスを拡張している。
 	
-	var last:CFTimeInterval!  //!をつけることで、初期化不要？
+	
+	var pScrollNode: ScrollNode!
+	var cScrollNode: ScrollNode!
+	var last:CFTimeInterval!
 	let queue = DispatchQueue.main    //メインスレッド
 	let nets = net()	//netクラスのインスタンス化
 	var didchange = false   //攻守交代(netp2用)
 	var comRoop = false	//(com,scom用)
 	var showResult = results.wait //centerLabelに結果を表示する
+	var cheight: CGFloat!
+	var cwidth: CGFloat!
 	
 	//画像
 	var card:[SKSpriteNode] = []	  //カードの画像(空の配列)
@@ -90,12 +95,14 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	
 	override func didMove(to view: SKView) {//このシーンに移ったときに最初に実行される
 		
+		
+		
 		resevation.append((sound: .none, x: nil, y: nil, card: nil, hide: [], pointLabel: (pp: nil, cp: nil), tPointLabel: [], BPLabel: (pBP: nil, cBP: nil)))
 		
 		Cards.pBP = 1
 		Cards.cBP = 2
 		
-		//音の設定
+		/*音の設定*/
 		setAllSounds()
 		
 		playcard.delegate = self//デリゲート先（通知先）に自分を設定する。
@@ -113,15 +120,22 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		debuffSound.delegate = self
 		
 		
-		//描写物の設定
-		let cheight = view.frame.height/3	//カードの縦の長さは画面サイズによって変わる。7+で138? 
-		let cwidth = cheight*2/3
+		/*描写物の設定*/
+		self.cheight = view.frame.height/3	//カードの縦の長さは画面サイズによって変わる。7+で138?
+		self.cwidth = cheight*2/3
 		
+		//スクロールノード TODO:可変長に
+		self.pScrollNode = ScrollNode(size: CGSize(width: cwidth*60, height: cheight) ,position: CGPoint(x:0, y:0) ,text:"pScroll")
+		self.cScrollNode = ScrollNode(size: CGSize(width: cwidth*60, height: cheight) ,position: CGPoint(x:0, y:view.frame.height - cheight) ,text:"cScroll")
+		pScrollNode.zPosition = 10000
+		cScrollNode.zPosition = 10000
+		self.addChild(pScrollNode)
+		self.addChild(cScrollNode)
 		
-		//ラベルの設定
+		//ラベル
 		setLabels(frame_height: view.frame.height, frame_width: view.frame.width)
 		
-		//背景の設定
+		//背景
 		if Cards.mode == .scom{
 			backgroundColor = SKColor.init(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.5)
 		}else{
@@ -129,8 +143,8 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		}
 		
 		
-		//画像の設定
-		setImages(frame_height: view.frame.height, frame_width: view.frame.width)
+		//画像
+		setImages()
 		
 		if Cards.mode == .com || Cards.mode == .scom || Cards.mode == .pvp{
 			//最初の手札を獲得(pの手札、cの手札、pの得点、cの得点)
@@ -358,10 +372,13 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	
 	override func update(_ currentTime: CFTimeInterval) {
 		
+		self.pScrollNode.update(currentTime: currentTime)
+		self.cScrollNode.update(currentTime: currentTime)
+		
 		let cheight = (view?.frame.height)!/3	//カードの縦の長さは画面サイズによって変わる
 		let cwidth = cheight*2/3
 		
-		//トランプ得点ラベルの位置更新
+		//トランプ得点ラベルの位置更新:TODO
 		for i in 1...52{
 			tPointLabel[i-1].position=CGPoint(x:card[i].position.x+cwidth/2-cheight*16/138,y:card[i].position.y+cheight/2-cheight*28/138)
 		}
@@ -395,7 +412,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 //			}
 //		}
 		
-		//ラベルとカードをくっつける
+		//ラベルとカードをくっつける:TODO
 		updateSpecialLabelsPosition(cheight:cheight)
 		
 		//音の処理
@@ -728,6 +745,25 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		}
 	}
 
+//	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//		let location = touches.first?.location(in: self)
+//		print("cheight:\(cheight)")
+//		print("frame.height - cheight:\(view!.frame.height - cheight)")
+//
+//
+//
+//
+//		if location!.y < cheight{
+//
+//			self.pScrollNode.touchesBeganIn(touches, with: event)
+//		}else if location!.y > view!.frame.height - cheight{
+//
+//			self.cScrollNode.touchesBeganIn(touches, with: event)
+//		}
+//	}
+	
+	
+	
 	func pwin(){
 		
 		hitButton.isHidden = true

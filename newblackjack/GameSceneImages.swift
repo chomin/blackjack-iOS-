@@ -9,17 +9,14 @@
 import  SpriteKit
 
 extension GameScene{//画像に関する拡張
-	func setImages(frame_height: CGFloat, frame_width: CGFloat){
-		
-		let cheight = frame_height/3
-		let cwidth = cheight*2/3
+	func setImages(){
 		
 		//EP表示画像の設定
 		if Cards.mode == .scom{
 			pBPim = {() -> SKSpriteNode in	  //設定先を間違えるミスを防ぐため、クロージャで設定
 				let node=SKSpriteNode(imageNamed:"進化")
 				node.size=CGSize(width:cheight*30/138,height:cheight*30/138)
-				node.position = CGPoint(x:frame_width/2-cheight*20/138, y:cheight+cheight*15/138)
+				node.position = CGPoint(x:self.frame.width/2-cheight*20/138, y:cheight+cheight*15/138)
 				self.addChild(node)
 				return node
 				
@@ -28,7 +25,7 @@ extension GameScene{//画像に関する拡張
 			cBPim = {() -> SKSpriteNode in
 				let node=SKSpriteNode(imageNamed:"進化2")
 				node.size=CGSize(width:cheight*30/138,height:cheight*30/138)
-				node.position = CGPoint(x:frame_width/2-cheight*20/138, y:frame_height-(cheight+cheight*20/138))
+				node.position = CGPoint(x:self.frame.width/2-cheight*20/138, y:self.frame.height-(cheight+cheight*20/138))
 				self.addChild(node)
 				return node
 			}()
