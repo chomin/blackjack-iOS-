@@ -10,7 +10,7 @@ import SpriteKit
 
 class ScrollNode: SKSpriteNode {
 	
-	private var contentNode = SKNode()
+    	var contentNode = SKNode()
 	private var startX: CGFloat = 0.0
 	private var lastX: CGFloat = 0.0
 	// タッチされているかどうか
@@ -26,31 +26,14 @@ class ScrollNode: SKSpriteNode {
 		self.position = position
 		self.addChild(self.contentNode)
 		
-		// スクロールさせるコンテンツ
-		let myLabel = SKLabelNode(fontNamed: "Helvetica")
-		myLabel.text = "scroll"
-		myLabel.fontSize = 20
-		self.contentNode.addChild(myLabel)
+//		// スクロールさせるコンテンツ
+//		let myLabel = SKLabelNode(fontNamed: "Helvetica")
+//		myLabel.text = "scroll"
+//		myLabel.fontSize = 20
+//		self.contentNode.addChild(myLabel)
 	}
 	
-	init(size: CGSize ,position:CGPoint ,text:String) {
-		super.init(texture: nil, color: SKColor.clear, size: size)
-		
-		self.isUserInteractionEnabled = true	//A Boolean value that indicates whether the node receives touch events.
-		
-		self.position = position
-		self.size = size
-		
-		self.addChild(self.contentNode)
-		
-		// スクロールさせるコンテンツ
-		let myLabel = SKLabelNode(fontNamed: "Helvetica")
-		myLabel.text = text
-		myLabel.fontSize = 30
-		
-		myLabel.position = CGPoint(x:200, y:0)
-		self.contentNode.addChild(myLabel)
-	}
+	
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")

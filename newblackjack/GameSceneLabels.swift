@@ -109,10 +109,10 @@ extension GameScene{//labelに関する拡張
 		}
 		for i in tPointLabel{
 			i.fontSize=cheight*16/138
-			i.position=CGPoint(x:-1000,y:0)
+			i.position=CGPoint(x:0,y:10000)
 			i.zPosition=2
 			i.fontColor=SKColor.white
-			self.addChild(i)
+//			self.addChild(i)
 		}
 		
 		//ターンを表示
@@ -212,7 +212,7 @@ extension GameScene{//labelに関する拡張
 		Label.text=text
 		Label.fontSize=cheight*11/138
 		Label.zPosition=2
-		self.addChild(Label)
+//		self.addChild(Label)
 		return Label
 	}
 	
@@ -234,8 +234,48 @@ extension GameScene{//labelに関する拡張
 		}
 	}
 	
-	func updateSpecialLabelsPosition(cheight:CGFloat){
-		let cwidth = cheight*2/3
+	func getSpecialLabels(cardNum:Int) -> ([SKLabelNode]){
+		guard cardNum > 52  && cardNum < 67 else {
+			print("getSpecialLabels error: cardNumに該当する特殊カードは存在しません")
+			return []
+		}
+		
+		switch cardNum {
+		case 53:
+			return [specialLabels[.satanA]!, specialLabels[.satanHP]!]
+		case 54:
+			return [specialLabels[.olivieA]!, specialLabels[.olivieHP]!]
+		case 55:
+			return [specialLabels[.bahamutA]!, specialLabels[.bahamutHP]!]
+		case 56:
+			return [specialLabels[.zeusA]!, specialLabels[.zeusHP]!]
+		case 57:
+			return [specialLabels[.aliceA]!, specialLabels[.aliceHP]!]
+		case 58:
+			return [specialLabels[.olivieA2]!, specialLabels[.olivieHP2]!]
+		case 59:
+			return [specialLabels[.olivieA3]!, specialLabels[.olivieHP3]!]
+		case 60:
+			return [specialLabels[.bahamutA2]!, specialLabels[.bahamutHP2]!]
+		case 61:
+			return [specialLabels[.bahamutA3]!, specialLabels[.bahamutHP3]!]
+		case 62:
+			return [specialLabels[.aliceA2]!, specialLabels[.aliceHP2]!]
+		case 63:
+			return [specialLabels[.aliceA3]!, specialLabels[.aliceHP3]!]
+		case 64:
+			return [specialLabels[.luciferA]!, specialLabels[.luciferHP]!]
+		case 65:
+			return [specialLabels[.luciferA2]!, specialLabels[.luciferHP2]!]
+		case 66:
+			return [specialLabels[.luciferA3]!, specialLabels[.luciferHP3]!]
+		default:
+			print("getSpecialLabels error: cardNumに該当する特殊カードは存在しません")
+			return []
+		}
+	}
+	
+	func updateSpecialLabelsPosition(){
 		
 		if specialLabels.count>0{
 			
@@ -272,6 +312,21 @@ extension GameScene{//labelに関する拡張
 		}
 	}
 	
+	func specialLabelsAddChildren(cardNum:Int ,player:Player) {
+		guard cardNum > 52 else {
+			return
+		}
+		
+		let labels = getSpecialLabels(cardNum: cardNum)
+		for i in labels{
+			if player == .p1{
+				self.pScrollNode.contentNode.addChild(i)
+			}else{
+				self.cScrollNode.contentNode.addChild(i)
+			}
+		}
+		
+	}
 	
 	
 }

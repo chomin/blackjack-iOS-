@@ -385,9 +385,9 @@ extension GameScene{//ボタンに関する拡張
 						Cards.ccards.append((55,10))
 						makeHideAndPaintResevation(sound: .br, x: cwidth/2, y: frame.size.height-cheight/2, card: 55, hide: remove)
 						
-					}else if ccards[1].card == 54  || ccards[1].0 == 58 || ccards[1].0 == 59{//オリヴィエ
+					}else if ccards[1].card == 54 || ccards[1].0 == 58 || ccards[1].0 == 59{//オリヴィエ
 						Cards.cBP = 3
-						resevation.append((sound: .BP3, x: nil, y: nil, card: nil, hide: [], pointLabel: (pp: nil, cp: nil), tPointLabel: [], BPLabel: (pBP: nil, cBP: "×3")))
+						resevation.append((sound: .BP3, x: nil, y: nil, card: nil, hide: [], pointLabels: (pp: nil, cp: nil), tPointLabels: [], BPLabels: (pBP: nil, cBP: "3")))
 					}
 				}
 			}

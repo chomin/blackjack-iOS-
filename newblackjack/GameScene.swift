@@ -39,7 +39,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	var cpLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
 	var pbjLabel = SKLabelNode(fontNamed: "HiraginoSans-W6") //bj表示用のラベル
 	var cbjLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
-	var tPointLabel:[SKLabelNode]=[]//トランプの得点ラベル（52個）
+	var tPointLabel:[SKLabelNode]=[]//トランプの得点ラベル（52個）(cardnumとのindexのずれに注意)
 	var centerLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")	//ターンや最終結果を表示
 	var p1Label = SKLabelNode(fontNamed: "HiraginoSans-W6")	//p1,comと表示
 	var comLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
@@ -58,7 +58,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	var fccardsc = 2	//p2の手札の数(更新前)
 	var fpcardsc = 0	//p1の手札の数(更新前)
 	static var audioFinish = true
-	var resevation:[(sound:SoundType,x:CGFloat?,y:CGFloat?,card:Int?,hide:[Int],pointLabel:(pp:String?,cp:String?),tPointLabel:[(index:Int,value:String,color:UIColor?)],BPLabel:(pBP:String?,cBP:String?))] = []	//音付き描写の予約（音のみの場合もあり）をタプルの配列で表現
+	var resevation:[(sound:SoundType, x:CGFloat?, y:CGFloat?, card:Int?, hide:[Int], pointLabels:(pp:String?,cp:String?), tPointLabels:[(index:Int,value:String,color:UIColor?)], BPLabels:(pBP:String?,cBP:String?))] = []	//音付き描写の予約（音のみの場合もあり）をタプルの配列で表現
 	//tPointLabelの変更は現時点でアリス召喚、退場時のみ
 	
 	
@@ -97,10 +97,10 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		
 		
 		
-		resevation.append((sound: .none, x: nil, y: nil, card: nil, hide: [], pointLabel: (pp: nil, cp: nil), tPointLabel: [], BPLabel: (pBP: nil, cBP: nil)))
+		resevation.append((sound: .none, x: nil, y: nil, card: nil, hide: [], pointLabels: (pp: nil, cp: nil), tPointLabels: [], BPLabels: (pBP: nil, cBP: nil)))
 		
-		Cards.pBP = 1
-		Cards.cBP = 2
+		Cards.pBP = 2
+		Cards.cBP = 3
 		
 		/*音の設定*/
 		setAllSounds()
@@ -125,10 +125,10 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		self.cwidth = cheight*2/3
 		
 		//スクロールノード TODO:可変長に
-		self.pScrollNode = ScrollNode(size: CGSize(width: cwidth*60, height: cheight) ,position: CGPoint(x:0, y:0) ,text:"pScroll")
-		self.cScrollNode = ScrollNode(size: CGSize(width: cwidth*60, height: cheight) ,position: CGPoint(x:0, y:view.frame.height - cheight) ,text:"cScroll")
-		pScrollNode.zPosition = 10000
-		cScrollNode.zPosition = 10000
+		self.pScrollNode = ScrollNode(size: CGSize(width: cwidth*10, height: cheight) ,position: CGPoint(x:0, y:0) )
+		self.cScrollNode = ScrollNode(size: CGSize(width: cwidth*10, height: cheight) ,position: CGPoint(x:0, y:view.frame.height - cheight) )
+		pScrollNode.zPosition = 0
+		cScrollNode.zPosition = 0
 		self.addChild(pScrollNode)
 		self.addChild(cScrollNode)
 		
@@ -315,7 +315,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				
 				let y = (Cards.mode == .netp2 ? cheight/2 : frame.size.height-cheight/2)
 				
-				resevation.append((sound:.none,x:nil,y:nil,card:nil,hide:[0],pointLabel:(pp:nil,cp:nil),tPointLabel:[],BPLabel:(pBP:nil,cBP:nil)))
+				resevation.append((sound:.none,x:nil,y:nil,card:nil,hide:[0],pointLabels:(pp:nil,cp:nil),tPointLabels:[],BPLabels:(pBP:nil,cBP:nil)))
 				makeAliceResevation(x: cwidth/2+cwidth, y: y, card: ccards[1].card, tPointLabel: [(Cards.ccards[0].card-1,String(Cards.ccards[0].point),SKColor.orange)])
 			}else{//2枚目が他の特殊カード
 				let i = getSpecialEnteringSoundType(card: ccards[1].card)
@@ -380,7 +380,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		
 		//トランプ得点ラベルの位置更新:TODO
 		for i in 1...52{
-			tPointLabel[i-1].position=CGPoint(x:card[i].position.x+cwidth/2-cheight*16/138,y:card[i].position.y+cheight/2-cheight*28/138)
+			tPointLabel[i-1].position = CGPoint(x:card[i].position.x+cwidth/2-cheight*16/138,y:card[i].position.y+cheight/2-cheight*28/138)
 		}
 //		//トランプ得点ラベルの得点更新
 //		for i in Cards.pcards{
@@ -413,7 +413,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 //		}
 		
 		//ラベルとカードをくっつける:TODO
-		updateSpecialLabelsPosition(cheight:cheight)
+		updateSpecialLabelsPosition()
 		
 		//音の処理
 		if GameScene.audioFinish == true {
@@ -426,15 +426,33 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				//カードを隠す処理（バハのため、先に隠してから表示）
 				for i in resevation[0].hide{
 					
-					card[i].position=CGPoint(x:-1000,y:0)    //枠外に
+					card[i].position = CGPoint(x:0,y:10000)    //枠外に
 					if i<53 && i>0{//トランプ表の得点も隠す
-						tPointLabel[i-1].position=CGPoint(x:-1000,y:0)
+						tPointLabel[i-1].position=CGPoint(x:0,y:10000)
 					}
 				}
 				
 				//カードの表示、移動
-				if let cardnum=resevation[0].card{
-					card[cardnum].position=CGPoint(x:resevation[0].x!,y:resevation[0].y!)
+				if let cardnum = resevation[0].card{
+					if resevation[0].y! > (view?.frame.height)!/2{
+						//カード
+						self.cScrollNode.contentNode.addChild(card[cardnum])
+						//得点ラベル
+						if cardnum > 52{
+							specialLabelsAddChildren(cardNum: cardnum, player: .com)
+						}else if cardnum > 0{
+							self.cScrollNode.contentNode.addChild(tPointLabel[cardnum - 1])
+						}
+					}else{
+						self.pScrollNode.contentNode.addChild(card[cardnum])
+						if cardnum > 52{
+							specialLabelsAddChildren(cardNum: cardnum, player: .p1)
+						}else if cardnum > 0{
+							self.pScrollNode.contentNode.addChild(tPointLabel[cardnum - 1])
+						}
+					}
+					
+					card[cardnum].position = CGPoint(x:resevation[0].x!, y:cheight/2)
 				}
 				
 				//音を鳴らす
@@ -484,16 +502,16 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				}
 				
 				//ppLabel,cpLabelの更新（String?,String?）
-				if let pp = resevation[0].pointLabel.pp{
+				if let pp = resevation[0].pointLabels.pp{
 					ppLabel.text = pp
 				}
-				if let cp = resevation[0].pointLabel.cp{
+				if let cp = resevation[0].pointLabels.cp{
 					cpLabel.text = cp
 				}
 				
 				
 				//tPointLabelの更新[(どれ,String,UIColor)]（アリスを３枚め以降引いたときのみ）
-				for i in resevation[0].tPointLabel{//（今は重複するので不要だが,Aのタイミングも合わせるときに使う？）
+				for i in resevation[0].tPointLabels{//（今は重複するので不要だが,Aのタイミングも合わせるときに使う？）
 					if i.index < 52{//トランプ
 						tPointLabel[i.index].text = i.value
 						tPointLabel[i.index].fontColor = i.color	//(注)fontColor!=color
@@ -501,10 +519,10 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				}
 				
 				//pBP,cBPLabelの更新(String,String)
-				if let pBP=resevation[0].BPLabel.pBP{
+				if let pBP=resevation[0].BPLabels.pBP{
 					pBPLabel.text="×"+pBP
 				}
-				if let cBP=resevation[0].BPLabel.cBP{
+				if let cBP=resevation[0].BPLabels.cBP{
 					cBPLabel.text="×"+cBP
 				}
 				

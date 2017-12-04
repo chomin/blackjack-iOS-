@@ -68,10 +68,9 @@ extension GameScene{//画像に関する拡張
 		
 		//cardのサイズを設定
 		for i in card{
-			i.size=CGSize(width:cwidth,height:cheight)
-			i.position=CGPoint(x:-1000,y:0)    //枠外に
-			i.zPosition=1
-			self.addChild(i)
+			i.size = CGSize(width:cwidth,height:cheight)
+			i.position = CGPoint(x:0, y:10000)    //枠外に
+			i.zPosition = 1
 		}
 	}
 	
