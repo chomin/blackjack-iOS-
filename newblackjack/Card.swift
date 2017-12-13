@@ -246,6 +246,13 @@ class SpecialCard:Card{
 				GameScene.makePaintResevation(sound: .bbIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(index), y: GameScene.frameHeight - GameScene.cheight/2, card: self)
 			}
 			
+			self.attack += 2
+			self.hp += 2
+			self.attackLabel.text = String(self.attack)
+			self.attackLabel.fontColor = .orange
+			self.hpLabel.text = String(self.hp)
+			self.hpLabel.fontColor = .orange
+			
 		case 60://ダリス
 			if cardPlace == .p1{
 				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(index), y: GameScene.cheight/2, card: self)
