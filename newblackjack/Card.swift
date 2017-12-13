@@ -249,9 +249,9 @@ class SpecialCard:Card{
 			self.attack += 2
 			self.hp += 2
 			self.attackLabel.text = String(self.attack)
-			self.attackLabel.fontColor = .orange
+			self.attackLabel.fontColor = .green
 			self.hpLabel.text = String(self.hp)
-			self.hpLabel.fontColor = .orange
+			self.hpLabel.fontColor = .green
 			
 		case 60://ダリス
 			if cardPlace == .p1{
