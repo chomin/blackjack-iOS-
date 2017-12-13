@@ -33,30 +33,30 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 		
 		net.dealer=Int(arc4random_uniform(2))+1	//1~2
 		
-		Cards().setcard()
+		Game().setCards()
 		
 		//Aの得点の確認
-		let (ppoint,cpoint,_,_)=Cards().calculatepoints()
-		for (index,value) in Cards.ccards.enumerated(){
-			if value.card<53{//トランプ限定
+		let (ppoint,cpoint,_,_)=Game().calculatepoints()
+		for (index,value) in Game.ccards.enumerated(){
+			if value.cardNum<53{//トランプ限定
 				if value.point==1 && cpoint.inA<22{
-					Cards.ccards[index].point+=10
+					Game.ccards[index].point+=10
 					break	  //二枚目以降は更新しない
 				}
-				if value.card%13==1 && value.point>9 && cpoint.noA>21{
-					Cards.ccards[index].point-=10
+				if value.initialPoint == 1 && value.point>9 && cpoint.noA>21{
+					Game.ccards[index].point-=10
 					break //後に直すべきAはないはず
 				}
 			}
 		}
-		for (index,value) in Cards.pcards.enumerated(){
-			if value.card<53{//トランプ限定
+		for (index,value) in Game.pcards.enumerated(){
+			if value.cardNum<53{//トランプ限定
 				if value.point==1 && ppoint.inA<22{
-					Cards.pcards[index].point+=10
+					Game.pcards[index].point+=10
 					break	  //二枚目以降は更新しない
 				}
-				if value.card%13==1 && value.point>9 && ppoint.noA>21{
-					Cards.pcards[index].point-=10
+				if value.initialPoint == 1 && value.point > 9 && ppoint.noA > 21{
+					Game.pcards[index].point-=10
 					break //後に直すべきAはないはず
 				}
 			}
@@ -64,7 +64,7 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 
 
 		
-		Cards.state = .ready
+		Game.state = .ready
 		net().sendData()	  //初期手札を送信
 		Thread.sleep(forTimeInterval: 3.0)
 		
@@ -82,7 +82,7 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 		if last + 1 <= currentTime  {
 			net().receiveData()
 			
-			if Cards.state == .br{	  //breakを受信したら強制終了
+			if Game.state == .br{	  //breakを受信したら強制終了
 				let gameScene = LaunchScene(size: self.view!.bounds.size)
 				let transition = SKTransition.fade(withDuration: 1.0)
 				gameScene.scaleMode = SKSceneScaleMode.fill
@@ -90,16 +90,16 @@ class preparingScene: SKScene { //先攻後攻を決め、配り、送信する�
 			}
 
 			
-			if(Cards.state == .p1turn){	//相手の受信を確認（こちら側が一方的にどんどん進めるのを防ぐため）
+			if(Game.state == .p1turn){	//相手の受信を確認（こちら側が一方的にどんどん進めるのを防ぐため）
 				if net.dealer==1{
-					Cards.mode = .netp1
+					Game.mode = .netp1
 					let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 					let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 					gameScene.scaleMode = SKSceneScaleMode.fill
 					self.view!.presentScene(gameScene, transition: transition) //GameSceneに移動
 					
 				}else if net.dealer==2{
-					Cards.mode = .netp2
+					Game.mode = .netp2
 					let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 					let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 					gameScene.scaleMode = SKSceneScaleMode.fill

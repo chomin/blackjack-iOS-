@@ -15,87 +15,107 @@ enum gameMode {
 	case com,pvp,netp1,netp2,scom,spvp,snetp1,snetp2
 }
 
-class Cards{	//カードや得点の管理、勝敗判定などを行うクラス
+class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 	
 	//クラスプロパティ（クラス自身が保持する値）	
-	static var pcards:[(card:Int,point:Int)]=[]	//手札(各カードは1から52の通し番号)(空の配列であることに注意！)
-	static var ccards:[(card:Int,point:Int)]=[]
-	static var cards:[(card:Int,point:Int)]=[]   //(山札,得点)
+//	static var pcards:[(card:Int,point:Int)]=[]	//手札(各カードは1から52の通し番号)(空の配列であることに注意！)
+//	static var ccards:[(card:Int,point:Int)]=[]
+//	static var cards:[(card:Int,point:Int)]=[]   //(山札,得点)
+	static var pcards:[Card] = []	//手札(各カードは1から52の通し番号)
+	static var ccards:[Card] = []
+	static var deckCards:[Card] = []   //(山札,得点)
 	static var state:gameState = .end	  //end,waiting（1人が待っている状態）,start(配り終えた情報を送信するまで),ready(配り終えた情報を相手が受信するまで),p1turn,p2turn,judge,endと推移
 	static var mode:gameMode = .com	//com,pvp,netp1,netp2,scom(shadowjackモード),spvp,snetp1,snetp2
-	static var pBP=0
-	static var cBP=0
-	static var cardSum=0  //カードの合計枚数
+	static var pBP = 0
+	static var cBP = 0
+	static var pPoint = 0
+	static var cPoint = 0
+	static var cardSum = 0  //カードの合計枚数
+	static var maxCardVariety = 0	//カードの種類
+	static var firstDealed = false
 	
 	@discardableResult	//結果を使わなくてもいいよ
-	func setcard() -> (pcards:[(Int,Int)],ccards:[(Int,Int)],pp:String,cp:String){
+	func setCards() -> (pcards:[Card], ccards:[Card], pp:String, cp:String){
+		Game.cardSum = 0
 		
-		if Cards.mode == .com || Cards.mode == .pvp || Cards.mode == .netp1 || Cards.mode == .netp2{
-			Cards.cardSum=52
+		if Game.mode == .com || Game.mode == .pvp || Game.mode == .netp1 || Game.mode == .netp2{
+//			Game.cardSum = 52
+			Game.maxCardVariety = 52
 		}else{
-			Cards.cardSum=66
+//			Game.cardSum = 72
+			Game.maxCardVariety = 60
 		}
 		
-		var removeCount=0
+//		var removeCount = 0
 		
-		for i in 1...Cards.cardSum{
+		for i in 1...Game.maxCardVariety{
 			
 			if i==53 || i==56{//サタンとゼウスは禁止カード
-				removeCount += 1
+//				removeCount += 1
 				continue
 			}
 			
+			
+			
 			if i<53{
-				if (i-1)%13 > 8{	//10,J,Q,Kのとき
-					Cards.cards.append((i,10))
-				}else{
-					Cards.cards.append((i,i%13))
-				}
+
+				Game.deckCards.append(Trump(cardNum: i)!)
+				Game.cardSum += 1
+//				if (i-1)%13 > 8{	//10,J,Q,Kのとき
+//					Game.deckCards.append((i,10))
+//				}else{
+//					Game.deckCards.append((i,i%13))
+//				}
 			}else{//特殊カード
-				if i==53 || i==55 || i==56 || i==60 || i==61{
-					Cards.cards.append((i,10))
-				}else if i==57 || i==62 || i==63{
-					Cards.cards.append((i,4))
-				}else if i==54 || i==58 || i==59{
-					Cards.cards.append((i,9))
-				}else if i==64 || i==65 || i==66 {
-					Cards.cards.append((i,8))
+				
+				for _ in 1...3{
+					Game.deckCards.append(SpecialCard(cardNum: i)!)
+					Game.cardSum += 1
 				}
+//				if i==53 || i==55 || i==56 || i==60 || i==61{
+//					Game.deckCards.append((i,10))
+//				}else if i==57 || i==62 || i==63{
+//					Game.deckCards.append((i,4))
+//				}else if i==54 || i==58 || i==59{
+//					Game.deckCards.append((i,9))
+//				}else if i==64 || i==65 || i==66 {
+//					Game.deckCards.append((i,8))
+//				}
 			}
 		}
 		
-		Cards.cardSum -= removeCount
+//		Game.cardSum -= removeCount
 		
 		
 		//Fisher–Yatesシャッフルアルゴルズム
-		for i in 0...Cards.cardSum-1{
-			let j=Int(arc4random_uniform(UInt32(Cards.cardSum-1)))%Cards.cardSum  //上限をつけないとiPhone5では動かない。。。
-			let t=Cards.cards[i]
-			Cards.cards[i]=Cards.cards[j]
-			Cards.cards[j]=t
+		for i in 0...Game.cardSum-1{
+			let j = Int(arc4random_uniform(UInt32(Game.cardSum-1)))%Game.cardSum  //上限をつけないとiPhone5では動かない。。。
+			let t = Game.deckCards[i]
+			Game.deckCards[i] = Game.deckCards[j]
+			Game.deckCards[j] = t
 		}
 
 		
 		
 		//カードを配る
-		Cards.pcards.append(Cards.cards[0])
-		Cards.cards.removeFirst()
-		Cards.pcards.append(Cards.cards[0])
-		Cards.cards.removeFirst()
-		Cards.ccards.append(Cards.cards[0])
-		Cards.cards.removeFirst()
-		Cards.ccards.append(Cards.cards[0])
-		Cards.cards.removeFirst()
+		Game.pcards.append(Game.deckCards[0])
+		Game.deckCards.removeFirst()
+		Game.pcards.append(Game.deckCards[0])
+		Game.deckCards.removeFirst()
+		Game.ccards.append(Game.deckCards[0])
+		Game.deckCards.removeFirst()
+		Game.ccards.append(Game.deckCards[0])
+		Game.deckCards.removeFirst()
 		
 		let (pp,cp) = getpoints()
 		
 		
-		return (Cards.pcards,Cards.ccards,pp!,cp!)
+		return (Game.pcards, Game.ccards, pp!, cp!)
 	}
 	
 	func getpoints() ->(pp:String?,cp:String?){
 		
-		let (ppoint,cpoint,_,_)=calculatepoints()
+		let (ppoint,cpoint,_,_) = calculatepoints()
 		//ppoint,cpointはそれぞれ(noA:Int,inA:Int)、pAとcAはAを持っているか(Bool)
 		
 		//得点をcp,ppにまとめた後、ラベルに表示（ラベルはオプショナルだから足し算できない）
@@ -115,19 +135,19 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		
 	}//ラベル用のポイントを返す
 	
-	func hit() -> (pcards:[(Int,Int)],pp:String){//pcardsにcards[0]を配る
+	func hit() -> (pcards:[Card],pp:String){//pcardsにcards[0]を配る
 		
-		Cards.pcards.append(Cards.cards[0])
-		Cards.cards.removeFirst()
+		Game.pcards.append(Game.deckCards[0])
+		Game.deckCards.removeFirst()
 		let (pp,_)=getpoints()
-		return (Cards.pcards,pp!)
+		return (Game.pcards, pp!)
 	}
 	
-	func stand() -> (ccards:[(Int,Int)],cp:String){
-		Cards.ccards.append(Cards.cards[0])
-		Cards.cards.removeFirst()
+	func stand() -> (ccards:[Card],cp:String){
+		Game.ccards.append(Game.deckCards[0])
+		Game.deckCards.removeFirst()
 		let (_,cp)=getpoints()
-		return (Cards.ccards,cp!)
+		return (Game.ccards, cp!)
 		
 	}
 	
@@ -209,7 +229,7 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		var ppoint=(noA:0,inA:10)
 		var cpoint=(noA:0,inA:10)//inAは、もし今のポイントに、更に１０点加えたら...の値
 		
-		for i in Cards.pcards{
+		for i in Game.pcards{
 			
 				ppoint.inA+=i.point
 				ppoint.noA+=i.point
@@ -238,7 +258,7 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 //			}
 		}
 		
-		for i in Cards.ccards{
+		for i in Game.ccards{
 
 				cpoint.inA+=i.point
 				cpoint.noA+=i.point
@@ -246,15 +266,15 @@ class Cards{	//カードや得点の管理、勝敗判定などを行うクラ�
 		}
 		
 		//Aを持っているかの判定
-		var pA=false,cA=false
-		for i in Cards.pcards{
-			if i.card%13 == 1 && i.card<53{
-				pA=true
+		var pA = false, cA = false
+		for i in Game.pcards{
+			if i.cardNum % 13 == 1 && i.cardNum < 53{
+				pA = true
 			}
 		}
-		for i in Cards.ccards{
-			if i.card%13 == 1 && i.card<53{
-				cA=true
+		for i in Game.ccards{
+			if i.cardNum % 13 == 1 && i.cardNum < 53{
+				cA = true
 			}
 		}
 		

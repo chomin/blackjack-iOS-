@@ -68,11 +68,11 @@ class waitingScene: SKScene {
 			queue.async { //3秒以上たっても処理が終わるまで次の処理を行わない
 				
 				if waitingScene.dobreak==true{
-					Cards.state = .br
+					Game.state = .br
 					//クラス変数を初期化
-					Cards.pcards.removeAll()
-					Cards.cards.removeAll()
-					Cards.ccards.removeAll()
+					Game.pcards.removeAll()
+					Game.deckCards.removeAll()
+					Game.ccards.removeAll()
 					self.nets.sendData()
 					
 					let gameScene = LaunchScene(size: self.view!.bounds.size) // create your new scene
@@ -89,12 +89,12 @@ class waitingScene: SKScene {
 					
 					
 					
-					let tmp=Cards.state   //更新前の状態
-					self.nets.receiveData() //更新(Cardsに反映)
+					let tmp=Game.state   //更新前の状態
+					self.nets.receiveData() //更新(Gameに反映)
 
 					if net.isLatest==true{
 						
-						if (Cards.state == .start && tmp == .waiting) || (Cards.state == .ready && tmp == .start) {//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
+						if (Game.state == .start && tmp == .waiting) || (Game.state == .ready && tmp == .start) {//こっちがwaitingで向こうからstart(p1turn???)が帰ってきたとき（didfirstより前に行う）
 							self.breakButton.isHidden=true
 							self.cancelButton.isHidden=true
 							let gameScene:loadingScene = loadingScene(size: self.view!.bounds.size) // create your new scene
@@ -104,7 +104,7 @@ class waitingScene: SKScene {
 						}
 						
 						
-//						if Cards.state=="p2turn" && tmp=="p1turn"{//2つ進んでいたらloadingSceneを飛ばす(片方が進め過ぎるとバグるので、起こらないように仕様変更)
+//						if Game.state=="p2turn" && tmp=="p1turn"{//2つ進んでいたらloadingSceneを飛ばす(片方が進め過ぎるとバグるので、起こらないように仕様変更)
 //							if net.dealer==2{	//ありえないはず
 //								let gameScene:Netp1Scene = Netp1Scene(size: self.view!.bounds.size) // create your new scene
 //								let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
@@ -122,14 +122,14 @@ class waitingScene: SKScene {
 //						}
 						
 						if self.didfirst==false{//最初だけ行うべき内容？
-							if Cards.state == .end||Cards.state == .br{
-								Cards.state = .waiting
+							if Game.state == .end||Game.state == .br{
+								Game.state = .waiting
 								self.nets.sendData()
 								self.Label.text = "Waiting..."
 								self.breakButton.isHidden=true
-							}else if Cards.state == .waiting{	//誰かが待っていたら→p2
+							}else if Game.state == .waiting{	//誰かが待っていたら→p2
 								self.cancelButton.isHidden=true
-								Cards.state = .start
+								Game.state = .start
 								self.nets.sendData()
 								Thread.sleep(forTimeInterval: 3.0)
 								let gameScene:preparingScene = preparingScene(size: self.view!.bounds.size) // create your new scene
@@ -160,8 +160,8 @@ class waitingScene: SKScene {
 						
 						
 						
-						if (Cards.state == .end)||(Cards.state == .br){//??
-							Cards.state = .waiting
+						if (Game.state == .end)||(Game.state == .br){//??
+							Game.state = .waiting
 							self.nets.sendData()
 							self.Label.text = "Waiting..."
 							self.breakButton.isHidden=true
@@ -169,7 +169,7 @@ class waitingScene: SKScene {
 						}
 						if waitingScene.sendstart==true{
 							self.cancelButton.isHidden=true
-							Cards.state = .start
+							Game.state = .start
 							waitingScene.sendstart=false
 							self.nets.sendData()
 							let gameScene:preparingScene = preparingScene(size: self.view!.bounds.size) // create your new scene

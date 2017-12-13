@@ -166,9 +166,9 @@ class LaunchScene: SKScene {
 	
 	@objc func onClickCOMButton(_ sender : UIButton){
 		//クラス変数を初期化（不要？）
-		Cards.pcards.removeAll()
-		Cards.cards.removeAll()
-		Cards.ccards.removeAll()
+		Game.pcards.removeAll()
+		Game.deckCards.removeAll()
+		Game.ccards.removeAll()
 		
 		//ボタンを隠す
 		comButton.isHidden=true
@@ -176,7 +176,7 @@ class LaunchScene: SKScene {
 		netButton.isHidden=true
 		cancelButton.isHidden=true
 		
-		Cards.mode = .com
+		Game.mode = .com
 		let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 		gameScene.scaleMode = SKSceneScaleMode.fill
@@ -188,9 +188,9 @@ class LaunchScene: SKScene {
 	@objc func onClickPVPButton(_ sender : UIButton){
 		
 		//クラス変数を初期化（不要？）
-		Cards.pcards.removeAll()
-		Cards.cards.removeAll()
-		Cards.ccards.removeAll()
+		Game.pcards.removeAll()
+		Game.deckCards.removeAll()
+		Game.ccards.removeAll()
 		
 		//ボタンを隠す
 		comButton.isHidden=true
@@ -198,7 +198,7 @@ class LaunchScene: SKScene {
 		netButton.isHidden=true
 		cancelButton.isHidden=true
 		
-		Cards.mode = .pvp
+		Game.mode = .pvp
 		let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 		gameScene.scaleMode = SKSceneScaleMode.fill
@@ -209,9 +209,9 @@ class LaunchScene: SKScene {
 	@objc func onClickNetButton(_ sender : UIButton){
 		
 		//クラス変数を初期化（不要？）
-		Cards.pcards.removeAll()
-		Cards.cards.removeAll()
-		Cards.ccards.removeAll()
+		Game.pcards.removeAll()
+		Game.deckCards.removeAll()
+		Game.ccards.removeAll()
 		
 		//ボタンを隠す
 		comButton.isHidden=true
@@ -219,7 +219,7 @@ class LaunchScene: SKScene {
 		netButton.isHidden=true
 		cancelButton.isHidden=true
 		
-		Cards.mode = .netp1  //setcardでの認識に必要
+		Game.mode = .netp1  //setcardでの認識に必要
 		let gameScene:waitingScene = waitingScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 		gameScene.scaleMode = SKSceneScaleMode.fill
@@ -229,15 +229,15 @@ class LaunchScene: SKScene {
 	
 	@objc func onClicksCOMButton(_ sender : UIButton){
 		//クラス変数を初期化（不要？）
-		Cards.pcards.removeAll()
-		Cards.cards.removeAll()
-		Cards.ccards.removeAll()
+		Game.pcards.removeAll()
+		Game.deckCards.removeAll()
+		Game.ccards.removeAll()
 		
 		//ボタンを隠す
 		scomButton.isHidden=true
 		cancelButton.isHidden=true
 		
-		Cards.mode = .scom
+		Game.mode = .scom
 		let gameScene:GameScene = GameScene(size: self.view!.bounds.size) // create your new scene
 		let transition = SKTransition.fade(withDuration: 1.0) // create type of transition (you can check in documentation for more transtions)
 		gameScene.scaleMode = SKSceneScaleMode.fill

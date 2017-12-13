@@ -10,6 +10,10 @@
 import SpriteKit
 import AVFoundation
 
+enum SoundType{
+	case satanIn,olivieIn,bahamutIn,zeusIn,aliceIn,luciferIn,luciferEffect,bbIn,daliceIn,daliceLast,card,cardAndSummon,br,extinction,cure,debuffField,BP3,none
+}
+
 class Sounds: SKScene, AVAudioPlayerDelegate{//通知を受け取るためAVAudioPlayerDelegateを、更にエラー回避のためSKScene(これは多重継承ではないらしい)
 	//効果音を生成
 	var playcard : AVAudioPlayer! = nil  // 再生するサウンドのインスタンス
@@ -21,22 +25,30 @@ class Sounds: SKScene, AVAudioPlayerDelegate{//通知を受け取るためAVAudi
 	var aliceIn : AVAudioPlayer! = nil
 	var luciferIn : AVAudioPlayer! = nil
 	var luciferEffect : AVAudioPlayer! = nil
+	var bbIn: AVAudioPlayer! = nil
+	var daliceIn: AVAudioPlayer! = nil
+	var daliceLast: AVAudioPlayer! = nil
 	var breakcard : AVAudioPlayer! = nil
+	var extinction: AVAudioPlayer! = nil
 	var BP3Sound : AVAudioPlayer! = nil
 	var cureSound : AVAudioPlayer! = nil
 	var debuffSound : AVAudioPlayer! = nil
 	
 	func setAllSounds() {
-		playcard=Sounds().setSound(fileName: "カード音")	//トランプ
-		summon=Sounds().setSound(fileName: "カード+召喚音")	//特殊カード？
-		satanIn=Sounds().setSound(fileName: "絶望よ、来たれ")
-		olivieIn=Sounds().setSound(fileName: "新たなる世界を求めて")
-		bahamutIn=Sounds().setSound(fileName: "（バハ登場）")
-		zeusIn=Sounds().setSound(fileName: "我こそ唯一にして無二たる神なり")
-		aliceIn=Sounds().setSound(fileName: "不思議な世界、素敵な世界！")
+		playcard = Sounds().setSound(fileName: "カード音")	//トランプ
+		summon = Sounds().setSound(fileName: "カード+召喚音")	//特殊カード？
+		satanIn = Sounds().setSound(fileName: "絶望よ、来たれ")
+		olivieIn = Sounds().setSound(fileName: "新たなる世界を求めて")
+		bahamutIn = Sounds().setSound(fileName: "（バハ登場）")
+		zeusIn = Sounds().setSound(fileName: "我こそ唯一にして無二たる神なり")
+		aliceIn = Sounds().setSound(fileName: "不思議な世界、素敵な世界！")
 		luciferIn = Sounds().setSound(fileName: "世界の調和こそが、私の望みだ")
 		luciferEffect = Sounds().setSound(fileName: "神の慈悲だ")
-		breakcard=Sounds().setSound(fileName: "破壊音")
+		bbIn = Sounds().setSound(fileName: "恋ではなく、これは愛")
+		daliceIn = Sounds().setSound(fileName: "幻想の世界へようこそ")
+		daliceLast = Sounds().setSound(fileName: "幻想は終わらない→幻想の世界へようこそ")
+		breakcard = Sounds().setSound(fileName: "破壊音")
+		extinction = Sounds().setSound(fileName: "消滅音")
 		BP3Sound = Sounds().setSound(fileName: "BP3音")
 		cureSound = Sounds().setSound(fileName: "回復音")
 		debuffSound = Sounds().setSound(fileName: "場のデバフ")
@@ -46,7 +58,7 @@ class Sounds: SKScene, AVAudioPlayerDelegate{//通知を受け取るためAVAudi
 		var sound:AVAudioPlayer!
 		
 		// サウンドファイルのパスを生成
-		let Path = Bundle.main.path(forResource: fileName, ofType: "mp3")!    //m4aは不可
+		let Path = Bundle.main.path(forResource: "Sounds/" + fileName, ofType: "mp3")!    //m4aは不可
 		let soundURL:URL = URL(fileURLWithPath: Path)
 		// AVAudioPlayerのインスタンスを作成
 		do {

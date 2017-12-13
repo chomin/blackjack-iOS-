@@ -143,8 +143,8 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 									break
 								}
 							}
-							//cardとかを更新
-							Cards.cards=cards
+							//cardとかを更新:TODO
+//							Game.cards = cards
 							
 						}
 						
@@ -168,7 +168,7 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 									break
 								}
 							}
-							Cards.pcards=pcards
+//							Game.pcards=pcards	TODO
 						}
 						if let tmp0=json[alast]["ccards"]{
 							ccardsS=tmp0 as! String
@@ -189,28 +189,28 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 								}else{
 									break
 								}							}
-							Cards.ccards=ccards
+//							Game.ccards=ccards	TODO
 						}
 						if let tmp0=json[alast]["state"]{
 							
 							state=tmp0 as! String
 							switch state {
 							case "break":
-								Cards.state = .br
+								Game.state = .br
 							case "end":
-								Cards.state = .end
+								Game.state = .end
 							case "waiting":
-								Cards.state = .waiting
+								Game.state = .waiting
 							case "start":
-								Cards.state = .start
+								Game.state = .start
 							case "ready":
-								Cards.state = .ready
+								Game.state = .ready
 							case "p1turn":
-								Cards.state = .p1turn
+								Game.state = .p1turn
 							case "p2turn":
-								Cards.state = .p2turn
+								Game.state = .p2turn
 							case "judge":
-								Cards.state = .judge
+								Game.state = .judge
 							default:
 								print("state error")
 								exit(1)
@@ -246,22 +246,22 @@ class net:UIViewController,URLSessionDelegate{	//ネット関係の処理をす�
 		//		// タスクの実行.
 //		task.resume()
 		print("↓受信後のローカルの状態")
-		print("state:\(Cards.state),cards:\(Cards.cards),pcards:\(Cards.pcards),ccards:\(Cards.ccards)")
+//		print("state:\(Game.state),cards:\(Game.cards),pcards:\(Game.pcards),ccards:\(Game.ccards)")	TODO
 		print("↑受信後のローカルの状態")
 
 	}
 	
 	func sendData(){
-		//配列を文字列に変換
-		let Scards=String(describing: Cards.cards)
-		let Spcards=String(describing: Cards.pcards)
-		let Sccards=String(describing: Cards.ccards)
+		//配列を文字列に変換:TODO
+		let Scards=String(describing: Game.deckCards)
+		let Spcards=String(describing: Game.pcards)
+		let Sccards=String(describing: Game.ccards)
 		
 		print(net.dealer)
 		
 		//gameState型をStringに変換
 		var state:String
-		switch Cards.state {
+		switch Game.state {
 		case .br:
 			state="break"
 		case .end:
