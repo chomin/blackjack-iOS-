@@ -95,25 +95,25 @@
 			isa = PBXGroup;
 			children = (
 				0F9EE1B51E66544000A78B59 /* AppDelegate.swift */,
+				0F9EE1C21E66544000A78B59 /* Assets.xcassets */,
+				0F121EB21FD65595009A24EB /* Card.swift */,
+				0F5E74891E6D688F003557A5 /* Game.swift */,
 				0F9EE1BB1E66544000A78B59 /* GameScene.swift */,
 				0FC5C0421F4FC57100789DB4 /* GameSceneButtons.swift */,
 				0FC5C0041F4E6E2400789DB4 /* GameSceneImages.swift */,
-				0FC5C0061F4E6E4200789DB4 /* Sounds.swift */,
 				0FC5C0021F4E67F200789DB4 /* GameSceneLabels.swift */,
-				0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */,
-				0F0E09081E7BDFA4005B85FB /* waitingScene.swift */,
-				0F869AB21EF55EA20039832A /* preparingScene.swift */,
-				0F869AB41EF55EC40039832A /* loadingScene.swift */,
-				0F5E74891E6D688F003557A5 /* Game.swift */,
-				0F121EB21FD65595009A24EB /* Card.swift */,
-				0F0E094C1E7BE5FA005B85FB /* net.swift */,
 				0F9EE1BD1E66544000A78B59 /* GameViewController.swift */,
-				0F121EB01FD3A7F3009A24EB /* ScrollNode.swift */,
-				0F9EE1BF1E66544000A78B59 /* Main.storyboard */,
-				0F9EE1C21E66544000A78B59 /* Assets.xcassets */,
-				0F121EB91FD69F6E009A24EB /* Sounds */,
-				0F9EE1C41E66544000A78B59 /* LaunchScreen.storyboard */,
 				0F9EE1C71E66544000A78B59 /* Info.plist */,
+				0F51A0821E7151A900A2ACE6 /* LaunchScene.swift */,
+				0F9EE1C41E66544000A78B59 /* LaunchScreen.storyboard */,
+				0F869AB41EF55EC40039832A /* loadingScene.swift */,
+				0F9EE1BF1E66544000A78B59 /* Main.storyboard */,
+				0F0E094C1E7BE5FA005B85FB /* net.swift */,
+				0F869AB21EF55EA20039832A /* preparingScene.swift */,
+				0F121EB01FD3A7F3009A24EB /* ScrollNode.swift */,
+				0F121EB91FD69F6E009A24EB /* Sounds */,
+				0FC5C0061F4E6E4200789DB4 /* Sounds.swift */,
+				0F0E09081E7BDFA4005B85FB /* waitingScene.swift */,
 			);
 			path = newblackjack;
 			sourceTree = "<group>";
@@ -145,7 +145,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = NakaiKohei;
 				TargetAttributes = {
 					0F9EE1B11E66544000A78B59 = {
@@ -355,10 +355,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -381,7 +380,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

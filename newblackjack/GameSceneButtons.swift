@@ -221,10 +221,10 @@ extension GameScene{//ボタンに関する拡張
 					var ccards = Game.ccards
 					if ccards.count>0{//バハで消えてないか確認
 						if ccards[1].cardNum < 53{
-							GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [backCard])
+							GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
 						}else if let SC = ccards[1] as? SpecialCard{
 							//裏を隠してファンファーレ
-							GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
+							GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [GameScene.backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
 							Game.firstDealed = false
 							SC.fanfare(cardPlace: .com, index: 1)
 //							let i = getSpecialEnteringSoundType(card: ccards[1].card)
@@ -268,7 +268,7 @@ extension GameScene{//ボタンに関する拡張
 					//2枚目を表に向ける
 					var ccards = Game.ccards
 					if ccards[1].cardNum < 53{
-						GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [backCard])
+						GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
 					}else{
 						//TODO
 //						let i = getSpecialEnteringSoundType(card: ccards[1].card)
@@ -325,7 +325,7 @@ extension GameScene{//ボタンに関する拡張
 				//2枚目を表に向ける
 				var ccards = Game.ccards
 				if ccards[1].cardNum<53{
-					GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [backCard])
+					GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
 				}else{
 					//TODO
 //					let i = getSpecialEnteringSoundType(card: ccards[1].card)
@@ -378,12 +378,12 @@ extension GameScene{//ボタンに関する拡張
 //						tPointLabel[ccards[1].card-1].fontColor = SKColor.orange
 //						tPointLabel[ccards[1].card-1].text = String(Game.ccards[1].point)
 //					}
-					GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [backCard])
+					GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
 					
 				}else if let SC = ccards[1] as? SpecialCard{//特殊カード
 					
 					//まず裏を隠し、登場音とともに登場させる
-					GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
+					GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [GameScene.backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
 					SC.fanfare(cardPlace: .com, index: 1)
 					
 //					let i = getSpecialEnteringSoundType(card: ccards[1].card)
@@ -454,7 +454,7 @@ extension GameScene{//ボタンに関する拡張
 				}
 				
 //				let pcards = Game.pcards
-				var (ccards,_) = Game().stand()
+				let (ccards,_) = Game().stand()
 				
 				//Aの得点の確認
 				checkA()

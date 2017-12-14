@@ -172,33 +172,51 @@ class SpecialCard:Card{
 			}
 			if Game.firstDealed{
 				//破壊と移動
-				var hideCards:[Card] = []
+				var hideCards:[Card] = [GameScene.backCard]
 				var repaintCards:[(x:CGFloat, y:CGFloat, card:Card)] = []
+				var repaintPCardNum = 0
+				var repaintCCardNum = 0
+				var pcardsRemoveIndexes:[Int] = []
+				var ccardsRemoveIndexes:[Int] = []
 				
 				for (index, value) in Game.pcards.enumerated(){
 					if value !== self as Card && value.canBeBroken {
+						
 						hideCards.append(value)
-						Game.pcards.remove(at: index)
-						if let a = value as? SpecialCard{
-							a.lastWord()
-						}
+//						Game.pcards.remove(at: index)	//個数が変わる！
+						pcardsRemoveIndexes.append(index)
 					}else{//残ったものの位置を更新
-						repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintCards.count)*GameScene.cwidth, GameScene.cheight/2, value))
+						repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintPCardNum)*GameScene.cwidth, GameScene.cheight/2, value))
+						repaintPCardNum += 1
 					}
 				}
 				for(index, value) in Game.ccards.enumerated(){
 					if value !== self as Card && value.canBeBroken {
+						
 						hideCards.append(value)
-						Game.ccards.remove(at: index)
-						if let a = value as? SpecialCard{
-							a.lastWord()
-						}
+//						Game.ccards.remove(at: index)
+						ccardsRemoveIndexes.append(index)
 					}else{
-						repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintCards.count)*GameScene.cwidth, GameScene.frameHeight - GameScene.cheight/2, value))
+						repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintCCardNum)*GameScene.cwidth, GameScene.frameHeight - GameScene.cheight/2, value))
+						repaintCCardNum += 1
 					}
+				}
+				//対象カードを破壊
+				for (index,value) in pcardsRemoveIndexes.enumerated(){
+					Game.pcards.remove(at: value - index)
+				}
+				for (index,value) in ccardsRemoveIndexes.enumerated(){
+					Game.ccards.remove(at: value - index)
 				}
 				
 				GameScene.resevation.append((sound: .br, paint:[], repaint:repaintCards, hide: hideCards, pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP: nil)))
+				
+				//全破壊の後、ラストワード発動
+				for i in hideCards{
+					if let SC = i as? SpecialCard{
+						SC.lastWord()
+					}
+				}
 			
 			}
 			
@@ -253,6 +271,8 @@ class SpecialCard:Card{
 			self.hpLabel.text = String(self.hp)
 			self.hpLabel.fontColor = .green
 			
+			self.canBeBroken = false
+			
 		case 60://ダリス
 			if cardPlace == .p1{
 				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(index), y: GameScene.cheight/2, card: self)
@@ -271,24 +291,35 @@ class SpecialCard:Card{
 		case 60://ダリス
 			//（相手を含めて）残っているカードをすべて消滅させる(自身は破壊されてるのでないはず)
 			var hideCards:[Card] = []
+			var pcardsRemoveIndexes:[Int] = []
+			var ccardsRemoveIndexes:[Int] = []
+			
 			for (index, value) in Game.pcards.enumerated(){
 				hideCards.append(value)
-				Game.pcards.remove(at: index)
+				pcardsRemoveIndexes.append(index)
 			}
 			for (index, value) in Game.ccards.enumerated(){
 				hideCards.append(value)
-				Game.ccards.remove(at: index)
+				ccardsRemoveIndexes.append(index)
 			}
 			
 			GameScene.makeDaliceLastResevation(hide: hideCards)
+			
+			for (index,value) in pcardsRemoveIndexes.enumerated(){
+				Game.pcards.remove(at: value - index)
+			}
+			for (index,value) in ccardsRemoveIndexes.enumerated(){
+				Game.ccards.remove(at: value - index)
+			}
+			
 			//ダリスを新たに召喚（これ自体を追加すると2重append。文章的にも新たに召喚するのが正しい）(makeDaliceLastResevationに記述)
 			//新しいダリスを生成
 			let newDalice = SpecialCard(cardNum: 60)!
 			if self.cardPlace == .p1{
-				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(Game.pcards.count), y: GameScene.cheight/2, card: self)//count関係の順番に注意
+				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(Game.pcards.count), y: GameScene.cheight/2, card: newDalice)//count関係の順番に注意
 				Game.pcards.append(newDalice)
 			}else{
-				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(Game.ccards.count), y: GameScene.frameHeight - GameScene.cheight/2, card: self)//count関係の順番に注意
+				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(Game.ccards.count), y: GameScene.frameHeight - GameScene.cheight/2, card: newDalice)//count関係の順番に注意
 				Game.ccards.append(newDalice)
 			}
 			
