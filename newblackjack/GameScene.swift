@@ -96,8 +96,10 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	}
 	static func makeAliceResevation(x:CGFloat?,y:CGFloat?,card:Card?,tPointLabel:[(card:Card,value:String,color:UIColor?)]){//カード表示と得点群のみ(アリス引いたとき用)
 		var TPLabel = tPointLabel
+		if TPLabel.count > 0{
 		for i in 1...TPLabel.count{
 			TPLabel[i-1].color = SKColor.orange
+			}
 		}
 		GameScene.resevation.append((.aliceIn,[(x,y,card)],[],[],(nil,nil),[],(nil,nil)))
 		GameScene.resevation.append((.debuffField,[],[],[],Game().getpoints(),TPLabel,(nil,nil)))
@@ -191,91 +193,53 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 			//Aの得点の確認
 			checkA()
 			
-			//各トランプの得点の初期値を設定（初期値設定のためこの位置（setcardより後、アリスより前））
-			//			setTPointLabelsText()
-			
-			//各手札を表示
+			//各手札を表示(hit内に移動)
 			for (index,value) in pccards.pcards.enumerated(){//プレイヤー側
-				if value is Trump{//トランプ
-					//					//１枚目がアリスであるかの確認
-					//					if Game.pcards[0].card == 57 || Game.pcards[0].card == 62 || Game.pcards[0].card == 63{
-					//						Game.pcards[1].point += 1
-					//						tPointLabel[value.0-1].fontColor = .orange
-					//						tPointLabel[value.0-1].text = String(Game.pcards[1].point)
-					//					}
-					
-					
-					GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(index), y: GameScene.cheight/2, card: value)
-					
-					
-					//				}else if value.0 == 54 || value.0 == 58 || value.0 == 59{//オリヴィエ
-					//					Game.pBP = 3
-					//					makeOlivieResevation(x: cwidth/2+cwidth*CGFloat(index), y: cheight/2, card: value.0, BPLabel: (pBP: "3", cBP: nil))
-					//				}else if (value.0 == 57 || value.0 == 62 || value.0 == 63) && index == 1 {//2枚目アリス
-					//					if Game.pcards[0].card < 53{
-					//						Game.pcards[0].point += 1
-					//					}
-					//					makeAliceResevation(x: cwidth/2+cwidth*CGFloat(index), y: cheight/2, card: value.0, tPointLabel: [(Game.pcards[0].card-1,String(Game.pcards[0].point),SKColor.orange)])
-					//
-				}else if let SC = value as? SpecialCard{//引いたのが特殊カード
-					
-					SC.fanfare(cardPlace: .p1, index: index)
-				}
-				
-				for j in Game.pcards{//場にある分の効果を確認
-					if let SC2 = j as? SpecialCard{
-						SC2.drawEffect(drawPlayer: .p1)
-					}
-				}
-				for j in Game.ccards{//場にある分の効果を確認
-					if let SC2 = j as? SpecialCard{
-						SC2.drawEffect(drawPlayer: .p1)
-					}
-				}
+//				if value is Trump{//トランプ
+//
+//					GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(index), y: GameScene.cheight/2, card: value)
+//
+//				}else if let SC = value as? SpecialCard{//引いたのが特殊カード
+//
+//					SC.fanfare(cardPlace: .p1, index: index)
+//				}
+//
+//				for j in Game.pcards{//場にある分の効果を確認
+//					if let SC2 = j as? SpecialCard{
+//						SC2.drawEffect(drawPlayer: .p1)
+//					}
+//				}
+//				for j in Game.ccards{//場にある分の効果を確認
+//					if let SC2 = j as? SpecialCard{
+//						SC2.drawEffect(drawPlayer: .p1)
+//					}
+//				}
 			}
-			//					let i = getSpecialEnteringSoundType(card: value.0)
-			//					makePaintResevation(sound: i, x: cwidth/2+cwidth*CGFloat(index), y: cheight/2, card: value.0)
-		
-		
-		
-	
 	
 			//cpuの1枚目の表示
-			if pccards.ccards[0] is Trump{
-				GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2, y: frame.size.height-GameScene.cheight/2, card: pccards.ccards[0])
-				
-//			}else
-//				if pccards.ccards[0].0 == 54 || pccards.ccards[0].0 == 58 || pccards.ccards[0].0 == 59{//オリヴィエ
-//				Game.cBP = 3
-//				makeOlivieResevation(x: cwidth/2, y: frame.size.height-cheight/2, card: pccards.ccards[0].0, BPLabel: (pBP: nil, cBP: "3"))
-			}else if let SC =  pccards.ccards[0] as? SpecialCard{
-				
-				SC.fanfare(cardPlace: .com, index: 0)
-				
-				
-//				let i = getSpecialEnteringSoundType(card: pccards.ccards[0].0)
-//				makePaintResevation(sound: i, x: cwidth/2, y: frame.size.height-cheight/2, card: pccards.ccards[0].0)
-				//アリスの処理は不要
-			}
-			for j in Game.pcards{//場にある分の効果を確認
-				if let SC2 = j as? SpecialCard{
-					SC2.drawEffect(drawPlayer: .com)
-				}
-			}
-			for j in Game.ccards{//場にある分の効果を確認
-				if let SC2 = j as? SpecialCard{
-					SC2.drawEffect(drawPlayer: .com)
-				}
-			}
+//			if pccards.ccards[0] is Trump{
+//				GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2, y: frame.size.height-GameScene.cheight/2, card: pccards.ccards[0])
+//
+//			}else if let SC =  pccards.ccards[0] as? SpecialCard{
+//
+//				SC.fanfare(cardPlace: .com, index: 0)
+//			}
+//			for j in Game.pcards{//場にある分の効果を確認
+//				if let SC2 = j as? SpecialCard{
+//					SC2.drawEffect(drawPlayer: .com)
+//				}
+//			}
+//			for j in Game.ccards{//場にある分の効果を確認
+//				if let SC2 = j as? SpecialCard{
+//					SC2.drawEffect(drawPlayer: .com)
+//				}
+//			}
 			
 			//cpuの2枚目の表示
-			GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: GameScene.backCard)
+//			GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: GameScene.backCard)
 			
 			
 		}else{//ネット系
-			
-			//各トランプの得点の値を設定（初期値設定のためこの位置（setcardより後、アリスより前））
-			//			setTPointLabelsText()
 			
 			let pcards:[Card] = Game.pcards
 			let ccards:[Card] = Game.ccards
@@ -330,7 +294,6 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 					GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
 				}
 			}else if let SC = ccards[1] as? SpecialCard{
-//				let i = getSpecialEnteringSoundType(card: ccards[1].card)
 				
 				GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [GameScene.backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
 				
@@ -376,11 +339,6 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 			}
 			
 		}else if j == 3{//pがbj
-//			if Game.ccards[0].card == 57 || Game.ccards[0].card == 62 || Game.ccards[0].card == 63 {//1枚目アリスの確認
-//				Game.ccards[1].point += 1
-//				tPointLabel[Game.ccards[1].card-1].fontColor = SKColor.orange
-//				tPointLabel[Game.ccards[1].card-1].text = String(Game.ccards[1].point)
-//			}
 			
 			//2枚目を表に向ける
 			var ccards = Game.ccards
@@ -392,15 +350,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				}else{
 					GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
 				}
-//			}else if Game.ccards[1].card == 57 || Game.ccards[1].card == 62 || Game.ccards[1].card == 63{//2枚目アリスの確認
-//				Game.ccards[0].point += 1
-//
-//				let y = (Game.mode == .netp2 ? GameScene.cheight/2 : frame.size.height-GameScene.cheight/2)
-//
-//				GameScene.resevation.append((sound:.none,x:nil,y:nil,card:nil,hide:[0],pointLabels:(pp:nil,cp:nil),tPointLabels:[],BPLabels:(pBP:nil,cBP:nil)))
-//				makeAliceResevation(x: GameScene.cwidth/2+GameScene.cwidth, y: y, card: ccards[1].card, tPointLabel: [(Game.ccards[0].card-1,String(Game.ccards[0].point),SKColor.orange)])
 			}else if let SC = ccards[1] as? SpecialCard{//2枚目が他の特殊カード
-//				let i = getSpecialEnteringSoundType(card: ccards[1].card)
 				
 				GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [GameScene.backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
 				
@@ -538,9 +488,6 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 					
 					i.image.position = CGPoint(x:0,y:10000)    //枠外に
 					i.update()	//手札から外れると自動更新されなくなるので
-//					if i<53 && i>0{//トランプ表の得点も隠す
-//						tPointLabel[i-1].position=CGPoint(x:0,y:10000)
-//					}
 				}
 				
 				//カードの表示、移動
@@ -557,11 +504,6 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 						}else if let trump = paintCard as? Trump{
 							self.cScrollNode.contentNode.addChild(trump.pointLabel)
 						}
-//						if paintCard.cardNum > 52{
-//							specialLabelsAddChildren(cardNum: paintCard, player: .com)
-//						}else if paintCard > 0{
-//							self.cScrollNode.contentNode.addChild(tPointLabel[paintCard - 1])
-//						}
 					}else{
 						//カード
 						self.pScrollNode.contentNode.addChild(paintCard.image)
@@ -572,12 +514,6 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 						}else if let trump = paintCard as? Trump{
 							self.pScrollNode.contentNode.addChild(trump.pointLabel)
 						}
-//						self.pScrollNode.contentNode.addChild(card[paintCard])
-//						if paintCard > 52{
-//							specialLabelsAddChildren(cardNum: paintCard, player: .p1)
-//						}else if paintCard > 0{
-//							self.pScrollNode.contentNode.addChild(tPointLabel[paintCard - 1])
-//						}
 					}
 					
 					paintCard.image.position = CGPoint(x:i.x!, y:cheight/2)
@@ -645,6 +581,11 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				GameScene.audioFinish=false
 					
 				default : print("該当の音が作られていません:\(GameScene.resevation[0].sound)")
+				//audioPlayerDidFinishPlayingが呼び出されないのでここで解除
+				resetButton.isEnabled = true
+				titleButton.isEnabled = true
+				hitButton.isEnabled = true
+				standButton.isEnabled = true
 					
 				}
 				
@@ -662,8 +603,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 					if let trump = i.card as? Trump{//トランプ
 						trump.pointLabel.text = i.value
 						trump.pointLabel.fontColor = i.color	//(注)fontColor != color
-//						tPointLabel[i.index].text = i.value
-//						tPointLabel[i.index].fontColor = i.color
+
 					}
 				}
 				
@@ -737,8 +677,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 			// 3秒おきに行う処理をかく。
 			if last + 1 <= currentTime {
 				queue.async {
-					
-					//				if self.sentfirst==true{    //初期手札を送る前の空データの受信防止
+
 					//サーバーから山札、手札を獲得（1つずつ）
 					if Game.state != .end{
 						self.nets.receiveData()

@@ -142,6 +142,7 @@ class SpecialCard:Card{
 			return
 		}
 		
+		
 		self.cardPlace = cardPlace
 		
 		switch cardNum {
@@ -371,6 +372,7 @@ class Card{//
 	let image:SKSpriteNode
 	var cardPlace:CardPlace
 	var canBeBroken:Bool
+	var isReversed:Bool	//バハの確認に必要
 	
 	
 	init?(cardNum:Int) {
@@ -380,6 +382,7 @@ class Card{//
 		}
 		
 		self.canBeBroken = true
+		self.isReversed = false
 		self.cardPlace = .deck
 		self.cardNum = cardNum
 		

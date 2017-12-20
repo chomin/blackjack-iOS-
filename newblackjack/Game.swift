@@ -61,30 +61,17 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 
 				Game.deckCards.append(Trump(cardNum: i)!)
 				Game.cardSum += 1
-//				if (i-1)%13 > 8{	//10,J,Q,Kのとき
-//					Game.deckCards.append((i,10))
-//				}else{
-//					Game.deckCards.append((i,i%13))
-//				}
+
 			}else{//特殊カード
 				
-				for _ in 1...3{
+				for _ in 1...4{
 					Game.deckCards.append(SpecialCard(cardNum: i)!)
 					Game.cardSum += 1
 				}
-//				if i==53 || i==55 || i==56 || i==60 || i==61{
-//					Game.deckCards.append((i,10))
-//				}else if i==57 || i==62 || i==63{
-//					Game.deckCards.append((i,4))
-//				}else if i==54 || i==58 || i==59{
-//					Game.deckCards.append((i,9))
-//				}else if i==64 || i==65 || i==66 {
-//					Game.deckCards.append((i,8))
-//				}
 			}
 		}
 		
-//		Game.cardSum -= removeCount
+
 		
 		
 		//Fisher–Yatesシャッフルアルゴルズム
@@ -98,14 +85,18 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 		
 		
 		//カードを配る
-		Game.pcards.append(Game.deckCards[0])
-		Game.deckCards.removeFirst()
-		Game.pcards.append(Game.deckCards[0])
-		Game.deckCards.removeFirst()
-		Game.ccards.append(Game.deckCards[0])
-		Game.deckCards.removeFirst()
-		Game.ccards.append(Game.deckCards[0])
-		Game.deckCards.removeFirst()
+		self.pHit()
+		self.pHit()
+		self.cHit()
+		self.cRecversedHit()
+//		Game.pcards.append(Game.deckCards[0])
+//		Game.deckCards.removeFirst()
+//		Game.pcards.append(Game.deckCards[0])
+//		Game.deckCards.removeFirst()
+//		Game.ccards.append(Game.deckCards[0])
+//		Game.deckCards.removeFirst()
+//		Game.ccards.append(Game.deckCards[0])
+//		Game.deckCards.removeFirst()
 		
 		let (pp,cp) = getpoints()
 		
@@ -135,20 +126,78 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 		
 	}//ラベル用のポイントを返す
 	
-	func hit() -> (pcards:[Card],pp:String){//pcardsにcards[0]を配る
+	@discardableResult
+	func pHit() -> (pcards:[Card],pp:String){//pcardsにcards[0]を配る
 		
 		Game.pcards.append(Game.deckCards[0])
 		Game.deckCards.removeFirst()
+		
+		//描写予約及びファンファーレ、場のエフェクト
+		if Game.pcards.last! is Trump{//トランプ
+			
+			GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(Game.pcards.count-1), y: GameScene.cheight/2, card: Game.pcards.last!)
+			
+		}else if let SC = Game.pcards.last! as? SpecialCard{//引いたのが特殊カード
+			
+			SC.fanfare(cardPlace: .p1, index: Game.pcards.count-1)
+		}
+		
+		for j in Game.pcards{//場にある分の効果を確認
+			guard j !== Game.pcards.last! else{//最後に引いたものは除く
+				break
+			}
+			
+			if let SC2 = j as? SpecialCard{
+				SC2.drawEffect(drawPlayer: .p1)
+			}
+		}
+		for j in Game.ccards{//場にある分の効果を確認
+			if let SC2 = j as? SpecialCard{
+				SC2.drawEffect(drawPlayer: .p1)
+			}
+		}
+		
 		let (pp,_)=getpoints()
 		return (Game.pcards, pp!)
 	}
 	
-	func stand() -> (ccards:[Card],cp:String){
+	@discardableResult
+	func cHit() -> (ccards:[Card],cp:String){
 		Game.ccards.append(Game.deckCards[0])
 		Game.deckCards.removeFirst()
+		
+		if Game.ccards.last! is Trump{
+			GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(Game.ccards.count-1), y: GameScene.frameHeight-GameScene.cheight/2, card: Game.ccards.last!)
+			
+		}else if let SC =  Game.ccards.last! as? SpecialCard{
+			
+			SC.fanfare(cardPlace: .com, index: Game.ccards.count-1)
+		}
+		for j in Game.pcards{//場にある分の効果を確認
+			if let SC2 = j as? SpecialCard{
+				SC2.drawEffect(drawPlayer: .com)
+			}
+		}
+		for j in Game.ccards{//場にある分の効果を確認
+			guard j !== Game.ccards.last! else{//最後に引いたものは除く
+				break
+			}
+			if let SC2 = j as? SpecialCard{
+				SC2.drawEffect(drawPlayer: .com)
+			}
+		}
+		
+		
 		let (_,cp)=getpoints()
 		return (Game.ccards, cp!)
 		
+	}
+	
+	func cRecversedHit(){
+		Game.ccards.append(Game.deckCards[0])
+		Game.deckCards.removeFirst()
+		GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: GameScene.frameHeight-GameScene.cheight/2, card: GameScene.backCard)
+		Game.ccards.last!.isReversed = true
 	}
 	
 	func judge(_ i:Int) -> Int{

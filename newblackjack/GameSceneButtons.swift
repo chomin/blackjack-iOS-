@@ -105,81 +105,42 @@ extension GameScene{//ボタンに関する拡張
 		hitButton.isEnabled=false
 		standButton.isEnabled=false
 		
-		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
-		let cwidth = cheight*2/3
+//		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
+//		let cwidth = cheight*2/3
 		
 		self.isPaused=true  //updateによる受信防止
 		
 		if Game.mode == .com || Game.mode == .scom {
-//			let ccards = Game.ccards	  //バハによる除去前の敵の手札
-			let (pcards,_) = Game().hit()
+			
+//			let (pcards,_) =
+			
+			Game().pHit()
 			
 			//Aの得点の確認
 			checkA()
 			
 			//手札追加
-			if let trump = pcards.last! as? Trump{//引いたのがトランプのとき
-//				for i in Game.pcards{//アリスの確認
-//					if i.card == 57 || i.card == 62 || i.card == 63{
-//						Game.pcards[2+hcounter].point += 1
-//						tPointLabel[Game.pcards[2+hcounter].card-1].fontColor = SKColor.orange
-//						tPointLabel[Game.pcards[2+hcounter].card-1].text = String(Game.pcards[2+hcounter].point)
-//					}
-//				}
-				
-				GameScene.makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(pcards.count - 1), y: cheight/2, card: trump)
-//			}else if pcards[2+hcounter].0 == 54 || pcards[2+hcounter].0 == 58 || pcards[2+hcounter].0 == 59 {//オリヴィエ
-//				Game.pBP = 3
-//				makeOlivieResevation(x: cwidth/2+cwidth*CGFloat(2+hcounter), y: cheight/2, card: pcards[2+hcounter].0, BPLabel: ("3",nil))
-//			}else if pcards[2+hcounter].0 == 57 || pcards[2+hcounter].0 == 62 || pcards[2+hcounter].0 == 63{//アリス
-//				var changeTPointLabels:[(index:Int,value:String,color:UIColor?)]=[]
-//				for (index,value) in Game.pcards.enumerated(){
-//					if value.card<53{//トランプの得点を増やす
-//						Game.pcards[index].point += 1
-//						changeTPointLabels.append((value.card-1,String(Game.pcards[index].point),SKColor.orange))
-//					}else{
-//						//特殊カードの攻撃、体力を増やす
-//					}
-//				}
-//				makeAliceResevation(x: cwidth/2+cwidth*CGFloat(2+hcounter), y: cheight/2, card: pcards[2+hcounter].0, tPointLabel: changeTPointLabels)
-			}else if let SC = pcards.last as? SpecialCard{
-				
-				SC.fanfare(cardPlace: .p1, index: pcards.count - 1)
-//				let i = getSpecialEnteringSoundType(card: pcards[2+hcounter].0)
-				
-				
-//				makePaintResevation(sound: i, x: cwidth/2+cwidth*CGFloat(2+hcounter), y: cheight/2, card: pcards[2+hcounter].0)//特殊カードの表示
-//				if pcards[2+hcounter].0 == 55 || pcards[2+hcounter].0 == 60 || pcards[2+hcounter].0 == 61{//バハ
-//					hcounter = -2
-//					scounter = -2 //敵の手札も消える
-//					var remove = [0]
-//					for i in pcards{
-//						remove.append(i.0)
-//					}
-//					for i in ccards{
-//						remove.append(i.0)
-//					}
+//			if let trump = pcards.last! as? Trump{//引いたのがトランプのとき
 //
-//					//全カードの除去&バハを再び表示
-//					Game.pcards.removeAll()
-//					Game.ccards.removeAll()
-//					Game.pcards.append((55,10))
-//					makeHideAndPaintResevation(sound: .br, x: cwidth/2, y: cheight/2, card: 55, hide: remove)//再表示は現状55にしておく
+//				GameScene.makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(pcards.count - 1), y: cheight/2, card: trump)
 //
+//			}else if let SC = pcards.last as? SpecialCard{
+//
+//				SC.fanfare(cardPlace: .p1, index: pcards.count - 1)
+//
+//			}
+//
+//			//ドロー時効果
+//			for j in Game.pcards{//場にある分の効果を確認
+//				if let SC2 = j as? SpecialCard{
+//					SC2.drawEffect(drawPlayer: .p1)
 //				}
-			}
-			
-			//ドロー時効果
-			for j in Game.pcards{//場にある分の効果を確認
-				if let SC2 = j as? SpecialCard{
-					SC2.drawEffect(drawPlayer: .p1)
-				}
-			}
-			for j in Game.ccards{//場にある分の効果を確認
-				if let SC2 = j as? SpecialCard{
-					SC2.drawEffect(drawPlayer: .p1)
-				}
-			}
+//			}
+//			for j in Game.ccards{//場にある分の効果を確認
+//				if let SC2 = j as? SpecialCard{
+//					SC2.drawEffect(drawPlayer: .p1)
+//				}
+//			}
 			
 			//バストの判定
 			var j = Game().judge(1)
@@ -220,16 +181,18 @@ extension GameScene{//ボタンに関する拡張
 					//2枚目を表に向ける
 					var ccards = Game.ccards
 					if ccards.count>0{//バハで消えてないか確認
-						if ccards[1].cardNum < 53{
-							GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
-						}else if let SC = ccards[1] as? SpecialCard{
-							//裏を隠してファンファーレ
-							GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [GameScene.backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
-							Game.firstDealed = false
-							SC.fanfare(cardPlace: .com, index: 1)
-//							let i = getSpecialEnteringSoundType(card: ccards[1].card)
-//
-//							makeHideAndPaintResevation(sound: i, x: cwidth/2+cwidth, y: frame.size.height-cheight/2, card: ccards[1].card, hide: [0])
+						if ccards.last!.isReversed{
+							if ccards[1].cardNum < 53{
+								GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
+							}else if let SC = ccards[1] as? SpecialCard{
+								//裏を隠してファンファーレ
+								GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [GameScene.backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
+								Game.firstDealed = false
+								SC.fanfare(cardPlace: .com, index: 1)
+								//							let i = getSpecialEnteringSoundType(card: ccards[1].card)
+								//
+								//							makeHideAndPaintResevation(sound: i, x: cwidth/2+cwidth, y: frame.size.height-cheight/2, card: ccards[1].card, hide: [0])
+							}
 						}
 					}
 					//敵の得点を表示
@@ -243,14 +206,16 @@ extension GameScene{//ボタンに関する拡張
 			
 		}else if Game.mode == .pvp{
 			if scounter == 0{ //p1のターンで押されたとき
-				let (pcards,_) = Game().hit()
+//				let (pcards,_) =
+				
+				Game().pHit()
 				
 				//Aの得点の確認
 				checkA()
 				
-				//p1の手札追加&得点の更新
-				GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(pcards.count-1), y: GameScene.cheight/2, card: pcards[pcards.count-1])
-				
+//				//p1の手札追加&得点の更新
+//				GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(pcards.count-1), y: GameScene.cheight/2, card: pcards[pcards.count-1])
+//
 //				hcounter += 1
 				
 				//バストの判定
@@ -280,7 +245,7 @@ extension GameScene{//ボタンに関する拡張
 					cpLabel.isHidden = false
 				}
 			}else if scounter == 1{	//p2のターン
-				let (ccards,_) = Game().stand() //カードを引く
+				let (ccards,_) = Game().cHit() //カードを引く
 				
 				
 				//Aの得点の確認
@@ -305,13 +270,15 @@ extension GameScene{//ボタンに関する拡張
 				nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
 			}while net.isLatest == false
 			
-			let (pcards,_) = Game().hit()
+//			let (pcards,_) =
+//
+		    Game().pHit()
 			
 			//Aの得点の確認
 			checkA()
 			
 			//p1の手札追加&得点の更新
-			GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(pcards.count-1), y: GameScene.cheight/2, card: pcards.last!)
+//			GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(pcards.count-1), y: GameScene.cheight/2, card: pcards.last!)
 			
 //			hcounter += 1
 			
@@ -341,7 +308,7 @@ extension GameScene{//ボタンに関する拡張
 				nets.receiveData()  //送信前に受信(stand時のみ)（押した瞬間に）
 			}while net.isLatest == false
 			
-			let (ccards,_)=Game().stand() //カードを引く
+			let (ccards,_)=Game().cHit() //カードを引く
 			
 			//Aの得点の確認
 			checkA()
@@ -356,7 +323,7 @@ extension GameScene{//ボタンに関する拡張
 			if j == 3{
 				pwin()
 			}
-//			chcounter += 1
+			//			chcounter += 1
 		}
 		self.isPaused=false
 	}
@@ -364,76 +331,36 @@ extension GameScene{//ボタンに関する拡張
 	@objc func onClickStandButton(_ sender : UIButton){
 		self.isPaused = true  //updateによる受信防止
 		
-//		let cheight = (view?.frame.height)!/3	//フィールドの1パネルの大きさは画面サイズによって変わる
-//		let cwidth = cheight*2/3
-		
 		if Game.mode != .netp2 && (Game.mode != .pvp || scounter == 0){
 			//2枚目を表に向ける
 			var ccards = Game.ccards
-			if ccards.count>0{//バハで消えてないか確認
-				if ccards[1].cardNum<53{
-					
-//					if Game.ccards[0].card==57 || Game.ccards[0].card==62 || Game.ccards[0].card==63{//アリスの確認
-//						Game.ccards[1].point += 1
-//						tPointLabel[ccards[1].card-1].fontColor = SKColor.orange
-//						tPointLabel[ccards[1].card-1].text = String(Game.ccards[1].point)
-//					}
-					GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
-					
-				}else if let SC = ccards[1] as? SpecialCard{//特殊カード
-					
-					//まず裏を隠し、登場音とともに登場させる
-					GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [GameScene.backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
-					SC.fanfare(cardPlace: .com, index: 1)
-					
-//					let i = getSpecialEnteringSoundType(card: ccards[1].card)
-					
-//					if ccards[1].card == 57 || ccards[1].card == 62 || ccards[1].card == 63{//アリス(得点更新の関係でこの位置)
-//						if ccards[0].card<53{//トランプの得点を増やす
-//							Game.ccards[0].point += 1
-//							tPointLabel[ccards[0].card-1].fontColor = SKColor.orange
-//							tPointLabel[ccards[0].card-1].text = String(Game.ccards[0].point)
-//						}else{
-//							//特殊カードの攻撃、体力を増やす
-//						}
-//					}
-					
-//					makeHideAndPaintResevation(sound: i, x: cwidth/2+cwidth, y: frame.size.height-cheight/2, card: ccards[1].card, hide: [0])
-					
-					//各特殊能力の処理（登場音は済なので不要）
-//					if ccards[1].card == 55 || ccards[1].0 == 60 || ccards[1].0 == 61{//バハ
-//						let pcards=Game.pcards
-//						scounter = -1
-//						var remove:[Int] = []
-//						for i in pcards{
-//							remove.append(i.card)
-//						}
-//						for i in ccards{
-//							remove.append(i.card)
-//						}
-//
-//						Game.pcards.removeAll()
-//						Game.ccards.removeAll()
-//						Game.ccards.append((55,10))
-//						makeHideAndPaintResevation(sound: .br, x: cwidth/2, y: frame.size.height-cheight/2, card: 55, hide: remove)
-//
-//					}else if ccards[1].card == 54 || ccards[1].0 == 58 || ccards[1].0 == 59{//オリヴィエ
-//						Game.cBP = 3
-//						resevation.append((sound: .BP3, x: nil, y: nil, card: nil, hide: [], pointLabels: (pp: nil, cp: nil), tPointLabels: [], BPLabels: (pBP: nil, cBP: "3")))
-//					}
-				}
-				//ドロー時効果
-				for j in Game.pcards{//場にある分の効果を確認
-					if let SC2 = j as? SpecialCard{
-						SC2.drawEffect(drawPlayer: .com)
+			if ccards.count>0 {//バハで消えてないか確認
+				if ccards.last!.isReversed{//バハで消えてないか確認
+					if ccards[1].cardNum<53{
+						
+						GameScene.makeHideAndPaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: ccards[1], hide: [GameScene.backCard])
+						
+					}else if let SC = ccards[1] as? SpecialCard{//特殊カード
+						
+						//まず裏を隠し、登場音とともに登場させる
+						GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [GameScene.backCard], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP:nil)))
+						SC.fanfare(cardPlace: .com, index: 1)
+						
+						
 					}
-				}
-				for j in Game.ccards{//場にある分の効果を確認
-					if let SC2 = j as? SpecialCard{
-						SC2.drawEffect(drawPlayer: .com)
+					//ドロー時効果
+					for j in Game.pcards{//場にある分の効果を確認
+						if let SC2 = j as? SpecialCard{
+							SC2.drawEffect(drawPlayer: .com)
+						}
 					}
+					for j in Game.ccards{//場にある分の効果を確認
+						if let SC2 = j as? SpecialCard{
+							SC2.drawEffect(drawPlayer: .com)
+						}
+					}
+					
 				}
-				
 			}
 			//得点を表示する
 			cpLabel.isHidden = false
@@ -454,75 +381,35 @@ extension GameScene{//ボタンに関する拡張
 				}
 				
 //				let pcards = Game.pcards
-				let (ccards,_) = Game().stand()
+//				let (ccards,_) =
+				
+				Game().cHit()
 				
 				//Aの得点の確認
 				checkA()
 				
 				//手札追加&得点更新
-				if ccards.last!.cardNum < 53{
-//					for i in Game.ccards{//アリスの確認
-//						if i.card==57 || i.card==62 || i.card==63{
-//							Game.ccards[2+scounter].point += 1
-//							tPointLabel[Game.ccards[2+scounter].card-1].fontColor = .orange
-//							tPointLabel[Game.ccards[2+scounter].card-1].text = String(Game.ccards[2+scounter].point)
+//				if ccards.last!.cardNum < 53{
 //
-//						}
+//					GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(ccards.count-1), y: frame.size.height-GameScene.cheight/2, card: ccards.last!)
+//
+//
+//				}else if let SC = ccards.last! as? SpecialCard{//その他の特殊カード
+//
+//					SC.fanfare(cardPlace: .com, index: ccards.count-1)
+//
+//				}
+//				//ドロー時効果
+//				for j in Game.pcards{//場にある分の効果を確認
+//					if let SC2 = j as? SpecialCard{
+//						SC2.drawEffect(drawPlayer: .com)
 //					}
-					
-					GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(ccards.count-1), y: frame.size.height-GameScene.cheight/2, card: ccards.last!)
-					
-					
-//				}else if ccards[2+scounter].0==54 || ccards[2+scounter].0==58 || ccards[2+scounter].0==59{//オリヴィエ
-//					Game.cBP=3
-//					makeOlivieResevation(x: cwidth/2+cwidth*CGFloat(2+scounter), y: frame.size.height-cheight/2, card: ccards[2+scounter].0, BPLabel: (nil,"3"))
-//				}else if ccards[2+scounter].0==57 || ccards[2+scounter].0==62 || ccards[2+scounter].0==63{//アリス
-//
-//					var changeTPointLabels:[(index:Int,value:String,color:UIColor?)]=[]
-//					for (index,value) in Game.ccards.enumerated(){
-//						if value.card<53{//トランプの得点を増やす
-//							Game.ccards[index].point+=1
-//							changeTPointLabels.append((value.card-1,String(Game.ccards[index].point),SKColor.orange))
-//						}else{
-//							//特殊カードの攻撃、体力を増やす
-//						}
+//				}
+//				for j in Game.ccards{//場にある分の効果を確認
+//					if let SC2 = j as? SpecialCard{
+//						SC2.drawEffect(drawPlayer: .com)
 //					}
-//					makeAliceResevation(x: cwidth/2+cwidth*CGFloat(2+scounter), y: frame.size.height-cheight/2, card: ccards[2+scounter].0, tPointLabel: changeTPointLabels)
-				}else if let SC = ccards.last! as? SpecialCard{//その他の特殊カード
-					
-					SC.fanfare(cardPlace: .com, index: ccards.count-1)
-					
-//					let i = getSpecialEnteringSoundType(card: ccards[2+scounter].0)
-//
-//					makePaintResevation(sound: i, x: cwidth/2+cwidth*CGFloat(2+scounter), y: frame.size.height-cheight/2, card: ccards[2+scounter].0)
-//					if ccards[2+scounter].0==55 || ccards[2+scounter].0==60 || ccards[2+scounter].0==61{//バハ
-//						scounter = -2
-//						var remove:[Int]=[]
-//						for i in pcards{
-//							remove.append(i.card)
-//						}
-//						for i in ccards{
-//							remove.append(i.0)
-//						}
-//						Game.pcards.removeAll()
-//						Game.ccards.removeAll()
-//						Game.ccards.append((55,10))
-//						makeHideAndPaintResevation(sound: .br, x: cwidth/2, y: frame.size.height-cheight/2, card: 55, hide: remove)
-//
-//
-//					}
-				}
-				//ドロー時効果
-				for j in Game.pcards{//場にある分の効果を確認
-					if let SC2 = j as? SpecialCard{
-						SC2.drawEffect(drawPlayer: .com)
-					}
-				}
-				for j in Game.ccards{//場にある分の効果を確認
-					if let SC2 = j as? SpecialCard{
-						SC2.drawEffect(drawPlayer: .com)
-					}
-				}
+//				}
 				
 				
 				//引いた直後にバストの判定(ループ内)
