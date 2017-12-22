@@ -346,8 +346,8 @@ class SpecialCard:Card{
 			}
 			
 			
-		default:
-			print("ドロー時に発動する効果はありません")
+		default: break
+//			print("ドロー時に発動する効果はありません")
 		}
 	}
 	

@@ -61,11 +61,19 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 					Game.deckCards.append(SpecialCard(cardNum: i)!)
 					Game.cardSum += 1
 				}
+				
+				
+				
 			}
 		}
 		
-
-		
+		//ゴッドフェス
+		for _ in 1...30{
+			Game.deckCards.append(SpecialCard(cardNum: 60)!)//ダリス
+			Game.cardSum += 1
+			Game.deckCards.append(SpecialCard(cardNum: 55)!)//バハ
+			Game.cardSum += 1
+		}
 		
 		//Fisher–Yatesシャッフルアルゴルズム
 		for i in 0...Game.cardSum-1{
@@ -75,8 +83,6 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 			Game.deckCards[j] = t
 		}
 
-		
-		
 		//カードを配る
 		self.pHit()
 		self.pHit()

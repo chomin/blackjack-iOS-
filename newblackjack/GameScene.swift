@@ -20,18 +20,9 @@ enum specialLabelNames{
 }
 
 
-
-
-//enum Player{
-//	case p1,com
-//}
-
-
 class GameScene: Sounds{  //描写などの処理を主に行うクラス。音の再生終了の通知を受け取るためDelegateを実装。(SKSceneはSoundsで継承)
 	//Buttons.swift,Labels.swift,Images.swiftでこのクラスを拡張している。
-	
-	
-	
+
 	
 	var pScrollNode: ScrollNode!
 	var cScrollNode: ScrollNode!
@@ -119,7 +110,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 			GameScene.resevation.append((sound: .extinction, paint: [], repaint: [], hide: hide, pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP: nil)))
 		}
 		
-		GameScene.resevation.append((sound: .daliceIn, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP: nil)))
+		
 	}
 	
 	
@@ -283,8 +274,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 					}
 				}
 			}
-			
-			
+	
 			Game.state = .end
 			Game.pcards.removeAll()
 			Game.ccards.removeAll()
@@ -340,8 +330,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 					}
 				}
 			}
-			
-			
+
 			Game.state = .end
 			Game.pcards.removeAll()
 			Game.ccards.removeAll()
@@ -477,7 +466,10 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				//カードの移動
 				for i in GameScene.resevation[0].repaint{
 					i.card.image.position = CGPoint(x:i.x, y:cheight/2)
+					//トランプ得点、特殊カードラベルの位置更新(移動後。バハ→ダリスで消えることがあるので)
+					i.card.update()
 				}
+				
 				
 				
 				//音を鳴らす
@@ -857,15 +849,15 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 				if trump.initialPoint == 1 && ppoint.inA<22{
 					Game.pcards[index].point+=10
 					
-					trump.pointLabel.text=String(Game.pcards[index].point)
-					trump.pointLabel.fontColor = .orange
+					GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [(card: Game.pcards[index], value: String(Game.pcards[index].point), color:.orange)], BPLabels: (pBP: nil, cBP: nil)))
+
 					break	  //二枚目以降は更新しない
 				}
 				if trump.initialPoint == 1 && value.point>9{
 					if ppoint.noA>21{
 						Game.pcards[index].point -= 10
-						trump.pointLabel.text = String(Game.pcards[index].point)
-						trump.pointLabel.fontColor = .white
+						GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [(card: Game.pcards[index], value: String(Game.pcards[index].point), color:.white)], BPLabels: (pBP: nil, cBP: nil)))
+
 						break //後に直すべきAはないはず
 					}
 				}
@@ -875,14 +867,12 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 			if let trump = value as? Trump{//トランプ限定
 				if trump.initialPoint == 1 && cpoint.inA<22{
 					Game.ccards[index].point += 10
-					trump.pointLabel.text=String(Game.ccards[index].point)
-					trump.pointLabel.fontColor = .orange
+					GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [(card: Game.ccards[index], value: String(Game.ccards[index].point), color:.orange)], BPLabels: (pBP: nil, cBP: nil)))
 					break	  //二枚目以降は更新しない
 				}
 				if trump.initialPoint == 1 && value.point > 9 && cpoint.noA > 21{
 					Game.ccards[index].point -= 10
-					trump.pointLabel.text=String(Game.ccards[index].point)
-					trump.pointLabel.fontColor = .orange
+					GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [(card: Game.ccards[index], value: String(Game.ccards[index].point), color:.white)], BPLabels: (pBP: nil, cBP: nil)))
 					break //後に直すべきAはないはず
 				}
 			}

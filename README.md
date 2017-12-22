@@ -1,4 +1,9 @@
 # blackjack-iOS-
+
+ゴッドフェス開催中！
+-対象カードの出現率が超絶UP!!!
+
+
 iアプリ版blackjackをiOSに移植しました。
 
 shadowjackモードではトランプに加え、特殊カードが登場します。
