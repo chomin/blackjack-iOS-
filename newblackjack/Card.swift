@@ -319,9 +319,11 @@ class SpecialCard:Card{
 			if self.cardPlace == .p1{
 				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(Game.pcards.count), y: GameScene.cheight/2, card: newDalice)//count関係の順番に注意
 				Game.pcards.append(newDalice)
+				newDalice.cardPlace = .p1
 			}else{
 				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(Game.ccards.count), y: GameScene.frameHeight - GameScene.cheight/2, card: newDalice)//count関係の順番に注意
 				Game.ccards.append(newDalice)
+				newDalice.cardPlace = .com
 			}
 			
 			
