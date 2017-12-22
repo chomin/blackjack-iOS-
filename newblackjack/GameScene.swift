@@ -47,25 +47,21 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	static var frameWidth: CGFloat!
 	
 //	//カード
-//	var cards:[Card] = []	  //カード(空の配列)
 	static var backCard = Card(cardNum: 0)!
 	
 	//画像
-//	var card:[SKSpriteNode] = []	  //カードの画像(空の配列)
 	var pBPim = SKSpriteNode()
 	var cBPim = SKSpriteNode()
 	
 	
 	
 	//ラベル
-//	var specialLabels:[specialLabelNames:SKLabelNode]=[:]//特殊カードの攻撃力、体力
 	var pBPLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")//BP
 	var cBPLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
 	var ppLabel = SKLabelNode(fontNamed: "HiraginoSans-W6") //得点表示用のラベル
 	var cpLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
 	var pbjLabel = SKLabelNode(fontNamed: "HiraginoSans-W6") //bj表示用のラベル
 	var cbjLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
-//	var tPointLabel:[SKLabelNode]=[]//トランプの得点ラベル（52個）(cardnumとのindexのずれに注意)
 	var centerLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")	//ターンや最終結果を表示
 	var p1Label = SKLabelNode(fontNamed: "HiraginoSans-W6")	//p1,comと表示
 	var comLabel = SKLabelNode(fontNamed: "HiraginoSans-W6")
@@ -77,9 +73,6 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 	var resetButton = UIButton()
 	var titleButton = UIButton()
 	
-
-//	var hcounter = 0
-//	var chcounter = 0 //comがヒットした数
 	var scounter = 0	//pvpで、ターン確認用
 	var fccardsc = 2	//p2の手札の数(更新前)
 	var fpcardsc = 0	//p1の手札の数(更新前)
@@ -120,9 +113,13 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		GameScene.resevation.append((.extinction,[],[],hide,Game().getpoints(),[],BPLabel))
 	}
 	static func makeDaliceLastResevation(hide:[Card]){
+		GameScene.resevation.append((sound: .daliceLast, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP: nil)))
 		
+		if hide.count > 0 {
+			GameScene.resevation.append((sound: .extinction, paint: [], repaint: [], hide: hide, pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP: nil)))
+		}
 		
-		GameScene.resevation.append((sound: .daliceLast, paint: [], repaint: [], hide: hide, pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP: nil)))
+		GameScene.resevation.append((sound: .daliceIn, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [], BPLabels: (pBP: nil, cBP: nil)))
 	}
 	
 	
@@ -134,6 +131,8 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		
 		Game.pBP = 2
 		Game.cBP = 3
+		
+		Game.adjustPoints = (0, 0)
 		
 		/*音の設定*/
 		setAllSounds()
@@ -188,56 +187,12 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 		//配る
 		if Game.mode == .com || Game.mode == .scom || Game.mode == .pvp{
 			//最初の手札を獲得(pの手札、cの手札、pの得点、cの得点)
-			let pccards = Game().setCards()
+			Game().setCards()
 			
 			//Aの得点の確認
 			checkA()
 			
 			//各手札を表示(hit内に移動)
-			for (index,value) in pccards.pcards.enumerated(){//プレイヤー側
-//				if value is Trump{//トランプ
-//
-//					GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(index), y: GameScene.cheight/2, card: value)
-//
-//				}else if let SC = value as? SpecialCard{//引いたのが特殊カード
-//
-//					SC.fanfare(cardPlace: .p1, index: index)
-//				}
-//
-//				for j in Game.pcards{//場にある分の効果を確認
-//					if let SC2 = j as? SpecialCard{
-//						SC2.drawEffect(drawPlayer: .p1)
-//					}
-//				}
-//				for j in Game.ccards{//場にある分の効果を確認
-//					if let SC2 = j as? SpecialCard{
-//						SC2.drawEffect(drawPlayer: .p1)
-//					}
-//				}
-			}
-	
-			//cpuの1枚目の表示
-//			if pccards.ccards[0] is Trump{
-//				GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2, y: frame.size.height-GameScene.cheight/2, card: pccards.ccards[0])
-//
-//			}else if let SC =  pccards.ccards[0] as? SpecialCard{
-//
-//				SC.fanfare(cardPlace: .com, index: 0)
-//			}
-//			for j in Game.pcards{//場にある分の効果を確認
-//				if let SC2 = j as? SpecialCard{
-//					SC2.drawEffect(drawPlayer: .com)
-//				}
-//			}
-//			for j in Game.ccards{//場にある分の効果を確認
-//				if let SC2 = j as? SpecialCard{
-//					SC2.drawEffect(drawPlayer: .com)
-//				}
-//			}
-			
-			//cpuの2枚目の表示
-//			GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth, y: frame.size.height-GameScene.cheight/2, card: GameScene.backCard)
-			
 			
 		}else{//ネット系
 			
@@ -442,8 +397,7 @@ class GameScene: Sounds{  //描写などの処理を主に行うクラス。音�
 					}
 				}
 			}
-		
-			
+
 			Game.state = .end
 			Game.pcards.removeAll()
 			Game.ccards.removeAll()

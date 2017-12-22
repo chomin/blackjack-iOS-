@@ -17,10 +17,7 @@ enum gameMode {
 
 class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 	
-	//クラスプロパティ（クラス自身が保持する値）	
-//	static var pcards:[(card:Int,point:Int)]=[]	//手札(各カードは1から52の通し番号)(空の配列であることに注意！)
-//	static var ccards:[(card:Int,point:Int)]=[]
-//	static var cards:[(card:Int,point:Int)]=[]   //(山札,得点)
+	//クラスプロパティ（クラス自身が保持する値）
 	static var pcards:[Card] = []	//手札(各カードは1から52の通し番号)
 	static var ccards:[Card] = []
 	static var deckCards:[Card] = []   //(山札,得点)
@@ -33,25 +30,21 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 	static var cardSum = 0  //カードの合計枚数
 	static var maxCardVariety = 0	//カードの種類
 	static var firstDealed = false
+	static var adjustPoints:(pp:Int, cp:Int) = (0, 0)
 	
 	@discardableResult	//結果を使わなくてもいいよ
 	func setCards() -> (pcards:[Card], ccards:[Card], pp:String, cp:String){
 		Game.cardSum = 0
 		
 		if Game.mode == .com || Game.mode == .pvp || Game.mode == .netp1 || Game.mode == .netp2{
-//			Game.cardSum = 52
 			Game.maxCardVariety = 52
 		}else{
-//			Game.cardSum = 72
 			Game.maxCardVariety = 60
 		}
-		
-//		var removeCount = 0
-		
+
 		for i in 1...Game.maxCardVariety{
 			
 			if i==53 || i==56{//サタンとゼウスは禁止カード
-//				removeCount += 1
 				continue
 			}
 			
@@ -89,14 +82,6 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 		self.pHit()
 		self.cHit()
 		self.cRecversedHit()
-//		Game.pcards.append(Game.deckCards[0])
-//		Game.deckCards.removeFirst()
-//		Game.pcards.append(Game.deckCards[0])
-//		Game.deckCards.removeFirst()
-//		Game.ccards.append(Game.deckCards[0])
-//		Game.deckCards.removeFirst()
-//		Game.ccards.append(Game.deckCards[0])
-//		Game.deckCards.removeFirst()
 		
 		let (pp,cp) = getpoints()
 		
@@ -279,39 +264,30 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 		var cpoint=(noA:0,inA:10)//inAは、もし今のポイントに、更に１０点加えたら...の値
 		
 		for i in Game.pcards{
-			
 				ppoint.inA+=i.point
 				ppoint.noA+=i.point
-			
-//			初期値不変の場合の計算
-//			if i.card<53{//トランプ
-//				if (i.card-1)%13 > 8{	//10,J,Q,Kのとき
-//					ppoint.inA+=10
-//					ppoint.noA+=10
-//				}else{
-//					ppoint.inA+=i.card%13
-//					ppoint.noA+=i.card%13
-//				}
-//			}else{//特殊カード
-//				if i.card==53 || i.card==55 || i.card==56{
-//					ppoint.inA+=10
-//					ppoint.noA+=10
-//				}else if i.card==57{
-//					ppoint.inA+=4
-//					ppoint.noA+=4
-//				}else if i.card==54{
-//					ppoint.inA+=9
-//					ppoint.noA+=9
-//				}
-//			
-//			}
 		}
-		
 		for i in Game.ccards{
-
 				cpoint.inA+=i.point
 				cpoint.noA+=i.point
-			
+		}
+		
+		ppoint.inA += Game.adjustPoints.pp
+		ppoint.noA += Game.adjustPoints.pp
+		cpoint.inA += Game.adjustPoints.cp
+		cpoint.noA += Game.adjustPoints.cp
+		
+		if ppoint.inA < 0{
+			ppoint.inA = 0
+		}
+		if ppoint.noA < 0{
+			ppoint.noA = 0
+		}
+		if cpoint.inA < 0{
+			cpoint.inA = 0
+		}
+		if cpoint.noA < 0{
+			cpoint.noA = 0
 		}
 		
 		//Aを持っているかの判定

@@ -336,12 +336,12 @@ class SpecialCard:Card{
 			if self.cardPlace == .p1 && drawPlayer == .p1{
 				if let a = Game.pcards.last as? Trump{
 					a.point += 1
-					GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [(card: a, value: String(a.point), color: .orange)], BPLabels: (pBP: nil, cBP: nil)))
+					GameScene.resevation.append((sound: .debuffField, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [(card: a, value: String(a.point), color: .orange)], BPLabels: (pBP: nil, cBP: nil)))
 				}
 			}else if self.cardPlace == .com && drawPlayer == .com{
 				if let a = Game.ccards.last as? Trump{
 					a.point += 1
-					GameScene.resevation.append((sound: .none, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [(card: a, value: String(a.point), color: .orange)], BPLabels: (pBP: nil, cBP: nil)))
+					GameScene.resevation.append((sound: .debuffField, paint: [], repaint: [], hide: [], pointLabels: Game().getpoints(), tPointLabels: [(card: a, value: String(a.point), color: .orange)], BPLabels: (pBP: nil, cBP: nil)))
 				}
 			}
 			
@@ -352,10 +352,21 @@ class SpecialCard:Card{
 	}
 	
 	func bustEffect(bustPlayer: CardPlace)  {//bustした時に呼び出す（場にある分の効果）
+		
+		guard bustPlayer != .deck else {
+			print("bustEffectを発動するカードが配られていません")
+			return
+		}
+		
 		switch cardNum {
 		case 58://ルシフェル
 			if self.cardPlace == bustPlayer{
-				self.point -= 4
+				if self.cardPlace == .p1{
+					Game.adjustPoints.pp -= 4
+				}else{
+					Game.adjustPoints.cp -= 4
+				}
+				
 				GameScene.makeLuciferCureResevation()
 			}
 			

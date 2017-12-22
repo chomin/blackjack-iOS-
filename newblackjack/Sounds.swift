@@ -46,7 +46,7 @@ class Sounds: SKScene, AVAudioPlayerDelegate{//通知を受け取るためAVAudi
 		luciferEffect = Sounds().setSound(fileName: "神の慈悲だ")
 		bbIn = Sounds().setSound(fileName: "恋ではなく、これは愛")
 		daliceIn = Sounds().setSound(fileName: "幻想の世界へようこそ")
-		daliceLast = Sounds().setSound(fileName: "幻想は終わらない→幻想の世界へようこそ")
+		daliceLast = Sounds().setSound(fileName: "幻想は終わらない")
 		breakcard = Sounds().setSound(fileName: "破壊音")
 		extinction = Sounds().setSound(fileName: "消滅音")
 		BP3Sound = Sounds().setSound(fileName: "BP3音")

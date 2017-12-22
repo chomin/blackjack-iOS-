@@ -119,28 +119,7 @@ extension GameScene{//ボタンに関する拡張
 			//Aの得点の確認
 			checkA()
 			
-			//手札追加
-//			if let trump = pcards.last! as? Trump{//引いたのがトランプのとき
-//
-//				GameScene.makePaintResevation(sound: .card, x: cwidth/2+cwidth*CGFloat(pcards.count - 1), y: cheight/2, card: trump)
-//
-//			}else if let SC = pcards.last as? SpecialCard{
-//
-//				SC.fanfare(cardPlace: .p1, index: pcards.count - 1)
-//
-//			}
-//
-//			//ドロー時効果
-//			for j in Game.pcards{//場にある分の効果を確認
-//				if let SC2 = j as? SpecialCard{
-//					SC2.drawEffect(drawPlayer: .p1)
-//				}
-//			}
-//			for j in Game.ccards{//場にある分の効果を確認
-//				if let SC2 = j as? SpecialCard{
-//					SC2.drawEffect(drawPlayer: .p1)
-//				}
-//			}
+
 			
 			//バストの判定
 			var j = Game().judge(1)
@@ -212,20 +191,9 @@ extension GameScene{//ボタンに関する拡張
 				
 				//Aの得点の確認
 				checkA()
-				
-//				//p1の手札追加&得点の更新
-//				GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(pcards.count-1), y: GameScene.cheight/2, card: pcards[pcards.count-1])
-//
-//				hcounter += 1
-				
+			
 				//バストの判定
 				let j = Game().judge(1)
-				
-				//ルシフェル探し:TODO
-//				if j == 4{
-//					checkLucifer(player: .p1)
-//					j = Game().judge(1)
-//				}
 				
 				if j == 4{
 					plose()
@@ -380,38 +348,11 @@ extension GameScene{//ボタンに関する拡張
 					break
 				}
 				
-//				let pcards = Game.pcards
-//				let (ccards,_) =
-				
 				Game().cHit()
 				
 				//Aの得点の確認
 				checkA()
-				
-				//手札追加&得点更新
-//				if ccards.last!.cardNum < 53{
-//
-//					GameScene.makePaintResevation(sound: .card, x: GameScene.cwidth/2+GameScene.cwidth*CGFloat(ccards.count-1), y: frame.size.height-GameScene.cheight/2, card: ccards.last!)
-//
-//
-//				}else if let SC = ccards.last! as? SpecialCard{//その他の特殊カード
-//
-//					SC.fanfare(cardPlace: .com, index: ccards.count-1)
-//
-//				}
-//				//ドロー時効果
-//				for j in Game.pcards{//場にある分の効果を確認
-//					if let SC2 = j as? SpecialCard{
-//						SC2.drawEffect(drawPlayer: .com)
-//					}
-//				}
-//				for j in Game.ccards{//場にある分の効果を確認
-//					if let SC2 = j as? SpecialCard{
-//						SC2.drawEffect(drawPlayer: .com)
-//					}
-//				}
-				
-				
+
 				//引いた直後にバストの判定(ループ内)
 				j = Game().judge(1)
 				
