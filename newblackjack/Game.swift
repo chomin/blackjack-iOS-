@@ -41,7 +41,7 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 		}else{
 			Game.maxCardVariety = 60
 		}
-
+		
 		for i in 1...Game.maxCardVariety{
 			
 			if i==53 || i==56{//サタンとゼウスは禁止カード
@@ -51,10 +51,10 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 			
 			
 			if i<53{
-
+				
 				Game.deckCards.append(Trump(cardNum: i)!)
 				Game.cardSum += 1
-
+				
 			}else{//特殊カード
 				
 				for _ in 1...4{
@@ -68,11 +68,15 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 		}
 		
 		//ゴッドフェス
-		for _ in 1...30{
-			Game.deckCards.append(SpecialCard(cardNum: 60)!)//ダリス
-			Game.cardSum += 1
-			Game.deckCards.append(SpecialCard(cardNum: 55)!)//バハ
-			Game.cardSum += 1
+		if Game.mode == .scom{
+			for _ in 1...30{
+				//			Game.deckCards.append(SpecialCard(cardNum: 60)!)//ダリス
+				//			Game.cardSum += 1
+				//			Game.deckCards.append(SpecialCard(cardNum: 55)!)//バハ
+				//			Game.cardSum += 1
+				Game.deckCards.append(SpecialCard(cardNum: 58)!)//ルシフェル
+				Game.cardSum += 1
+			}
 		}
 		
 		//Fisher–Yatesシャッフルアルゴルズム
@@ -201,7 +205,7 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 		//		4:cが勝ち
 		//		5:引き分け
 		
-		let (ppoint,cpoint,pA,cA)=calculatepoints()
+		let (ppoint,cpoint,pA,cA) = calculatepoints()
 		
 		//BJの判定
 		if i==0{

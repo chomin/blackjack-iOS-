@@ -180,28 +180,57 @@ class SpecialCard:Card{
 				var pcardsRemoveIndexes:[Int] = []
 				var ccardsRemoveIndexes:[Int] = []
 				
-				for (index, value) in Game.pcards.enumerated(){
-					if value !== self as Card && value.canBeBroken {
-						
-						hideCards.append(value)
-//						Game.pcards.remove(at: index)	//個数が変わる！
-						pcardsRemoveIndexes.append(index)
-					}else{//残ったものの位置を更新
-						repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintPCardNum)*GameScene.cwidth, GameScene.cheight/2, value))
-						repaintPCardNum += 1
+				//ルシフェル調整点数を初期化
+				Game.adjustPoints = (0, 0)
+				
+				if self.cardPlace == .p1{//ラスワの発動はバハムートを引いた側から
+					for (index, value) in Game.pcards.enumerated(){
+						if value !== self as Card && value.canBeBroken {
+							
+							hideCards.append(value)
+							//						Game.pcards.remove(at: index)	//個数が変わる！
+							pcardsRemoveIndexes.append(index)
+						}else{//残ったものの位置を更新
+							repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintPCardNum)*GameScene.cwidth, GameScene.cheight/2, value))
+							repaintPCardNum += 1
+						}
+					}
+					for(index, value) in Game.ccards.enumerated(){
+						if value !== self as Card && value.canBeBroken {
+							
+							hideCards.append(value)
+							//						Game.ccards.remove(at: index)
+							ccardsRemoveIndexes.append(index)
+						}else{
+							repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintCCardNum)*GameScene.cwidth, GameScene.frameHeight - GameScene.cheight/2, value))
+							repaintCCardNum += 1
+						}
+					}
+				}else if self.cardPlace == .com{
+					for(index, value) in Game.ccards.enumerated(){
+						if value !== self as Card && value.canBeBroken {
+							
+							hideCards.append(value)
+							//						Game.ccards.remove(at: index)
+							ccardsRemoveIndexes.append(index)
+						}else{
+							repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintCCardNum)*GameScene.cwidth, GameScene.frameHeight - GameScene.cheight/2, value))
+							repaintCCardNum += 1
+						}
+					}
+					for (index, value) in Game.pcards.enumerated(){
+						if value !== self as Card && value.canBeBroken {
+							
+							hideCards.append(value)
+							//						Game.pcards.remove(at: index)	//個数が変わる！
+							pcardsRemoveIndexes.append(index)
+						}else{//残ったものの位置を更新
+							repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintPCardNum)*GameScene.cwidth, GameScene.cheight/2, value))
+							repaintPCardNum += 1
+						}
 					}
 				}
-				for(index, value) in Game.ccards.enumerated(){
-					if value !== self as Card && value.canBeBroken {
-						
-						hideCards.append(value)
-//						Game.ccards.remove(at: index)
-						ccardsRemoveIndexes.append(index)
-					}else{
-						repaintCards.append((GameScene.cwidth/2 + CGFloat(repaintCCardNum)*GameScene.cwidth, GameScene.frameHeight - GameScene.cheight/2, value))
-						repaintCCardNum += 1
-					}
-				}
+				
 				//対象カードを破壊
 				for (index,value) in pcardsRemoveIndexes.enumerated(){
 					Game.pcards.remove(at: value - index)
@@ -365,8 +394,10 @@ class SpecialCard:Card{
 			if self.cardPlace == bustPlayer{
 				if self.cardPlace == .p1{
 					Game.adjustPoints.pp -= 4
-				}else{
+				}else if self.cardPlace == .com{
 					Game.adjustPoints.cp -= 4
+				}else{
+					print("ルシフェルが配られていません@bustEffect")
 				}
 				
 				GameScene.makeLuciferCureResevation()

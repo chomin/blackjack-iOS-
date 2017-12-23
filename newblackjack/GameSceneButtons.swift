@@ -137,7 +137,7 @@ extension GameScene{//ボタンに関する拡張
 						SC2.bustEffect(bustPlayer: .p1)
 					}
 				}
-//				checkLucifer(player: .p1)
+
 				j = Game().judge(1)
 			}
 			
