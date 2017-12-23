@@ -70,12 +70,12 @@ class Game{	//カードや得点の管理、勝敗判定などを行うクラス
 		//ゴッドフェス
 		if Game.mode == .scom{
 			for _ in 1...30{
-				//			Game.deckCards.append(SpecialCard(cardNum: 60)!)//ダリス
-				//			Game.cardSum += 1
-				//			Game.deckCards.append(SpecialCard(cardNum: 55)!)//バハ
-				//			Game.cardSum += 1
-				Game.deckCards.append(SpecialCard(cardNum: 58)!)//ルシフェル
+				Game.deckCards.append(SpecialCard(cardNum: 60)!)//ダリス
 				Game.cardSum += 1
+				Game.deckCards.append(SpecialCard(cardNum: 55)!)//バハ
+				Game.cardSum += 1
+//				Game.deckCards.append(SpecialCard(cardNum: 58)!)//ルシフェル
+//				Game.cardSum += 1
 			}
 		}
 		
