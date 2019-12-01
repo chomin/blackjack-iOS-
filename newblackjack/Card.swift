@@ -44,8 +44,10 @@ class Trump:Card{
 	override func update(){
 		
 		//ラベルの位置を連動
-		let x = self.image.position.x+GameScene.cwidth/2-GameScene.cheight*16/138
-		let y = self.image.position.y+GameScene.cheight/2-GameScene.cheight*28/138
+		var x = self.image.position.x+GameScene.cwidth/2
+        x -= GameScene.cheight*16/138
+		var y = self.image.position.y+GameScene.cheight/2
+        y -= GameScene.cheight*28/138
 		self.pointLabel.position = CGPoint(x:x, y:y)
 	}
 }
@@ -128,8 +130,10 @@ class SpecialCard:Card{
 	
 	override func update(){
 		//ラベルの位置を連動
-		let x1 = self.image.position.x-GameScene.cwidth/2+GameScene.cheight*11/138
-		let x2 = self.image.position.x+GameScene.cwidth/2-GameScene.cheight*11/138
+		var x1 = self.image.position.x-GameScene.cwidth/2
+        x1 += GameScene.cheight*11/138
+		var x2 = self.image.position.x+GameScene.cwidth/2
+        x2 -= GameScene.cheight*11/138
 		
 		self.attackLabel.position = CGPoint(x:x1, y:self.image.position.y-GameScene.cheight/2+GameScene.cheight*8/138)
 		self.hpLabel.position = CGPoint(x:x2, y:self.image.position.y-GameScene.cheight/2+GameScene.cheight*8/138)
@@ -348,7 +352,7 @@ class SpecialCard:Card{
 			if self.cardPlace == .p1{
 				Game.pcards.append(newDalice)
 				newDalice.cardPlace = .p1
-				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(Game.pcards.count-1), y: GameScene.cheight/2, card: newDalice)//count関係の順番に注意
+				GameScene.makePaintResevation(sound: .daliceIn, x: GameScene.cwidth/2 + GameScene.cwidth*CGFloat(Game.pcards.count-1), y: GameScene.cheight/2, card: newDalice)//count関係の順番に注意（得点表示の関係でappendの後）
 				
 			}else{
 				Game.ccards.append(newDalice)
